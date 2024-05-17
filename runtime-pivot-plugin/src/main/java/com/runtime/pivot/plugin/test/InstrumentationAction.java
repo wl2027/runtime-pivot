@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.actions;
+package com.runtime.pivot.plugin.test;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

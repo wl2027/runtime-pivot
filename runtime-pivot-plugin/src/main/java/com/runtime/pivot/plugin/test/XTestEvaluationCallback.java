@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.runtime.pivot.plugin.actions;
+package com.runtime.pivot.plugin.test;
 
 import com.intellij.openapi.util.Pair;
 import com.intellij.xdebugger.frame.XValue;

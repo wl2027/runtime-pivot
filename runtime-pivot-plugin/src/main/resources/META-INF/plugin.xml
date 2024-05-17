@@ -18,57 +18,98 @@
     </extensions>
 
 
-
     <actions>
-        <action id="InstrumentationAction" class="com.runtime.pivot.plugin.actions.InstrumentationAction" text="InstrumentationAction">
-<!--            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="first" />-->
+        <group id="RuntimePivot.MainMenu" text="RuntimePivot" popup="true">
+            <separator/>
+            <group id="RuntimePivot.Program" text="Program" popup="true">
+                <action id="RuntimePivot.ClassLoadTree" text="classLoad tree"
+                        class="com.runtime.pivot.plugin.actions.ClassLoadTreeAction"/>
+                <action id="RuntimePivot.ClassLoadInfo" text="classLoad info"
+                        class="com.runtime.pivot.plugin.actions.ClassLoadInfoAction"/>
+                <action id="RuntimePivot.TransformerList" text="transformer list"
+                        class="com.runtime.pivot.plugin.actions.TransformerListAction"/>
+            </group>
+            <separator/>
+            <group id="RuntimePivot.Object" text="Object" popup="true">
+                <action id="RuntimePivot.ObjectSize" text="size"
+                        class="com.runtime.pivot.plugin.actions.ObjectSizeAction"/>
+                <action id="RuntimePivot.ObjectInternals" text="internals"
+                        class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
+            </group>
+            <separator/>
+            <group id="RuntimePivot.Class" text="Class" popup="true">
+                <action id="RuntimePivot.Dump" text="dump" class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+
+            </group>
+            <separator/>
+            <group id="RuntimePivot.Method" text="Method" popup="true">
+                <action id="RuntimePivot.MethodStartWatch" text="startWatch"
+                        class="com.runtime.pivot.plugin.actions.MethodStartWatchAction"/>
+                <action id="RuntimePivot.MethodStopWatch" text="stopWatch"
+                        class="com.runtime.pivot.plugin.actions.MethodStopWatchAction"/>
+                <action id="RuntimePivot.MethodRestore" text="restore"
+                        class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
+            </group>
+            <separator/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </group>
+
+
+
+        <action id="InstrumentationAction" class="com.runtime.pivot.plugin.test.InstrumentationAction"
+                text="InstrumentationAction">
+            <!--            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="first" />-->
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
-        <action id="Resume123" class="com.runtime.pivot.plugin.actions.ResumeAction2" text="Resume123" icon="AllIcons.Actions.Colors">
+        <action id="Resume123" class="com.runtime.pivot.plugin.test.ResumeAction2" text="Resume123"
+                icon="AllIcons.Actions.Colors">
             <add-to-group group-id="DebuggingActionsGroup" anchor="first"/>
-<!--            <add-to-group group-id="RunToolbarDebuggerAdditionalActions" anchor="first"/>-->
+            <!--            <add-to-group group-id="RunToolbarDebuggerAdditionalActions" anchor="first"/>-->
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
 
-<!--        <group id="DebugMainMenu">-->
-<!--            <separator/>-->
-<!--            <group id="DebuggingActionsGroup" popup="true">-->
-<!--                <group id="DebugReloadGroup"/>-->
-<!--                <separator/>-->
-<!--                <action id="StepOver" class="com.intellij.xdebugger.impl.actions.StepOverAction" icon="AllIcons.Actions.TraceOver"/>-->
-<!--                <action id="ForceStepOver" class="com.intellij.xdebugger.impl.actions.ForceStepOverAction" icon="PlatformDebuggerImplIcons.Actions.Force_step_over"/>-->
-<!--                <action id="StepInto" class="com.intellij.xdebugger.impl.actions.StepIntoAction" icon="AllIcons.Actions.TraceInto"/>-->
-<!--                <action id="ForceStepInto" class="com.intellij.xdebugger.impl.actions.ForceStepIntoAction" icon="PlatformDebuggerImplIcons.Actions.Force_step_into"/>-->
-<!--                <action id="SmartStepInto" class="com.intellij.xdebugger.impl.actions.SmartStepIntoAction" icon="AllIcons.Debugger.SmartStepInto"/>-->
-<!--                <action id="StepOut" class="com.intellij.xdebugger.impl.actions.StepOutAction" icon="AllIcons.Actions.StepOut"/>-->
-<!--                <action id="RunToCursor" class="com.intellij.xdebugger.impl.actions.RunToCursorAction" icon="AllIcons.Actions.RunToCursor"/>-->
-<!--                <action id="ForceRunToCursor" class="com.intellij.xdebugger.impl.actions.ForceRunToCursorAction" icon="PlatformDebuggerImplIcons.Actions.Force_run_to_cursor"/>-->
-<!--                <action id="Pause" class="com.intellij.xdebugger.impl.actions.PauseAction" icon="AllIcons.Actions.Pause"/>-->
-<!--                <action id="Resume" class="com.intellij.xdebugger.impl.actions.ResumeAction" icon="AllIcons.Actions.Resume"/>-->
-<!--                <separator/>-->
-<!--                <action id="EvaluateExpression" class="com.intellij.xdebugger.impl.actions.EvaluateAction" icon="AllIcons.Debugger.EvaluateExpression"/>-->
-<!--                <action id="QuickEvaluateExpression" class="com.intellij.xdebugger.impl.actions.QuickEvaluateAction"/>-->
-<!--                <action id="ShowExecutionPoint" class="com.intellij.xdebugger.impl.actions.ShowExecutionPointAction"-->
-<!--                        icon="AllIcons.Debugger.ShowCurrentFrame"/>-->
-<!--                <separator/>-->
-<!--            </group>-->
-<!--            <group id="BreakpointActionsGroup" popup="true">-->
-<!--                <action id="Debugger.RestoreBreakpoint" class="com.intellij.xdebugger.impl.actions.RestoreBreakpointAction"/>-->
-<!--                <action id="ToggleLineBreakpoint" class="com.intellij.xdebugger.impl.actions.ToggleLineBreakpointAction">-->
-<!--                    <override-text place="MainMenu"/>-->
-<!--                </action>-->
-<!--                <action id="ToggleTemporaryLineBreakpoint" class="com.intellij.xdebugger.impl.actions.ToggleTemporaryLineBreakpointAction">-->
-<!--                    <override-text place="MainMenu"/>-->
-<!--                </action>-->
-<!--                <action id="ToggleBreakpointEnabled" class="com.intellij.xdebugger.impl.actions.ToggleBreakpointEnabledAction"/>-->
-<!--            </group>-->
-<!--            <action id="ViewBreakpoints" class="com.intellij.xdebugger.impl.actions.ViewBreakpointsAction" icon="AllIcons.Debugger.ViewBreakpoints"/>-->
-<!--            <separator/>-->
 
-<!--            <add-to-group group-id="RunMenu" anchor="last"/>-->
-<!--        </group>-->
+        <!--        <group id="DebugMainMenu">-->
+        <!--            <separator/>-->
+        <!--            <group id="DebuggingActionsGroup" popup="true">-->
+        <!--                <group id="DebugReloadGroup"/>-->
+        <!--                <separator/>-->
+        <!--                <action id="StepOver" class="com.intellij.xdebugger.impl.actions.StepOverAction" icon="AllIcons.Actions.TraceOver"/>-->
+        <!--                <action id="ForceStepOver" class="com.intellij.xdebugger.impl.actions.ForceStepOverAction" icon="PlatformDebuggerImplIcons.Actions.Force_step_over"/>-->
+        <!--                <action id="StepInto" class="com.intellij.xdebugger.impl.actions.StepIntoAction" icon="AllIcons.Actions.TraceInto"/>-->
+        <!--                <action id="ForceStepInto" class="com.intellij.xdebugger.impl.actions.ForceStepIntoAction" icon="PlatformDebuggerImplIcons.Actions.Force_step_into"/>-->
+        <!--                <action id="SmartStepInto" class="com.intellij.xdebugger.impl.actions.SmartStepIntoAction" icon="AllIcons.Debugger.SmartStepInto"/>-->
+        <!--                <action id="StepOut" class="com.intellij.xdebugger.impl.actions.StepOutAction" icon="AllIcons.Actions.StepOut"/>-->
+        <!--                <action id="RunToCursor" class="com.intellij.xdebugger.impl.actions.RunToCursorAction" icon="AllIcons.Actions.RunToCursor"/>-->
+        <!--                <action id="ForceRunToCursor" class="com.intellij.xdebugger.impl.actions.ForceRunToCursorAction" icon="PlatformDebuggerImplIcons.Actions.Force_run_to_cursor"/>-->
+        <!--                <action id="Pause" class="com.intellij.xdebugger.impl.actions.PauseAction" icon="AllIcons.Actions.Pause"/>-->
+        <!--                <action id="Resume" class="com.intellij.xdebugger.impl.actions.ResumeAction" icon="AllIcons.Actions.Resume"/>-->
+        <!--                <separator/>-->
+        <!--                <action id="EvaluateExpression" class="com.intellij.xdebugger.impl.actions.EvaluateAction" icon="AllIcons.Debugger.EvaluateExpression"/>-->
+        <!--                <action id="QuickEvaluateExpression" class="com.intellij.xdebugger.impl.actions.QuickEvaluateAction"/>-->
+        <!--                <action id="ShowExecutionPoint" class="com.intellij.xdebugger.impl.actions.ShowExecutionPointAction"-->
+        <!--                        icon="AllIcons.Debugger.ShowCurrentFrame"/>-->
+        <!--                <separator/>-->
+        <!--            </group>-->
+        <!--            <group id="BreakpointActionsGroup" popup="true">-->
+        <!--                <action id="Debugger.RestoreBreakpoint" class="com.intellij.xdebugger.impl.actions.RestoreBreakpointAction"/>-->
+        <!--                <action id="ToggleLineBreakpoint" class="com.intellij.xdebugger.impl.actions.ToggleLineBreakpointAction">-->
+        <!--                    <override-text place="MainMenu"/>-->
+        <!--                </action>-->
+        <!--                <action id="ToggleTemporaryLineBreakpoint" class="com.intellij.xdebugger.impl.actions.ToggleTemporaryLineBreakpointAction">-->
+        <!--                    <override-text place="MainMenu"/>-->
+        <!--                </action>-->
+        <!--                <action id="ToggleBreakpointEnabled" class="com.intellij.xdebugger.impl.actions.ToggleBreakpointEnabledAction"/>-->
+        <!--            </group>-->
+        <!--            <action id="ViewBreakpoints" class="com.intellij.xdebugger.impl.actions.ViewBreakpointsAction" icon="AllIcons.Debugger.ViewBreakpoints"/>-->
+        <!--            <separator/>-->
+
+        <!--            <add-to-group group-id="RunMenu" anchor="last"/>-->
+        <!--        </group>-->
     </actions>
 
-
-
+    <projectListeners>
+        <listener class="com.runtime.pivot.plugin.listeners.MethodListener"
+                  topic="com.intellij.xdebugger.XDebuggerManagerListener"/>
+    </projectListeners>
 </idea-plugin>
