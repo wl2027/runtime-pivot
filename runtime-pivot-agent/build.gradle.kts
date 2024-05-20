@@ -16,8 +16,9 @@ dependencies {
     implementation("cn.hutool:hutool-all:5.8.23")
     implementation("net.bytebuddy:byte-buddy:1.14.11")
     implementation("net.bytebuddy:byte-buddy-agent:1.14.11")
-    implementation("org.benf:cfr:0.150")
-    implementation("org.jboss.windup.decompiler:decompiler-procyon:5.3.0.Final")
+    implementation("org.benf:cfr:0.152")
+    implementation("org.javassist:javassist:3.28.0-GA")
+//    implementation("org.jboss.windup.decompiler:decompiler-procyon:5.3.0.Final")
 }
 
 tasks {
@@ -32,7 +33,7 @@ tasks.withType<Jar> {
     manifest {
         attributes(
                 mapOf(
-                        "Premain-Class" to "com.runtime.pivot.agent.PreAgent",
+                        "Premain-Class" to "com.runtime.pivot.agent.tools.PreAgent",
                         "Can-Redefine-Classes" to "true",
                       )
         )

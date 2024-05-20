@@ -25,7 +25,7 @@ repositories {
 dependencies {
 //    implementation(libs.annotations)
     implementation("cn.hutool:hutool-all:5.8.16")
-    implementation("com.github.oshi:oshi-core:6.4.1")
+//    implementation("com.github.oshi:oshi-core:6.4.1")
     implementation(fileTree(projectDir.resolve("libs")) {
         include("*.jar")
     })
