@@ -82,5 +82,28 @@ public class InstrumentationAction extends AnAction {
 //            }
 //        };
 //        session.process.managerThread.schedule(command)
+
+
+        /** MY
+         * evaluator.evaluate(expression,
+         *                          new XDebuggerEvaluator.XEvaluationCallback() {
+         *                            @Override
+         *                            public void evaluated(@NotNull XValue result) {
+         *                              if (result instanceof JavaValue) {
+         *                                forceEarlyReturnWithFinally(((JavaValue)result).getDescriptor().getValue(),
+         *                                                            stackFrame,
+         *                                                            debugProcess,
+         *                                                            dialog);
+         *                              }
+         *                            }
+         *
+         *                            @Override
+         *                            public void errorOccurred(@NotNull final @NlsContexts.DialogMessage String errorMessage) {
+         *                              showError(project, JavaDebuggerBundle.message("error.unable.to.evaluate.expression") + ": " + errorMessage);
+         *                            }
+         *                          }, stackFrame.getSourcePosition());
+         */
+
+
     }
 }

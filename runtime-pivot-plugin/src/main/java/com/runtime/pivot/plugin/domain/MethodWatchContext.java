@@ -6,6 +6,7 @@ import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
+import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XExecutionStack;
 import com.intellij.xdebugger.frame.XStackFrame;
 
@@ -19,6 +20,7 @@ public class MethodWatchContext implements XDebugSessionListener {
     public static ExecutionEnvironment executionEnvironment;
     public static RunContentDescriptor runContentDescriptor;
     public static SuspendContextImpl suspendContext;
+    public static XBreakpoint xBreakpoint;
 
     @Override
     public void sessionPaused() {

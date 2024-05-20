@@ -49,6 +49,8 @@
                         class="com.runtime.pivot.plugin.actions.MethodStopWatchAction"/>
                 <action id="RuntimePivot.MethodRestore" text="restore"
                         class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
+<!--                <action id="RuntimePivot.ExceptionRestore" text="exception"-->
+<!--                        class="com.runtime.pivot.plugin.actions.ExceptionAction"/>-->
             </group>
             <separator/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
