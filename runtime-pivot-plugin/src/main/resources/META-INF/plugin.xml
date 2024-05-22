@@ -19,40 +19,53 @@
 
 
     <actions>
-        <group id="RuntimePivot.MainMenu" text="RuntimePivot" popup="true">
-            <separator/>
-            <group id="RuntimePivot.Program" text="Program" popup="true">
-                <action id="RuntimePivot.ClassLoadTree" text="classLoad tree"
-                        class="com.runtime.pivot.plugin.actions.ClassLoadTreeAction"/>
-                <action id="RuntimePivot.ClassLoadInfo" text="classLoad info"
-                        class="com.runtime.pivot.plugin.actions.ClassLoadInfoAction"/>
-                <action id="RuntimePivot.TransformerList" text="transformer list"
-                        class="com.runtime.pivot.plugin.actions.TransformerListAction"/>
-            </group>
-            <separator/>
-            <group id="RuntimePivot.Object" text="Object" popup="true">
-                <action id="RuntimePivot.ObjectSize" text="size"
-                        class="com.runtime.pivot.plugin.actions.ObjectSizeAction"/>
-                <action id="RuntimePivot.ObjectInternals" text="internals"
-                        class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
-            </group>
-            <separator/>
-            <group id="RuntimePivot.Class" text="Class" popup="true">
-                <action id="RuntimePivot.Dump" text="dump" class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+        <group id="RuntimePivot.MainMenu" text="Runtime Pivot" popup="true"
+               icon="AllIcons.General.Locate">
+            <separator text="program"/>
+            <action id="RuntimePivot.ClassLoadTree" text="ClassLoad Tree"
+                    icon="com.intellij.icons.AllIcons.Actions.ShowAsTree"
+                    class="com.runtime.pivot.plugin.actions.ClassLoadTreeAction"/>
+            <action id="RuntimePivot.TransformerList" text="Transformer List"
+                    icon="com.intellij.icons.AllIcons.Actions.ListFiles"
+                    class="com.runtime.pivot.plugin.actions.TransformerListAction"/>
 
-            </group>
-            <separator/>
-            <group id="RuntimePivot.Method" text="Method" popup="true">
-                <action id="RuntimePivot.MethodStartWatch" text="startWatch"
-                        class="com.runtime.pivot.plugin.actions.MethodStartWatchAction"/>
-                <action id="RuntimePivot.MethodStopWatch" text="stopWatch"
-                        class="com.runtime.pivot.plugin.actions.MethodStopWatchAction"/>
-                <action id="RuntimePivot.MethodRestore" text="restore"
-                        class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
-<!--                <action id="RuntimePivot.ExceptionRestore" text="exception"-->
-<!--                        class="com.runtime.pivot.plugin.actions.ExceptionAction"/>-->
-            </group>
-            <separator/>
+            <separator text="class"/>
+            <action id="RuntimePivot.DumpClass" text="Dump Class"
+                    icon="com.intellij.icons.AllIcons.Nodes.Class"
+                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+            <action id="RuntimePivot.DumpObjectClass" text="Dump Object Class"
+                    icon="com.intellij.icons.AllIcons.Nodes.AbstractClass"
+                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+            <action id="RuntimePivot.DumpClassList" text="Dump Class List"
+                    icon="/icons/class-list.svg"
+                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+
+            <separator text="method"/>
+            <action id="RuntimePivot.MethodStartWatch" text="Start Track"
+                    icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
+                    class="com.runtime.pivot.plugin.actions.MethodStartWatchAction"/>
+            <action id="RuntimePivot.MethodStopWatch" text="Stop Track"
+                    icon="com.intellij.icons.AllIcons.Actions.Suspend"
+                    class="com.runtime.pivot.plugin.actions.MethodStopWatchAction"/>
+            <action id="RuntimePivot.MethodRestore" text="Breakpoint Restore"
+                    icon="com.intellij.icons.AllIcons.Actions.Rollback"
+                    class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
+            <action id="RuntimePivot.ExceptionRestore" text="Exception Interrupt"
+                    icon="com.intellij.icons.AllIcons.Actions.BuildLoadChanges"
+                    class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
+
+            <separator text="object"/>
+            <action id="RuntimePivot.ObjectSize" text="Information"
+                    icon="com.intellij.icons.AllIcons.General.BalloonInformation"
+                    class="com.runtime.pivot.plugin.actions.ObjectSizeAction"/>
+            <action id="RuntimePivot.ObjectInternals" text="Store"
+                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"
+                    class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
+
+            <action id="RuntimePivot.ObjectInternals2" text="Load"
+                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangepsOn"
+                    class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
+
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
 

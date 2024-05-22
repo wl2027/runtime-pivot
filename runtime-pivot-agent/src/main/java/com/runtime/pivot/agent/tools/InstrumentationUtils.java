@@ -1,7 +1,5 @@
 package com.runtime.pivot.agent.tools;
 
-import cn.hutool.core.date.StopWatch;
-
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.util.Collection;
@@ -14,18 +12,9 @@ import java.util.Set;
  */
 public class InstrumentationUtils {
 
-    public  static StopWatch stopWatch = new StopWatch();
-
-    public static void start(){
-        stopWatch.start();
-    }
-    public static void stop(){
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
-    }
 
     public static void retransformClasses(Instrumentation inst, ClassFileTransformer transformer,
-            Set<Class<?>> classes) {
+                                          Set<Class<?>> classes) {
         try {
             inst.addTransformer(transformer, true);
 
