@@ -1,29 +1,35 @@
 package com.runtime.pivot.agent.tools;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class JSONFileUtils {
-    public static final String PATH = "D:\\temp";
+    public static final String PATH = ".";
     public static String write(Object object,String path){
         if (StrUtil.isEmpty(path)) {
             path=PATH;
         }
-        String id = IdUtil.fastSimpleUUID();
-        String rs = path + FileUtil.FILE_SEPARATOR + id + ".json";
-        File touch = FileUtil.touch(rs);
-        FileUtil.writeString(JSONUtil.toJsonStr(object),touch, StandardCharsets.UTF_8);
-        return rs;
+        String dateString = DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN);
+        String className = object.getClass().getName();
+        String filePath = path + File.separatorChar
+                + className.replace('.', File.separatorChar) + dateString+"@"+System.identityHashCode(object)+".json";
+        File touch = FileUtil.touch(filePath);
+        FileUtil.writeString(JSONUtil.formatJsonStr(JSONUtil.toJsonStr(object)),touch, StandardCharsets.UTF_8);
+        return touch.getPath();
     }
-    public static <E> E read(String path,Class<E> eClass){
+    public static <E> E readObject(String path,Class<E> eClass){
         FileReader fileReader = new FileReader(path);
         String jsonString = fileReader.readString();
         return JSONUtil.toBean(jsonString,eClass);

@@ -8,7 +8,8 @@ import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XDebuggerManagerListener;
 import com.intellij.xdebugger.impl.XDebugSessionImpl;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
+import com.runtime.pivot.agent.config.ActionType;
+import com.runtime.pivot.agent.providers.ClassEnhanceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,9 @@ import java.util.Map;
 public class MethodListener implements XDebuggerManagerListener {
 
     public static final String a = "";
+    public static void aaa(String a,String b){
+
+    }
 
     public static XDebugSessionImpl xDebugSessionImpl = new XDebugSessionImpl(null,null);
 
