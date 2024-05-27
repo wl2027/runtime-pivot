@@ -2,6 +2,9 @@ package com.runtime.pivot.agent.model;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import com.runtime.pivot.agent.ActionExecutor;
+import com.runtime.pivot.agent.AgentContext;
+import com.runtime.pivot.agent.config.AgentConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +27,19 @@ public class AgentClassLoader extends URLClassLoader {
 
     static {
         registerAsParallelCapable();
+    }
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        //不破坏双亲委派,只修改加载类逻辑
+        if (ActionExecutor.class.getName().equals(name)|| AgentContext.class.getName().equals(name)) {
+            ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+            if(AgentConstants.DEBUG){
+                System.out.println("findClass-systemClassLoader"+systemClassLoader);
+            }
+            return systemClassLoader.loadClass(name);
+        }
+        return super.findClass(name);
     }
 
     private List<Class> actionClassList = new ArrayList<>();

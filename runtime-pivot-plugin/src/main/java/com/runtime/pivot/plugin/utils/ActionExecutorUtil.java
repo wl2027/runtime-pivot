@@ -8,7 +8,7 @@ import java.util.StringJoiner;
 
 public class ActionExecutorUtil {
     private static final String EXECUTE_EXPRESSION =
-            "Class<?> actionExecutorClass = Class.forName(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
             "Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
             "method.invoke(null,\"{actionType}\",{args});";
 
@@ -25,11 +25,11 @@ public class ActionExecutorUtil {
     }
 
     /**
-     * Class<?> actionExecutorClass = Class.forName("com.runtime.pivot.agent.ActionExecutor");
+     * Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
      * Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
      * method.invoke(null,"A",a,b,c);
      *
-     * Class<?> actionExecutorClass = Class.forName("com.runtime.pivot.agent.ActionExecutor");
+     * Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
      * Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
      * method.invoke(null,"A",new Object[]{});
      * @param args

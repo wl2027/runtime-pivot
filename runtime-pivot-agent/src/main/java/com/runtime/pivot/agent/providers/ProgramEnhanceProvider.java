@@ -1,10 +1,11 @@
 package com.runtime.pivot.agent.providers;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.runtime.pivot.agent.AgentContext;
+import com.runtime.pivot.agent.ActionExecutor;
 import com.runtime.pivot.agent.model.Action;
 import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.agent.model.ClassLoaderInfo;
 import com.runtime.pivot.agent.tools.ClassLoaderUtil;
 import sun.instrument.TransformerManager;
 
@@ -14,22 +15,26 @@ import java.util.List;
 public class ProgramEnhanceProvider extends ActionProvider {
 
     @Action(ActionType.Program.classLoadTree)
-    public static void classLoadTree() {
-        List<ClassLoaderUtil.ClassLoadInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(AgentContext.INSTRUMENTATION);
+    public static void classLoadTree() throws Exception{
+        System.out.println("ActionExecutor.getClassLoader():"+ActionExecutor.class.getClassLoader());
+        //System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.EXTERNAL_AGENT_CONTEXT);
+        System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.getAgentContext());
+        System.out.println("ActionExecutor.getAgentContext().getClassLoader:"+ActionExecutor.getAgentContext().getClass().getClassLoader());
+        System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.getAgentContext().getInstrumentation());
+        List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
         ClassLoaderUtil.printClassLoaderTree(classLoaderTree);
     }
 
     @Action(ActionType.Program.classLoaderClassTree)
-    public static void classLoaderClassTree() {
-        List<ClassLoaderUtil.ClassLoadInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(AgentContext.INSTRUMENTATION);
+    public static void classLoaderClassTree() throws Exception{
+        List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
         ClassLoaderUtil.printClassLoaderClassTree(classLoaderTree);
     }
 
     @Action(ActionType.Program.transformers)
     public static void transformers() throws Exception{
-        TransformerManager mTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(AgentContext.INSTRUMENTATION, "mTransformerManager");
-        TransformerManager mRetransfomableTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(AgentContext.INSTRUMENTATION, "mRetransfomableTransformerManager");
-
+        TransformerManager mTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mTransformerManager");
+        TransformerManager mRetransfomableTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mRetransfomableTransformerManager");
         Object[] mTransformerList = (Object[]) ReflectUtil.getFieldValue(mTransformerManager, "mTransformerList");
         Object[] mTransformerList2 = (Object[]) ReflectUtil.getFieldValue(mRetransfomableTransformerManager, "mTransformerList");
         for (Object o : mTransformerList) {

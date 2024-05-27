@@ -25,8 +25,7 @@ public class AgentConstants {
     public static final String PURPLE = "\033[0;35m";  // 紫色
     public static final String CYAN = "\033[0;36m";    // 青色
     public static final String WHITE = "\033[0;37m";   // 白色
-    public static final String PRINT_START_STRING = "================================================== Runtime Pivot START {} ==================================================";
-    public static final String PRINT_END_STRING = "================================================== Runtime Pivot END {} ====================================================";
-
+    public static final String PRINT_START_STRING = "-------------------------------------------------- Runtime Pivot START {} --------------------------------------------------";
+    public static final String PRINT_END_STRING = "-------------------------------------------------- Runtime Pivot END {} ----------------------------------------------------";
 
 }
