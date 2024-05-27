@@ -7,9 +7,6 @@ import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XDebuggerManagerListener;
-import com.intellij.xdebugger.impl.XDebugSessionImpl;
-import com.runtime.pivot.agent.config.ActionType;
-import com.runtime.pivot.agent.providers.ClassEnhanceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +21,7 @@ public class MethodListener implements XDebuggerManagerListener {
 
     }
 
-    public static XDebugSessionImpl xDebugSessionImpl = new XDebugSessionImpl(null,null);
+    //public static XDebugSessionImpl xDebugSessionImpl = new XDebugSessionImpl(null,null);
 
     @Override //XDebugProcess 调试过程
     public void processStarted(@NotNull XDebugProcess debugProcess) {

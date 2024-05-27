@@ -9,16 +9,20 @@ group = "com.runtime.pivot"
 version = "1.0.0.RELEASE"
 
 repositories {
-    mavenCentral()
+//    mavenCentral()
+    maven {
+        url = uri("https://maven.aliyun.com/repository/central")
+    }
 }
 
 dependencies {
-    implementation("cn.hutool:hutool-all:5.8.23")
+    implementation("cn.hutool:hutool-core:5.8.23")
+    implementation("cn.hutool:hutool-json:5.8.23")
     implementation("org.openjdk.jol:jol-core:0.16")
     implementation("org.javassist:javassist:3.28.0-GA")
-    implementation("org.jline:jline:3.21.0")
+//    implementation("org.jline:jline:3.21.0")
     //implementation 'com.carrotsearch:java-sizeof:0.0.5'
-    implementation("org.apache.lucene:lucene-core:9.9.2")
+    implementation("org.apache.lucene:lucene-core:8.5.0")
 }
 
 tasks {

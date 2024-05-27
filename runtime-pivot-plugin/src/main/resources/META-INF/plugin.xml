@@ -24,64 +24,73 @@
             <separator text="program"/>
             <action id="RuntimePivot.ClassLoadTree" text="ClassLoad Tree"
                     icon="com.intellij.icons.AllIcons.Actions.ShowAsTree"
-                    class="com.runtime.pivot.plugin.actions.ClassLoadTreeAction"/>
-            <action id="RuntimePivot.TransformerList" text="Transformer List"
+                    class="com.runtime.pivot.plugin.actions.program.ClassLoadTreeAction"/>
+            <action id="RuntimePivot.ClassLoadClassTree" text="ClassLoad Class Tree"
+                    icon="com.intellij.icons.AllIcons.General.TreeHovered"
+                    class="com.runtime.pivot.plugin.actions.program.ClassLoadClassTreeAction"/>
+            <action id="RuntimePivot.TransformerList" text="Transformers"
                     icon="com.intellij.icons.AllIcons.Actions.ListFiles"
-                    class="com.runtime.pivot.plugin.actions.TransformerListAction"/>
+                    class="com.runtime.pivot.plugin.actions.program.TransformersAction"/>
 
+<!--            BalloonInformation Information ShowInfos-->
             <separator text="class"/>
+<!--            GroupByClass-->
+            <action id="RuntimePivot.ClassLoadingProcess" text="Class Loading Process"
+                    icon="com.intellij.icons.AllIcons.Debugger.ClassLevelWatch"
+                    class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction"/>
             <action id="RuntimePivot.DumpClass" text="Dump Class"
                     icon="com.intellij.icons.AllIcons.Nodes.Class"
-                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+                    class="com.runtime.pivot.plugin.actions.struct.DumpClassAction"/>
             <action id="RuntimePivot.DumpObjectClass" text="Dump Object Class"
-                    icon="com.intellij.icons.AllIcons.Nodes.AbstractClass"
-                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
-            <action id="RuntimePivot.DumpClassList" text="Dump Class List"
                     icon="/icons/class-list.svg"
-                    class="com.runtime.pivot.plugin.actions.ClassDumpAction"/>
+                    class="com.runtime.pivot.plugin.actions.struct.DumpObjectClassAction"/>
+            <action id="RuntimePivot.DumpClassList" text="Dump Class List"
+                    icon="com.intellij.icons.AllIcons.Nodes.AbstractClass"
+                    class="com.runtime.pivot.plugin.actions.struct.DumpClassListAction"/>
 
             <separator text="method"/>
             <action id="RuntimePivot.MethodStartWatch" text="Start Track"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
-                    class="com.runtime.pivot.plugin.actions.MethodStartWatchAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.MethodStartWatchAction"/>
             <action id="RuntimePivot.MethodStopWatch" text="Stop Track"
                     icon="com.intellij.icons.AllIcons.Actions.Suspend"
-                    class="com.runtime.pivot.plugin.actions.MethodStopWatchAction"/>
-            <action id="RuntimePivot.MethodRestore" text="Breakpoint Restore"
+                    class="com.runtime.pivot.plugin.actions.method.MethodStopWatchAction"/>
+            <action id="RuntimePivot.BreakpointRestore" text="Breakpoint Restore"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
-                    class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
-            <action id="RuntimePivot.ExceptionRestore" text="Exception Interrupt"
+                    class="com.runtime.pivot.plugin.actions.method.BreakpointRestoreAction"/>
+            <action id="RuntimePivot.ExceptionInterrupt" text="Exception Interrupt"
                     icon="com.intellij.icons.AllIcons.Actions.BuildLoadChanges"
-                    class="com.runtime.pivot.plugin.actions.MethodRestoreAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.ExceptionInterruptAction"/>
 
             <separator text="object"/>
-            <action id="RuntimePivot.ObjectSize" text="Information"
+            <action id="RuntimePivot.ObjectInternals" text="Internals"
                     icon="com.intellij.icons.AllIcons.General.BalloonInformation"
-                    class="com.runtime.pivot.plugin.actions.ObjectSizeAction"/>
-            <action id="RuntimePivot.ObjectInternals" text="Store"
-                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"
-                    class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
+                    class="com.runtime.pivot.plugin.actions.object.InternalsAction"/>
 
-            <action id="RuntimePivot.ObjectInternals2" text="Load"
-                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangepsOn"
-                    class="com.runtime.pivot.plugin.actions.ObjectInternalsAction"/>
+            <action id="RuntimePivot.ObjectStore" text="Store"
+                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"
+                    class="com.runtime.pivot.plugin.actions.object.StoreAction"/>
+
+            <action id="RuntimePivot.ObjectLoad" text="Load"
+                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangesOn"
+                    class="com.runtime.pivot.plugin.actions.object.LoadAction"/>
 
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
 
 
 
-        <action id="InstrumentationAction" class="com.runtime.pivot.plugin.test.InstrumentationAction"
-                text="InstrumentationAction">
-            <!--            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="first" />-->
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-        </action>
-        <action id="Resume123" class="com.runtime.pivot.plugin.test.ResumeAction2" text="Resume123"
-                icon="AllIcons.Actions.Colors">
-            <add-to-group group-id="DebuggingActionsGroup" anchor="first"/>
-            <!--            <add-to-group group-id="RunToolbarDebuggerAdditionalActions" anchor="first"/>-->
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-        </action>
+<!--        <action id="InstrumentationAction" class="com.runtime.pivot.plugin.test.InstrumentationAction"-->
+<!--                text="InstrumentationAction">-->
+<!--            &lt;!&ndash;            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="first" />&ndash;&gt;-->
+<!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
+<!--        </action>-->
+<!--        <action id="Resume123" class="com.runtime.pivot.plugin.test.ResumeAction2" text="Resume123"-->
+<!--                icon="AllIcons.Actions.Colors">-->
+<!--            <add-to-group group-id="DebuggingActionsGroup" anchor="first"/>-->
+<!--            &lt;!&ndash;            <add-to-group group-id="RunToolbarDebuggerAdditionalActions" anchor="first"/>&ndash;&gt;-->
+<!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
+<!--        </action>-->
 
 
         <!--        <group id="DebugMainMenu">-->

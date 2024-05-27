@@ -1,10 +1,23 @@
 package com.runtime.pivot.agent.providers;
 
-import com.runtime.pivot.agent.config.ActionType;
-import com.runtime.pivot.agent.tools.ConsoleTool;
+import com.runtime.pivot.agent.model.Action;
+import com.runtime.pivot.agent.model.ActionProvider;
+import com.runtime.pivot.agent.model.ActionType;
 
-public class MethodEnhanceProvider extends EnhanceProvider {
+public class MethodEnhanceProvider extends ActionProvider {
+
+    @Action(ActionType.Method.trackTime)
     public static void trackTime(String info){
-        ConsoleTool.print(ActionType.Method.trackTime,()->System.out.println(info));
+        System.out.println(info);
+    }
+
+    @Action(ActionType.Method.breakpointRestore)
+    public static void breakpointRestore(String info){
+        System.out.println(info);
+    }
+
+    @Action(ActionType.Method.exceptionInterrupt)
+    public static void exceptionInterrupt(String info){
+        System.out.println(info);
     }
 }
