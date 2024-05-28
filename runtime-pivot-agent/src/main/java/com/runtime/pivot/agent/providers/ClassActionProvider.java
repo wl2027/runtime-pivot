@@ -9,10 +9,12 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
     @Action(ActionType.Class.classLoadingProcess)
     public static void classLoadingProcess(Object object) {
         //class每次加载的时间和classLoad
+        String className = object.getClass().getName();
     }
     @Action(ActionType.Class.dumpClass)
     public static void dumpClass(String className) {
         //精准查询
+
     }
 
     @Action(ActionType.Class.dumpClassList)

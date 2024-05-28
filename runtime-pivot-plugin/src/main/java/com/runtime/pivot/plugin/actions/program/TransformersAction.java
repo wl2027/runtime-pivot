@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class TransformersAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        String text = ActionExecutorUtil.build(ActionType.Program.transformers);
+        String text = ActionExecutorUtil.buildCode(ActionType.Program.transformers);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

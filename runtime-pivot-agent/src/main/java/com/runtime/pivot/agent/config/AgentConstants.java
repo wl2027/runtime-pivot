@@ -1,5 +1,7 @@
 package com.runtime.pivot.agent.config;
 
+import java.io.File;
+
 public class AgentConstants {
     public static final String BANNER =
             "__________ ____ _____________________.___   _____  ___________        __________._______   _______________________\n" +
@@ -10,7 +12,7 @@ public class AgentConstants {
                     "        \\/                \\/                     \\/        \\/                                          \\/         \n";
     public static final Boolean DEBUG = true;
     public static final String AGENT_PATH = "runtime.pivot.agent.path";
-    public static final String PATH = ".runtime";
+    public static final String PATH = File.separator+".runtime";
     public static final String VERSION = "1.0.0.RELEASE";
     public static final String IDENTIFICATION = " :: Runtime Pivot Agent::       (v"+VERSION+")";
 

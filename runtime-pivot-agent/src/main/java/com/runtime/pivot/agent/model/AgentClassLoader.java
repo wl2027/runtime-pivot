@@ -36,7 +36,18 @@ public class AgentClassLoader extends URLClassLoader {
             ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
             return systemClassLoader.loadClass(name);
         }
-        return super.findClass(name);
+        Class<?> aClass = null;
+        try{
+            aClass = super.findClass(name);
+        }catch (ClassNotFoundException exception){
+            //多个参数当前只支持去第一个参数的类加载器去找
+            ClassLoader actionClassLoader = ActionExecutor.getActionClassLoader();
+            if (actionClassLoader == null) {
+                throw new RuntimePivotAgentException("args' agentClassLoader is null!");
+            }
+            aClass = actionClassLoader.loadClass(name);
+        }
+        return aClass;
     }
 
     private List<Class> actionClassList = new ArrayList<>();

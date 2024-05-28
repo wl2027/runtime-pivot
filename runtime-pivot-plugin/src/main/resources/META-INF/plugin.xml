@@ -75,6 +75,7 @@
                     icon="com.intellij.icons.AllIcons.Ide.OutgoingChangesOn"
                     class="com.runtime.pivot.plugin.actions.object.LoadAction"/>
 
+            <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
 

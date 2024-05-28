@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ActionExecutor {
     //内部上线文
     private static Object INTERNAL_AGENT_CONTEXT;
+    private static ClassLoader ACTION_CLASS_LOADER;
 
     //外部上下文
     private static AgentContext EXTERNAL_AGENT_CONTEXT;
@@ -18,6 +19,14 @@ public class ActionExecutor {
 
     public static void setAgentContext(AgentContext agentContext){
         EXTERNAL_AGENT_CONTEXT=agentContext;
+    }
+
+    public static ClassLoader getActionClassLoader() {
+        return ACTION_CLASS_LOADER;
+    }
+
+    public static void setActionClassLoader(ClassLoader actionClassLoader) {
+        ACTION_CLASS_LOADER = actionClassLoader;
     }
 
     public static Class<?> getExternalClass(Class<?> aClass) throws Exception{
@@ -58,13 +67,16 @@ public class ActionExecutor {
         return invoke;
     }
 
-    public static Object execute (String actionTypeValue, Object...args) throws Exception{
+    public static synchronized Object execute (String actionTypeValue, Object...args) throws Exception{
         //TODO 上下文基础校验
 //        if (com.runtime.pivot.agent.AgentContext.INSTRUMENTATION!=null) {
 //        }
 //        System.out.println("正在调用execute..........args:"+args);
 //        System.out.println("正在调用execute..........args.length:"+args.length);
-
+        if (args != null && args.length>0) {
+            ClassLoader classLoader = args[0].getClass().getClassLoader();
+            ActionExecutor.setActionClassLoader(classLoader);
+        }
         Map<String, Method> ACTION_TYPE_METHOD_MAP = EXTERNAL_AGENT_CONTEXT.getActionTypeMethodMap();
         Method method = ACTION_TYPE_METHOD_MAP.get(actionTypeValue);
         AtomicReference<Object> invoke = new AtomicReference<>();

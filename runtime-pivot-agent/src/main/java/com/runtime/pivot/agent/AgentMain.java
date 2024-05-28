@@ -51,9 +51,9 @@ public class AgentMain {
         Class<?> agentMainClass = classLoader.loadClass("com.runtime.pivot.agent.AgentMain");
         Class<?> agentContextClass = classLoader.loadClass("com.runtime.pivot.agent.AgentContext");
         Class<?> actionExecutorClass = classLoader.loadClass("com.runtime.pivot.agent.ActionExecutor");
-        if (AgentConstants.DEBUG) {
-            System.out.println(classLoader);
-        }
+//        if (AgentConstants.DEBUG) {
+//            System.out.println(classLoader);
+//        }
     }
 
     private static void printError(Exception exception) {
@@ -71,11 +71,11 @@ public class AgentMain {
         String agentPath = System.getProperty(AgentConstants.AGENT_PATH);
         AgentClassLoader agentClassLoader = new AgentClassLoader(agentPath);
         List<Class<?>> classes = agentClassLoader.loadJarClassList(agentPath);
-        if (AgentConstants.DEBUG) {
-            for (Class<?> aClass : classes) {
-                System.out.println(aClass);
-            }
-        }
+//        if (AgentConstants.DEBUG) {
+//            for (Class<?> aClass : classes) {
+//                System.out.println(aClass);
+//            }
+//        }
         return agentClassLoader;
     }
 
@@ -114,9 +114,9 @@ public class AgentMain {
         externalAgentContext.setClassLoadingInfoMap(hashMap);
         ActionExecutor.setAgentContext(externalAgentContext);
 
-        if (AgentConstants.DEBUG) {
-            System.out.println(internalAgentContext);
-        }
+//        if (AgentConstants.DEBUG) {
+//            System.out.println(internalAgentContext);
+//        }
     }
 
     private static void printBanner() {
