@@ -2,7 +2,7 @@ package com.runtime.pivot.agent.model;
 
 public interface ActionType {
     interface Program extends ActionType{
-        String classLoadTree = "classLoadTree";
+        String classLoaderTree = "classLoaderTree";
         String classLoaderClassTree = "classLoaderClassTree";
         String transformers = "transformers";
     }

@@ -1,10 +1,10 @@
 package com.runtime.pivot.agent.model;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import com.runtime.pivot.agent.ActionExecutor;
 import com.runtime.pivot.agent.AgentContext;
-import com.runtime.pivot.agent.config.AgentConstants;
+import com.runtime.pivot.agent.tools.FileTool;
+import com.runtime.pivot.agent.tools.StringTool;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +34,6 @@ public class AgentClassLoader extends URLClassLoader {
         //不破坏双亲委派,只修改加载类逻辑
         if (ActionExecutor.class.getName().equals(name)|| AgentContext.class.getName().equals(name)) {
             ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-            if(AgentConstants.DEBUG){
-                System.out.println("findClass-systemClassLoader"+systemClassLoader);
-            }
             return systemClassLoader.loadClass(name);
         }
         return super.findClass(name);
@@ -86,7 +83,8 @@ public class AgentClassLoader extends URLClassLoader {
                     if (entryName.endsWith(".jar")) {
                         try (InputStream inputStream = this.getResourceAsStream(entryName)) {
                             File target = new File(parentPath, entryName);
-                            FileUtil.writeFromStream(inputStream, target);
+                            //FileUtil.writeFromStream(inputStream, target);
+                            FileTool.writeFromStream(inputStream,target);
                             method.invoke(this, new URL("file:" + target.getPath()));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -124,15 +122,15 @@ public class AgentClassLoader extends URLClassLoader {
         if (classNames.size() > 0) {
             for (String className : classNames) {
                 try {
-                    if (!StrUtil.isEmpty(className)) {
-                        if (!StrUtil.contains(className,"org.apache.lucene")
-                                || StrUtil.startWith(className,"org.apache.lucene.util")
-                                || StrUtil.startWith(className,"org.apache.lucene.search")
-                                || StrUtil.startWith(className,"org.apache.lucene.index")
+                    if (StringTool.isNotEmpty(className)) {
+                        if (!StringTool.contains(className,"org.apache.lucene")
+                                || StringTool.startWith(className,"org.apache.lucene.util")
+                                || StringTool.startWith(className,"org.apache.lucene.search")
+                                || StringTool.startWith(className,"org.apache.lucene.index")
                         ){
                             Class<?> theClass = classLoader.loadClass(className);
                             classList.add(theClass);
-                            if (StrUtil.startWith(className,"com.runtime.pivot.agent.providers")) {
+                            if (StringTool.startWith(className,"com.runtime.pivot.agent.providers")) {
                                 actionClassList.add(theClass);
                             }
                         }

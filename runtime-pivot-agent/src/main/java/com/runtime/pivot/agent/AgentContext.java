@@ -46,14 +46,4 @@ public class AgentContext {
         this.actionTypeMethodMap = actionTypeMethodMap;
     }
 
-
-    @Override
-    public String toString() {
-        return "AgentContext{" +
-                "agentClassloader=" + agentClassloader +
-                ", instrumentation=" + instrumentation +
-                ", actionTypeMethodMap=" + actionTypeMethodMap +
-                ", classLoadingInfoMap=" + classLoadingInfoMap +
-                '}';
-    }
 }

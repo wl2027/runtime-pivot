@@ -22,12 +22,12 @@
         <group id="RuntimePivot.MainMenu" text="Runtime Pivot" popup="true"
                icon="AllIcons.General.Locate">
             <separator text="program"/>
-            <action id="RuntimePivot.ClassLoadTree" text="ClassLoad Tree"
+            <action id="RuntimePivot.ClassLoaderTree" text="ClassLoader Tree"
                     icon="com.intellij.icons.AllIcons.Actions.ShowAsTree"
-                    class="com.runtime.pivot.plugin.actions.program.ClassLoadTreeAction"/>
-            <action id="RuntimePivot.ClassLoadClassTree" text="ClassLoad Class Tree"
+                    class="com.runtime.pivot.plugin.actions.program.ClassLoaderTreeAction"/>
+            <action id="RuntimePivot.ClassLoaderClassTree" text="ClassLoader Class Tree"
                     icon="com.intellij.icons.AllIcons.General.TreeHovered"
-                    class="com.runtime.pivot.plugin.actions.program.ClassLoadClassTreeAction"/>
+                    class="com.runtime.pivot.plugin.actions.program.ClassLoaderClassTreeAction"/>
             <action id="RuntimePivot.TransformerList" text="Transformers"
                     icon="com.intellij.icons.AllIcons.Actions.ListFiles"
                     class="com.runtime.pivot.plugin.actions.program.TransformersAction"/>

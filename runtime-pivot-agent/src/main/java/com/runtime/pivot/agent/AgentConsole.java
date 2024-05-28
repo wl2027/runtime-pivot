@@ -20,6 +20,7 @@ public class AgentConsole {
         try {
             runnable.run();
         }catch (Exception e){
+            //TODO 异常打印无法嵌套进去
             System.out.println(AgentConstants.ANSI_BOLD);
             System.err.println("RESULT : Error!");
             System.err.println("Error Message : "+e.getMessage());

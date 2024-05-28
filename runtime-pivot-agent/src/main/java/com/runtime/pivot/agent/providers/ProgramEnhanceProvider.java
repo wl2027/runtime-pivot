@@ -14,20 +14,17 @@ import java.util.List;
 
 public class ProgramEnhanceProvider extends ActionProvider {
 
-    @Action(ActionType.Program.classLoadTree)
+    @Action(ActionType.Program.classLoaderTree)
     public static void classLoadTree() throws Exception{
-        System.out.println("ActionExecutor.getClassLoader():"+ActionExecutor.class.getClassLoader());
-        //System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.EXTERNAL_AGENT_CONTEXT);
-        System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.getAgentContext());
-        System.out.println("ActionExecutor.getAgentContext().getClassLoader:"+ActionExecutor.getAgentContext().getClass().getClassLoader());
-        System.out.println("ActionExecutor.getAgentContext():"+ActionExecutor.getAgentContext().getInstrumentation());
         List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
         ClassLoaderUtil.printClassLoaderTree(classLoaderTree);
     }
 
     @Action(ActionType.Program.classLoaderClassTree)
     public static void classLoaderClassTree() throws Exception{
+        System.out.println("sout");
         List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
+        System.out.println("sout2");
         ClassLoaderUtil.printClassLoaderClassTree(classLoaderTree);
     }
 

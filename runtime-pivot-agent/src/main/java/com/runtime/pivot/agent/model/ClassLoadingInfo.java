@@ -1,29 +1,31 @@
 package com.runtime.pivot.agent.model;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
-
 import java.security.ProtectionDomain;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ClassLoadingInfo {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private final ClassLoader classLoader;
     private final String className;
-    private Class<?> classBeingRedefined;
-    private ProtectionDomain protectionDomain;
-    private byte[] classfileBuffer;
+    private final Class<?> classBeingRedefined;
+    private final ProtectionDomain protectionDomain;
+    private final byte[] classfileBuffer;
     private final Date loadingTime;
     private final String loadingTimeStr;
     private final String state;//open or close
 
-    public ClassLoadingInfo(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer, Date loadingTime) {
+    public ClassLoadingInfo(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         this.classLoader = classLoader;
         this.className = className;
         this.classBeingRedefined = classBeingRedefined;
         this.protectionDomain = protectionDomain;
         this.classfileBuffer = classfileBuffer;
-        this.loadingTime = loadingTime;
-        this.loadingTimeStr = DateUtil.format(new Date(), DatePattern.NORM_DATETIME_MS_PATTERN);
+        synchronized (simpleDateFormat){
+            this.loadingTime = new Date();
+            //this.loadingTimeStr = DateUtil.format(loadingTime, DatePattern.NORM_DATETIME_MS_PATTERN);
+            this.loadingTimeStr = simpleDateFormat.format(this.loadingTime);
+        }
         this.state = "open";
     }
 

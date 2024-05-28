@@ -75,6 +75,7 @@ public class ActionExecutor {
                 throw new RuntimeException(e);
             }
         };
+        //调用内部AgentConsole,避免加载内部类
         invokeInternalClassStaticMethod(new Object[]{actionTypeValue,runnable},AgentConsole.class,"print",String.class, Runnable.class);
         return invoke.get();
     }

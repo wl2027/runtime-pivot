@@ -8,8 +8,8 @@ import java.util.StringJoiner;
 
 public class ActionExecutorUtil {
     private static final String EXECUTE_EXPRESSION =
-            "Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
-            "Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
+            "java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "java.lang.reflect.Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
             "method.invoke(null,\"{actionType}\",{args});";
 
     public static String build(String actionType, String... args) {
@@ -25,12 +25,12 @@ public class ActionExecutorUtil {
     }
 
     /**
-     * Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
-     * Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
+     * java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
+     * java.lang.reflect.Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
      * method.invoke(null,"A",a,b,c);
      *
-     * Class<?> actionExecutorClass = ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
-     * Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
+     * java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
+     * java.lang.reflect.Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
      * method.invoke(null,"A",new Object[]{});
      * @param args
      */

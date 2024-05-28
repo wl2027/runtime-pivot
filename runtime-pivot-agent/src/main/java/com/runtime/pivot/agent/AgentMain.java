@@ -1,11 +1,9 @@
 package com.runtime.pivot.agent;
 
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.ReflectUtil;
 import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
-import com.runtime.pivot.agent.tools.ClassLoadingTransformer;
+import com.runtime.pivot.agent.config.ClassLoadingTransformer;
 
 import java.lang.annotation.Annotation;
 import java.lang.instrument.Instrumentation;
@@ -46,6 +44,7 @@ public class AgentMain {
 
     private static void initTransformer(Instrumentation instrumentation) {
         instrumentation.addTransformer(new ClassLoadingTransformer());
+        //test instrumentation.addTransformer(new JdbcTransformer());
     }
 
     private static void initActuator(ClassLoader classLoader) throws Exception{
@@ -85,12 +84,16 @@ public class AgentMain {
         List<Class> actionClassList = agentClassLoader.getActionClassList();
         Map<String, Method> actionTypeMethodMap = new HashMap<>();
         for (Class actionClass : actionClassList) {
-            Method[] methods = ReflectUtil.getMethods(actionClass);
+            //Method[] methods = ReflectUtil.getMethods(actionClass);
+            Method[] methods = actionClass.getDeclaredMethods();
             for (Method method : methods) {
                 method.setAccessible(true);
                 Annotation annotation = method.getAnnotation(actionAnnotationClass);
                 if (annotation!=null) {
-                    String annotationValue = AnnotationUtil.getAnnotationValue(method, actionAnnotationClass);
+                    Method declaredMethod = actionAnnotationClass.getDeclaredMethod("value");
+                    declaredMethod.setAccessible(true);
+                    String annotationValue = declaredMethod.invoke(annotation).toString();
+                    //String annotationValue = AnnotationUtil.getAnnotationValue(method, actionAnnotationClass);
                     actionTypeMethodMap.put(annotationValue,method);
                 }
             }
