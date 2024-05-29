@@ -57,6 +57,7 @@ public class AgentMain {
     }
 
     private static void printError(Exception exception) {
+//        if (true) return;
         System.out.println(AgentConstants.ANSI_BOLD);
         System.out.println(AgentConstants.RED);
         System.out.println("Runtime Pivot Agent failed to start");
@@ -120,6 +121,7 @@ public class AgentMain {
     }
 
     private static void printBanner() {
+//        if (true) return;
         System.out.println(AgentConstants.ANSI_BOLD);
         System.out.println(AgentConstants.BANNER);
         System.out.println(AgentConstants.IDENTIFICATION);

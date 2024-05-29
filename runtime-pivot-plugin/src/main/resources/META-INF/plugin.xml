@@ -1,5 +1,5 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
-<idea-plugin require-restart="true">
+<idea-plugin>
     <id>com.github.wl2027.runtime.pivot.plugin</id>
     <name>runtime-pivot</name>
     <vendor>wl2027</vendor>
@@ -33,34 +33,42 @@
                     class="com.runtime.pivot.plugin.actions.program.TransformersAction"/>
 
 <!--            BalloonInformation Information ShowInfos-->
+<!--            作用在类或对象上-->
             <separator text="class"/>
 <!--            GroupByClass-->
             <action id="RuntimePivot.ClassLoadingProcess" text="Class Loading Process"
-                    icon="com.intellij.icons.AllIcons.Debugger.ClassLevelWatch"
-                    class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction"/>
-            <action id="RuntimePivot.DumpClass" text="Dump Class"
                     icon="com.intellij.icons.AllIcons.Nodes.Class"
-                    class="com.runtime.pivot.plugin.actions.struct.DumpClassAction"/>
-            <action id="RuntimePivot.DumpObjectClass" text="Dump Object Class"
+                    class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction"/>
+            <action id="RuntimePivot.ClassFileDump" text="Class File Dump"
                     icon="/icons/class-list.svg"
-                    class="com.runtime.pivot.plugin.actions.struct.DumpObjectClassAction"/>
-            <action id="RuntimePivot.DumpClassList" text="Dump Class List"
-                    icon="com.intellij.icons.AllIcons.Nodes.AbstractClass"
-                    class="com.runtime.pivot.plugin.actions.struct.DumpClassListAction"/>
+                    class="com.runtime.pivot.plugin.actions.struct.ClassFileDumpAction"/>
+
+<!--            <action id="RuntimePivot.ClassLoadingProcess" text="Class Loading Process"-->
+<!--                    icon="com.intellij.icons.AllIcons.Debugger.ClassLevelWatch"-->
+<!--                    class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction"/>-->
+<!--            <action id="RuntimePivot.ClassFileDump" text="Class File Dump"-->
+<!--                    icon="com.intellij.icons.AllIcons.Nodes.Class"-->
+<!--                    class="com.runtime.pivot.plugin.actions.struct.ClassFileDumpAction"/>-->
+<!--            <action id="RuntimePivot.DumpObjectClass" text="Dump Object Class"-->
+<!--                    icon="/icons/class-list.svg"-->
+<!--                    class="com.runtime.pivot.plugin.actions.struct.DumpObjectClassAction"/>-->
+<!--            <action id="RuntimePivot.DumpClassList" text="Dump Class List"-->
+<!--                    icon="com.intellij.icons.AllIcons.Nodes.AbstractClass"-->
+<!--                    class="com.runtime.pivot.plugin.actions.struct.DumpClassListAction"/>-->
 
             <separator text="method"/>
-            <action id="RuntimePivot.MethodStartWatch" text="Start Track"
+            <action id="RuntimePivot.MethodStartWatch" text="Start Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
                     class="com.runtime.pivot.plugin.actions.method.MethodStartWatchAction"/>
-            <action id="RuntimePivot.MethodStopWatch" text="Stop Track"
+            <action id="RuntimePivot.MethodStopWatch" text="Stop Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.Suspend"
                     class="com.runtime.pivot.plugin.actions.method.MethodStopWatchAction"/>
             <action id="RuntimePivot.BreakpointRestore" text="Breakpoint Restore"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
                     class="com.runtime.pivot.plugin.actions.method.BreakpointRestoreAction"/>
-            <action id="RuntimePivot.ExceptionInterrupt" text="Exception Interrupt"
+            <action id="RuntimePivot.ExceptionRestore" text="Exception Restore"
                     icon="com.intellij.icons.AllIcons.Actions.BuildLoadChanges"
-                    class="com.runtime.pivot.plugin.actions.method.ExceptionInterruptAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.ExceptionRestoreAction"/>
 
             <separator text="object"/>
             <action id="RuntimePivot.ObjectInternals" text="Internals"
@@ -68,12 +76,20 @@
                     class="com.runtime.pivot.plugin.actions.object.InternalsAction"/>
 
             <action id="RuntimePivot.ObjectStore" text="Store"
-                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"
+                    icon="com.intellij.icons.AllIcons.Actions.Install"
                     class="com.runtime.pivot.plugin.actions.object.StoreAction"/>
 
             <action id="RuntimePivot.ObjectLoad" text="Load"
-                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangesOn"
+                    icon="com.intellij.icons.AllIcons.Actions.Uninstall"
                     class="com.runtime.pivot.plugin.actions.object.LoadAction"/>
+
+<!--            <action id="RuntimePivot.ObjectStore" text="Store"-->
+<!--                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"-->
+<!--                    class="com.runtime.pivot.plugin.actions.object.StoreAction"/>-->
+
+<!--            <action id="RuntimePivot.ObjectLoad" text="Load"-->
+<!--                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangesOn"-->
+<!--                    class="com.runtime.pivot.plugin.actions.object.LoadAction"/>-->
 
             <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>

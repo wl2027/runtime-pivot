@@ -10,9 +10,10 @@ public interface ActionType {
 
         //加载顺序
         String classLoadingProcess = "classLoadingProcess";
-        String dumpClass = "dumpClass";
-        String dumpObjectClass = "dumpObjectClass";
-        String dumpClassList = "dumpClassList";
+        String classFileDump = "classFileDump";
+//        String dumpClass = "dumpClass";
+//        String dumpObjectClass = "dumpObjectClass";
+//        String dumpClassList = "dumpClassList";
 
     }
     interface Thread extends ActionType{
@@ -24,7 +25,7 @@ public interface ActionType {
     interface Method extends ActionType{
         String trackTime = "trackTime";
         String breakpointRestore = "breakpointRestore";
-        String exceptionInterrupt = "exceptionInterrupt";
+        String exceptionRestore = "exceptionRestore";
     }
     interface Object extends ActionType{
 

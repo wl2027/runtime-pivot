@@ -13,11 +13,11 @@ public class MethodActionProvider extends ActionProvider {
 
     @Action(ActionType.Method.breakpointRestore)
     public static void breakpointRestore(String info){
-        System.out.println(info);
+        System.out.println("breakpoint restore success ...");
     }
 
-    @Action(ActionType.Method.exceptionInterrupt)
-    public static void exceptionInterrupt(String info){
-        System.out.println(info);
+    @Action(ActionType.Method.exceptionRestore)
+    public static void exceptionRestore(String info){
+        System.out.println("exception interrupted listener success ...");
     }
 }

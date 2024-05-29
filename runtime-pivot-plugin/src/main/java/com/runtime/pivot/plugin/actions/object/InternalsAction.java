@@ -30,6 +30,12 @@ public class InternalsAction extends XDebuggerTreeActionBase {
 
         String text = ActionExecutorUtil.buildCode(ActionType.Object.internals,null,name);
         XDebugSession session = DebuggerUIUtil.getSession(e);
+        /**
+         * pause用在已经停止的事情再次开始前，短时间停止在说或者做的。
+         * suspension指的是使某件正在进行中的事暂停，尤其强调是短时间的停止。
+         */
+        //session.isSuspended()//已暂停
+        //session.isPaused()//已暂停
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();
         XTestEvaluationCallback callback = new XTestEvaluationCallback();

@@ -26,7 +26,11 @@ public class ClassLoadingInfo {
             //this.loadingTimeStr = DateUtil.format(loadingTime, DatePattern.NORM_DATETIME_MS_PATTERN);
             this.loadingTimeStr = simpleDateFormat.format(this.loadingTime);
         }
-        this.state = "open";
+        this.state = "install";//install or uninstall
+    }
+
+    public static SimpleDateFormat getSimpleDateFormat() {
+        return simpleDateFormat;
     }
 
     public ClassLoader getClassLoader() {
@@ -37,11 +41,27 @@ public class ClassLoadingInfo {
         return className;
     }
 
+    public Class<?> getClassBeingRedefined() {
+        return classBeingRedefined;
+    }
+
+    public ProtectionDomain getProtectionDomain() {
+        return protectionDomain;
+    }
+
+    public byte[] getClassfileBuffer() {
+        return classfileBuffer;
+    }
+
     public Date getLoadingTime() {
         return loadingTime;
     }
 
     public String getLoadingTimeStr() {
         return loadingTimeStr;
+    }
+
+    public String getState() {
+        return state;
     }
 }

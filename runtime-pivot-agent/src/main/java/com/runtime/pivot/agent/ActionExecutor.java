@@ -67,6 +67,7 @@ public class ActionExecutor {
         return invoke;
     }
 
+    //MY 反射调用,会报空指针异常,因为当成args=null,而不是args内元素是null
     public static synchronized Object execute (String actionTypeValue, Object...args) throws Exception{
         //TODO 上下文基础校验
 //        if (com.runtime.pivot.agent.AgentContext.INSTRUMENTATION!=null) {

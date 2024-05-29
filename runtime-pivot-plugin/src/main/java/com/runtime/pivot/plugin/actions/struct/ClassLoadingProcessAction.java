@@ -6,25 +6,67 @@ import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.CommonClassNames;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.xdebugger.XDebugSession;
+import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
+import com.intellij.xdebugger.frame.XStackFrame;
+import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
+import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
+import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
+import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.plugin.test.XTestEvaluationCallback;
+import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class ClassLoadingProcessAction extends AnAction {
+/**
+ * 取对象 or 类?
+ */
+public class ClassLoadingProcessAction extends XDebuggerTreeActionBase {
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        super.update(e);
+        /**
+         * //启用
+         * e.getPresentation().setEnabledAndVisible(true);
+         * e.getPresentation().setEnabledAndVisible(false);
+         */
+        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
+        e.getPresentation().setEnabled(psiElement != null && psiElement instanceof PsiClass);
+    }
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-//        XExpressionImpl xExpression = XExpressionImpl.fromText("initialValue");
+        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
+        //e.getData(CommonDataKeys.PSI_FILE)
+        PsiClass psiClass = null;
+        if (psiElement instanceof PsiClass){
+            psiClass = (PsiClass) psiElement;
+        }
+        String qualifiedName = psiClass==null?null:psiClass.getQualifiedName();
+        XValueNodeImpl node = getSelectedNode(e.getDataContext());
+        String name = node==null?null:node.getName();
+
         Project project = e.getProject();
-        final PsiClass throwableClass =
-                JavaPsiFacade.getInstance(project).findClass(CommonClassNames.JAVA_LANG_THROWABLE, GlobalSearchScope.allScope(project));
-        TreeClassChooser chooser = TreeClassChooserFactory.getInstance(project)
-                .createInheritanceClassChooser(JavaDebuggerBundle.message("add.exception.breakpoint.classchooser.title"),
-                        GlobalSearchScope.allScope(project), throwableClass, true, true, null);
-        chooser.showDialog();
-        final PsiClass selectedClass = chooser.getSelected();
-        final String qName = selectedClass == null ? null : JVMNameUtil.getNonAnonymousClassName(selectedClass);
+        String text = ActionExecutorUtil.buildCode(ActionType.Class.classLoadingProcess,null,name,ActionExecutorUtil.buildStringObject(qualifiedName));
+        XDebugSession session = DebuggerUIUtil.getSession(e);
+        XStackFrame frame = session.getCurrentStackFrame();
+        XDebuggerEvaluator evaluator = frame.getEvaluator();
+        XTestEvaluationCallback callback = new XTestEvaluationCallback();
+        XExpressionImpl xExpression = XExpressionImpl.fromText(text);
+//        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
+        evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
+    }
+
+    @Override
+    protected void perform(XValueNodeImpl node, @NotNull String nodeName, AnActionEvent e) {
+
     }
 }

@@ -54,7 +54,7 @@ public class ActionExecutorUtil {
         System.out.println(buildStringObject("./com/wl/1456.json"));
     }
 
-    public static String buildStringObject(String path) {
-        return "new String(\""+path+"\")";
+    public static String buildStringObject(String string) {
+        return StrUtil.isEmpty(string)?null:"new String(\""+string+"\")";
     }
 }

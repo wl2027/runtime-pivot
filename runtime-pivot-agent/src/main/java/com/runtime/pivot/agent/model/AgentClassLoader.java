@@ -1,6 +1,5 @@
 package com.runtime.pivot.agent.model;
 
-import cn.hutool.core.io.FileUtil;
 import com.runtime.pivot.agent.ActionExecutor;
 import com.runtime.pivot.agent.AgentContext;
 import com.runtime.pivot.agent.tools.FileTool;
@@ -43,7 +42,7 @@ public class AgentClassLoader extends URLClassLoader {
             //多个参数当前只支持去第一个参数的类加载器去找
             ClassLoader actionClassLoader = ActionExecutor.getActionClassLoader();
             if (actionClassLoader == null) {
-                throw new RuntimePivotAgentException("args' agentClassLoader is null!");
+                throw new RuntimePivotException("args' agentClassLoader is null!");
             }
             aClass = actionClassLoader.loadClass(name);
         }

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.runtime.pivot.agent.model.Action;
 import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.agent.model.RuntimePivotAgentException;
+import com.runtime.pivot.agent.model.RuntimePivotException;
 import com.runtime.pivot.agent.tools.JSONFileTool;
 import org.apache.lucene.util.RamUsageEstimator;
 import org.openjdk.jol.info.ClassLayout;
@@ -30,7 +30,7 @@ public class ObjectActionProvider extends ActionProvider {
     }
 
     @Action(ActionType.Object.internals)
-    public static void information(Object object){
+    public static void internals(Object object){
         // 打印对象头信息=>引用大小
         System.out.println("Object Size Layout:");
         //计算指定对象本身在堆空间的大小，单位字节
@@ -95,7 +95,7 @@ public class ObjectActionProvider extends ActionProvider {
             }
             if (object.getClass().isArray()){
                 //先不处理数组
-                if (true) throw new RuntimePivotAgentException();
+                if (true) throw new RuntimePivotException();
                 Object[] sourceArray = objectMapper.readValue(jsonString, Object[].class);
                 Object[] targetArray = (Object[]) object;
                 int length = targetArray.length;

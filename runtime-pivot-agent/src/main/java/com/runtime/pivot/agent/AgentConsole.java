@@ -21,7 +21,7 @@ public class AgentConsole {
             runnable.run();
         }catch (Exception e){
             //TODO 异常打印无法嵌套进去
-            System.out.println(AgentConstants.ANSI_BOLD);
+            System.out.print(AgentConstants.ANSI_BOLD);
             System.err.println("RESULT : Error!");
             System.err.println("Error Message : "+e.getMessage());
             if (AgentConstants.DEBUG) {
@@ -30,7 +30,8 @@ public class AgentConsole {
             //IDEA捕获进行处理
             //throw e;
         } finally {
-            System.out.println(AgentConstants.ANSI_BOLD);
+            System.out.print(AgentConstants.RESET);
+            System.out.print(AgentConstants.ANSI_BOLD);
             System.out.println(StrUtil.format(AgentConstants.PRINT_END_STRING,uuidString));
             System.out.println(AgentConstants.RESET);
         }

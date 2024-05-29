@@ -6,18 +6,29 @@ import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.CommonClassNames;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
-public class DumpClassAction extends AnAction {
+public class ClassFileDumpAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
+        //e.getData(CommonDataKeys.PSI_FILE)
+        PsiClass psiClass = null;
+        if (psiElement instanceof PsiClass){
+            psiClass = (PsiClass) psiElement;
+        }
+        String qualifiedName = psiClass.getQualifiedName();
+        System.out.println(qualifiedName);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText("initialValue");
         Project project = e.getProject();
+        //base类
         final PsiClass throwableClass =
                 JavaPsiFacade.getInstance(project).findClass(CommonClassNames.JAVA_LANG_THROWABLE, GlobalSearchScope.allScope(project));
         TreeClassChooser chooser = TreeClassChooserFactory.getInstance(project)
@@ -26,5 +37,9 @@ public class DumpClassAction extends AnAction {
         chooser.showDialog();
         final PsiClass selectedClass = chooser.getSelected();
         final String qName = selectedClass == null ? null : JVMNameUtil.getNonAnonymousClassName(selectedClass);
+        System.out.println(qName);
+
+
+
     }
 }

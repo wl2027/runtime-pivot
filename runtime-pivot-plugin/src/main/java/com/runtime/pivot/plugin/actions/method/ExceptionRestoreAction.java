@@ -26,7 +26,7 @@ import org.junit.Assert;
  * com.intellij.xdebugger.impl.actions.ResetFrameAction
  * JvmDropFrameActionHandler
  */
-public class ExceptionInterruptAction extends AnAction {
+public class ExceptionRestoreAction extends AnAction {
 //    //只是打上断点,当前断点没有回去
 //    @Override
 //    public void actionPerformed(@NotNull AnActionEvent e) {
