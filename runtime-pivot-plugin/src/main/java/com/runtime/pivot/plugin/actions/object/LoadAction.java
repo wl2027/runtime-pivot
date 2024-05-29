@@ -2,6 +2,10 @@ package com.runtime.pivot.plugin.actions.object;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
@@ -11,12 +15,14 @@ import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.plugin.test.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,16 +35,16 @@ public class LoadAction extends XDebuggerTreeActionBase {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
 
-//        FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true,false,false,false,false,false);
-//        @Nullable VirtualFile toSelect = null;
-//        try {
-//            toSelect = VfsUtil.createDirectories(e.getProject().getBasePath()+ AgentConstants.PATH);
-//        } catch (IOException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, e.getProject(), toSelect);
-//        String path = virtualFile.getPath();
-        String path = "E:/002_Code/000_github/APM/apm-demo/target/classes/com/wl/apm/APMApplicationMain$120240528160128@1377301456.json";
+        FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true,false,false,false,false,false);
+        @Nullable VirtualFile toSelect = null;
+        try {
+            toSelect = VfsUtil.createDirectories(e.getProject().getBasePath()+ AgentConstants.PATH);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, e.getProject(), toSelect);
+        String path = virtualFile.getPath();
+//        String path = "E:/002_Code/000_github/APM/apm-demo/target/classes/com/wl/apm/APMApplicationMain$120240528160128@1377301456.json";
         String text = ActionExecutorUtil.buildCode(ActionType.Object.load,name,ActionExecutorUtil.buildStringObject(path));
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();

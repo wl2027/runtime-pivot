@@ -20,6 +20,7 @@ dependencies {
     implementation("cn.hutool:hutool-json:5.8.23")
     implementation("org.openjdk.jol:jol-core:0.16")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3")
     implementation("org.javassist:javassist:3.28.0-GA")
 //    implementation("org.jline:jline:3.21.0")
     //implementation 'com.carrotsearch:java-sizeof:0.0.5'
