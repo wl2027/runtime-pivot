@@ -16,7 +16,7 @@ public class ClassLoaderTreeAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        String text = ActionExecutorUtil.buildCode(ActionType.Program.classLoaderTree);
+        String text = ActionExecutorUtil.buildCode(ActionType.Program.classLoaderTree,null);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

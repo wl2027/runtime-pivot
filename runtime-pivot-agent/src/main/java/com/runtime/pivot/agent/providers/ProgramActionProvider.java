@@ -12,7 +12,7 @@ import sun.instrument.TransformerManager;
 import java.lang.instrument.ClassFileTransformer;
 import java.util.List;
 
-public class ProgramEnhanceProvider extends ActionProvider {
+public class ProgramActionProvider extends ActionProvider {
 
     @Action(ActionType.Program.classLoaderTree)
     public static void classLoadTree() throws Exception{

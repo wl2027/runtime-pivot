@@ -34,7 +34,11 @@ public class LoadAction extends XDebuggerTreeActionBase {
     public void actionPerformed(@NotNull AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
-
+        String script = name;
+        if (node.getRawValue().equals("null")) {
+            //空值不允许
+//            script = script+" = "+ActionExecutorUtil.RETURN_OBJECT;
+        }
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true,false,false,false,false,false);
         @Nullable VirtualFile toSelect = null;
         try {
@@ -44,16 +48,20 @@ public class LoadAction extends XDebuggerTreeActionBase {
         }
         VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, e.getProject(), toSelect);
         String path = virtualFile.getPath();
-//        String path = "E:/002_Code/000_github/APM/apm-demo/target/classes/com/wl/apm/APMApplicationMain$120240528160128@1377301456.json";
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.load,name,ActionExecutorUtil.buildStringObject(path));
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.load,null,name,ActionExecutorUtil.buildStringObject(path));
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();
-        XTestEvaluationCallback callback = new XTestEvaluationCallback();
+        XTestEvaluationCallback callback = new XTestEvaluationCallback(
+                session::rebuildViews,
+                null);
         XExpressionImpl xExpression = XExpressionImpl.fromText(text);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
         evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
+
     }
+
+
 
     @Override
     protected void perform(XValueNodeImpl node, @NotNull String nodeName, AnActionEvent e) {

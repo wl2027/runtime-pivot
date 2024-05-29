@@ -28,7 +28,7 @@ public class InternalsAction extends XDebuggerTreeActionBase {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
 
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.internals,name);
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.internals,null,name);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

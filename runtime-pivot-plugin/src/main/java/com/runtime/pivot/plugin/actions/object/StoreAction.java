@@ -24,10 +24,7 @@ public class StoreAction extends XDebuggerTreeActionBase {
     public void actionPerformed(@NotNull AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
-        if (node.getRawValue().equals("null")) {
-            //空值不允许
-        }
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.store,name);
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.store,null,name);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

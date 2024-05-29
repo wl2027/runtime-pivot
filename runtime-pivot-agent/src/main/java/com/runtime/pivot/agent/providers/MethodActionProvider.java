@@ -4,7 +4,7 @@ import com.runtime.pivot.agent.model.Action;
 import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
 
-public class MethodEnhanceProvider extends ActionProvider {
+public class MethodActionProvider extends ActionProvider {
 
     @Action(ActionType.Method.trackTime)
     public static void trackTime(String info){

@@ -25,17 +25,34 @@ import java.util.concurrent.Semaphore;
 public class XTestEvaluationCallback extends XEvaluationCallbackBase {
   private XValue myResult;
   private String myErrorMessage;
+  private Runnable myEvaluated;
+  private Runnable myErrorOccurred;
   private final Semaphore myFinished = new Semaphore(0);
+  public XTestEvaluationCallback() {
+  }
+
+  public XTestEvaluationCallback(Runnable myEvaluated, Runnable myErrorOccurred) {
+    this.myEvaluated = myEvaluated;
+    this.myErrorOccurred = myErrorOccurred;
+  }
 
   @Override
   public void evaluated(@NotNull XValue result) {
     myResult = result;
 //    myFinished.release();
+    if (myEvaluated != null) {
+      myEvaluated.run();
+    }
+
   }
 
   @Override
   public void errorOccurred(@NotNull String errorMessage) {
+
     myErrorMessage = errorMessage;
+    if (myErrorOccurred == null) {
+      myErrorOccurred.run();
+    }
 //    myFinished.release();
   }
 
