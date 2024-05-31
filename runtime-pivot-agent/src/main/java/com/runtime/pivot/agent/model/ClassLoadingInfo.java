@@ -8,6 +8,7 @@ public class ClassLoadingInfo {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private final ClassLoader classLoader;
     private final String className;
+    private final String qualifiedName;
     private final Class<?> classBeingRedefined;
     private final ProtectionDomain protectionDomain;
     private final byte[] classfileBuffer;
@@ -15,9 +16,10 @@ public class ClassLoadingInfo {
     private final String loadingTimeStr;
     private final String state;//open or close
 
-    public ClassLoadingInfo(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+    public ClassLoadingInfo(ClassLoader classLoader, String qualifiedName,String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         this.classLoader = classLoader;
         this.className = className;
+        this.qualifiedName = qualifiedName;
         this.classBeingRedefined = classBeingRedefined;
         this.protectionDomain = protectionDomain;
         this.classfileBuffer = classfileBuffer;

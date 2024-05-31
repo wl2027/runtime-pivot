@@ -3,7 +3,7 @@ package com.runtime.pivot.agent;
 import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
-import com.runtime.pivot.agent.config.ClassLoadingTransformer;
+import com.runtime.pivot.agent.transformer.ClassLoadingTransformer;
 
 import java.lang.annotation.Annotation;
 import java.lang.instrument.Instrumentation;
@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class AgentMain {
 
-    public static volatile Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = new ConcurrentHashMap<>();
+    public static volatile Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = new ConcurrentSkipListMap<>();
 
     public static void premain(String agentArgs, Instrumentation instrumentation) {
         // 当前线程的类加载器
@@ -43,7 +43,8 @@ public class AgentMain {
     }
 
     private static void initTransformer(Instrumentation instrumentation) {
-        instrumentation.addTransformer(new ClassLoadingTransformer());
+        //当加载类时，当 它们被重新定义时，转换器被调用。如果 canRetransform 为 true，则当它们 被重新转换时
+        instrumentation.addTransformer(new ClassLoadingTransformer(),true);
         //test instrumentation.addTransformer(new JdbcTransformer());
     }
 
@@ -51,6 +52,7 @@ public class AgentMain {
         Class<?> agentMainClass = classLoader.loadClass("com.runtime.pivot.agent.AgentMain");
         Class<?> agentContextClass = classLoader.loadClass("com.runtime.pivot.agent.AgentContext");
         Class<?> actionExecutorClass = classLoader.loadClass("com.runtime.pivot.agent.ActionExecutor");
+        Class<?> actionContextClass = classLoader.loadClass("com.runtime.pivot.agent.ActionContext");
 //        if (AgentConstants.DEBUG) {
 //            System.out.println(classLoader);
 //        }
@@ -110,7 +112,7 @@ public class AgentMain {
         externalAgentContext.setInstrumentation(instrumentation);
         externalAgentContext.setAgentClassloader(agentClassLoader);
         externalAgentContext.setActionTypeMethodMap(actionTypeMethodMap);
-        Map<String, List<ClassLoadingInfo>> hashMap = new ConcurrentHashMap<>(classLoadingInfoMap);
+        Map<String, List<ClassLoadingInfo>> hashMap = new ConcurrentSkipListMap<>();
         hashMap.putAll(classLoadingInfoMap);
         externalAgentContext.setClassLoadingInfoMap(hashMap);
         ActionExecutor.setAgentContext(externalAgentContext);

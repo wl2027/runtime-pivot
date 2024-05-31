@@ -1,5 +1,6 @@
 package com.runtime.pivot.agent.model;
 
+import com.runtime.pivot.agent.ActionContext;
 import com.runtime.pivot.agent.ActionExecutor;
 import com.runtime.pivot.agent.AgentContext;
 import com.runtime.pivot.agent.tools.FileTool;
@@ -24,14 +25,19 @@ import java.util.jar.JarFile;
 
 public class AgentClassLoader extends URLClassLoader {
 
+    private static final List<String> shareClassList = new ArrayList();
+
     static {
         registerAsParallelCapable();
+        shareClassList.add(ActionExecutor.class.getName());
+        shareClassList.add(AgentContext.class.getName());
+        shareClassList.add(ActionContext.class.getName());
     }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         //不破坏双亲委派,只修改加载类逻辑
-        if (ActionExecutor.class.getName().equals(name)|| AgentContext.class.getName().equals(name)) {
+        if (shareClassList.contains(name)) {
             ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
             return systemClassLoader.loadClass(name);
         }
@@ -42,6 +48,7 @@ public class AgentClassLoader extends URLClassLoader {
             //多个参数当前只支持去第一个参数的类加载器去找
             ClassLoader actionClassLoader = ActionExecutor.getActionClassLoader();
             if (actionClassLoader == null) {
+                //null or 根加载器
                 throw new RuntimePivotException("args' agentClassLoader is null!");
             }
             aClass = actionClassLoader.loadClass(name);
@@ -84,8 +91,9 @@ public class AgentClassLoader extends URLClassLoader {
                 File libDir = Paths.get(parentPath, "lib").toFile();
                 libDir.deleteOnExit();
                 boolean isSuccess = libDir.mkdirs();
-                if (!isSuccess) {
-                    System.out.println("create lib dir fail");
+                //MY E:\002_Code\000_github\IDEA\runtime-pivot\runtime-pivot-agent\build\libs\lib
+                if (!isSuccess&&!libDir.exists()) {
+                    System.out.println("create lib dir fail:"+libDir.getPath());
                 }
                 while (entries.hasMoreElements()) {
                     JarEntry jarEntry = entries.nextElement();

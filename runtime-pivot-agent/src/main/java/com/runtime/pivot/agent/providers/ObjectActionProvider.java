@@ -5,7 +5,10 @@ import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.runtime.pivot.agent.ActionExecutor;
+import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.Action;
+import com.runtime.pivot.agent.ActionContext;
 import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.agent.model.RuntimePivotException;
@@ -51,24 +54,16 @@ public class ObjectActionProvider extends ActionProvider {
     }
 
     @Action(ActionType.Object.store)
-    public static String store(Object object){
+    public static String store(Object object,String path){
+        ActionContext actionContext = ActionExecutor.getActionContext();
+        String dateFileString = actionContext.getDateFileString();
         //转成JSON
-        String writePath = JSONFileTool.write(object, null);
+        path = path+ AgentConstants.PATH+File.separator+ActionType.Object.store+File.separator+dateFileString;
+        String writePath = JSONFileTool.write(object,path);
         System.out.println("object store path: "+writePath);
         return writePath;
     }
 
-    /**
-     * java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass("com.runtime.pivot.agent.ActionExecutor");
-     * java.lang.reflect.Method method = actionExecutorClass.getMethod("execute",String.class,Object[].class);
-     * method.invoke(null,"load",new Object[]{aaa,new String("E:/002_Code/000_github/APM/apm-demo/target/classes/com/wl/apm/APMApplicationMain$120240528160128@1377301456.json")});
-     * aaa=new ArrayList<>();
-     *
-     * @param object
-     * @param path
-     * @return
-     * @param <E>
-     */
 
     @Action(ActionType.Object.load)
     public static <E> E load(E object,String path) throws Exception {

@@ -5,11 +5,11 @@ import java.io.File;
 public class AgentConstants {
     public static final String BANNER =
             "__________ ____ _____________________.___   _____  ___________        __________._______   _______________________\n" +
-                    "\\______   \\    |   \\      \\__    ___/|   | /     \\ \\_   _____/        \\______   \\   \\   \\ /   /\\_____  \\__    ___/\n" +
-                    " |       _/    |   /   |   \\|    |   |   |/  \\ /  \\ |    __)_   ______ |     ___/   |\\   Y   /  /   |   \\|    |   \n" +
-                    " |    |   \\    |  /    |    \\    |   |   /    Y    \\|        \\ /_____/ |    |   |   | \\     /  /    |    \\    |   \n" +
-                    " |____|_  /______/\\____|__  /____|   |___\\____|__  /_______  /         |____|   |___|  \\___/   \\_______  /____|   \n" +
-                    "        \\/                \\/                     \\/        \\/                                          \\/         \n";
+            "\\______   \\    |   \\      \\__    ___/|   | /     \\ \\_   _____/        \\______   \\   \\   \\ /   /\\_____  \\__    ___/\n" +
+            " |       _/    |   /   |   \\|    |   |   |/  \\ /  \\ |    __)_   ______ |     ___/   |\\   Y   /  /   |   \\|    |   \n" +
+            " |    |   \\    |  /    |    \\    |   |   /    Y    \\|        \\ /_____/ |    |   |   | \\     /  /    |    \\    |   \n" +
+            " |____|_  /______/\\____|__  /____|   |___\\____|__  /_______  /         |____|   |___|  \\___/   \\_______  /____|   \n" +
+            "        \\/                \\/                     \\/        \\/                                          \\/         \n";
     public static final Boolean DEBUG = true;
     public static final String AGENT_PATH = "runtime.pivot.agent.path";
     public static final String PATH = File.separator+".runtime";
@@ -27,7 +27,7 @@ public class AgentConstants {
     public static final String PURPLE = "\033[0;35m";  // 紫色
     public static final String CYAN = "\033[0;36m";    // 青色
     public static final String WHITE = "\033[0;37m";   // 白色
-    public static final String PRINT_START_STRING = "-------------------------------------------------- Runtime Pivot START {} --------------------------------------------------";
-    public static final String PRINT_END_STRING = "-------------------------------------------------- Runtime Pivot END {} ----------------------------------------------------";
+    public static final String PRINT_START_STRING = "--------------------------------------------------------------------- Runtime Pivot START {} ---------------------------------------------------------------------";
+    public static final String PRINT_END_STRING = "--------------------------------------------------------------------- Runtime Pivot END {} -----------------------------------------------------------------------";
 
 }

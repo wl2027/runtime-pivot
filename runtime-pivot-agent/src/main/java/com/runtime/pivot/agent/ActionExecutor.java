@@ -6,12 +6,26 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ActionExecutor {
+    private static final ThreadLocal<ActionContext> actionContextThreadLocal = new ThreadLocal<>();
     //内部上线文
     private static Object INTERNAL_AGENT_CONTEXT;
-    private static ClassLoader ACTION_CLASS_LOADER;
 
     //外部上下文
     private static AgentContext EXTERNAL_AGENT_CONTEXT;
+
+    private static ClassLoader ACTION_CLASS_LOADER;
+
+    public static ActionContext getActionContext(){
+        return actionContextThreadLocal.get();
+    }
+
+    public static void initActionContext(ActionContext actionContext){
+        actionContextThreadLocal.set(actionContext);
+    }
+
+    public static void removeActionContext(){
+        actionContextThreadLocal.remove();
+    }
 
     public static AgentContext getAgentContext() {
         return EXTERNAL_AGENT_CONTEXT;
@@ -75,9 +89,19 @@ public class ActionExecutor {
 //        System.out.println("正在调用execute..........args:"+args);
 //        System.out.println("正在调用execute..........args.length:"+args.length);
         if (args != null && args.length>0) {
-            ClassLoader classLoader = args[0].getClass().getClassLoader();
-            ActionExecutor.setActionClassLoader(classLoader);
+            for (Object arg : args) {
+                if (arg!=null) {
+                    //MY TOIDO arg.getClass().getClassLoader()可能为null,参数是根加载器加载的时候需要格外的appclassloader,
+                    // 不过既然用不到该参数正常来说也不用该参数的classloader
+                    ClassLoader classLoader = arg.getClass().getClassLoader();
+                    ActionExecutor.setActionClassLoader(classLoader);
+                    break;
+                }
+            }
         }
+//        if (ActionExecutor.getActionClassLoader() == null) {
+//            throw new RuntimePivotException("args is all null");
+//        }
         Map<String, Method> ACTION_TYPE_METHOD_MAP = EXTERNAL_AGENT_CONTEXT.getActionTypeMethodMap();
         Method method = ACTION_TYPE_METHOD_MAP.get(actionTypeValue);
         AtomicReference<Object> invoke = new AtomicReference<>();

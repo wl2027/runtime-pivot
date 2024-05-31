@@ -22,9 +22,10 @@ import java.util.List;
 public class StoreAction extends XDebuggerTreeActionBase {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        String basePath = e.getProject().getBasePath();
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.store,null,name);
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.store,null,name,basePath);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

@@ -19,10 +19,10 @@ public class JSONFileTool {
         if (StrUtil.isEmpty(path)) {
             path=PATH;
         }
-        String dateString = DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN);
+        //String dateString = DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN);
         String className = object.getClass().getName();
-        String filePath = path + File.separatorChar
-                + className.replace('.', File.separatorChar) + "@"+dateString+"@"+System.identityHashCode(object)+".json";
+//        String filePath = path + File.separatorChar + className.replace('.', File.separatorChar) + "@"+dateString+"@"+System.identityHashCode(object)+".json";
+        String filePath = path + File.separatorChar + className.replace('.', File.separatorChar) + "@"+"@"+System.identityHashCode(object)+".json";
         File touch = FileUtil.touch(filePath);
         FileUtil.writeString(JSONUtil.formatJsonStr(JSONUtil.toJsonStr(object)),touch, StandardCharsets.UTF_8);
         return touch.getPath();

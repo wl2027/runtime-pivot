@@ -32,7 +32,9 @@ import org.jetbrains.annotations.NotNull;
 public class ClassLoadingProcessAction extends XDebuggerTreeActionBase {
     @Override
     public void update(@NotNull AnActionEvent e) {
-        super.update(e);
+        //psi&变量&
+        XValueNodeImpl node = getSelectedNode(e.getDataContext());
+        e.getPresentation().setEnabled(node != null && isEnabled(node, e));
         /**
          * //启用
          * e.getPresentation().setEnabledAndVisible(true);

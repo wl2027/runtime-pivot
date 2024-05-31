@@ -41,6 +41,7 @@ tasks.withType<Jar> {
                 mapOf(
                         "Premain-Class" to "com.runtime.pivot.agent.AgentMain",
                         "Can-Redefine-Classes" to "true",
+                        "Can-Retransform-Classes" to "true",
                       )
         )
     }
