@@ -50,7 +50,7 @@ public class XTestEvaluationCallback extends XEvaluationCallbackBase {
   public void errorOccurred(@NotNull String errorMessage) {
 
     myErrorMessage = errorMessage;
-    if (myErrorOccurred == null) {
+    if (myErrorOccurred != null) {
       myErrorOccurred.run();
     }
 //    myFinished.release();

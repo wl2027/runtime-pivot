@@ -29,7 +29,7 @@ import java.util.List;
  * 参考 {@link com.intellij.openapi.vcs.changes.patch.ApplyPatchAction}
  * 参考 {@link com.intellij.ide.actions.OpenFileAction}
  */
-public class LoadAction extends XDebuggerTreeActionBase {
+public class ObjectLoadAction extends XDebuggerTreeActionBase {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
@@ -48,7 +48,7 @@ public class LoadAction extends XDebuggerTreeActionBase {
         }
         VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, e.getProject(), toSelect);
         String path = virtualFile.getPath();
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.load,null,name,ActionExecutorUtil.buildStringObject(path));
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.objectLoad,null,name,ActionExecutorUtil.buildStringObject(path));
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();

@@ -2,6 +2,8 @@ package com.runtime.pivot.plugin.actions.object;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
@@ -19,13 +21,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class StoreAction extends XDebuggerTreeActionBase {
+public class ObjectStoreAction extends XDebuggerTreeActionBase {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        //com.intellij.ide.actions.SynchronizeCurrentFileAction
         String basePath = e.getProject().getBasePath();
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.store,null,name,basePath);
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.objectStore,null,name,ActionExecutorUtil.buildStringObject(basePath));
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();
@@ -33,6 +36,10 @@ public class StoreAction extends XDebuggerTreeActionBase {
         XExpressionImpl xExpression = XExpressionImpl.fromText(text);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
         evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
+        //刷新./.runtime文件夹
+        VirtualFile baseDir = ProjectUtil.guessProjectDir(e.getProject());
+        VirtualFile child = baseDir.findChild(".runtime");
+        child.getFileSystem().refresh(false);
     }
 
     @Override

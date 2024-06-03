@@ -1,5 +1,6 @@
 package com.runtime.pivot.plugin.actions.struct;
 
+import cn.hutool.core.collection.ListUtil;
 import com.intellij.debugger.JavaDebuggerBundle;
 import com.intellij.debugger.engine.JVMNameUtil;
 import com.intellij.ide.util.TreeClassChooser;
@@ -8,6 +9,8 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.CommonClassNames;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -56,10 +59,16 @@ public class ClassFileDumpAction extends XDebuggerTreeActionBase {
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();
-        XTestEvaluationCallback callback = new XTestEvaluationCallback();
+        XTestEvaluationCallback callback = new XTestEvaluationCallback(()->{
+            VirtualFile baseDir = ProjectUtil.guessProjectDir(e.getProject());
+            VirtualFile child = baseDir.findChild(".runtime");
+            com.intellij.ide.actions.SynchronizeCurrentFileAction.synchronizeFiles(ListUtil.of(child),e.getProject(),false);
+            child.getFileSystem().refresh(false);
+        },null);
         XExpressionImpl xExpression = XExpressionImpl.fromText(text);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
         evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
+
     }
 
     @Override

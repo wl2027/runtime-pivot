@@ -22,13 +22,13 @@ import java.util.List;
 /**
  * 参考 {@link com.intellij.xdebugger.impl.ui.tree.actions.XCopyNameAction}
  */
-public class InternalsAction extends XDebuggerTreeActionBase {
+public class ObjectInternalsAction extends XDebuggerTreeActionBase {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
 
-        String text = ActionExecutorUtil.buildCode(ActionType.Object.internals,null,name);
+        String text = ActionExecutorUtil.buildCode(ActionType.Object.objectInternals,null,name);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         /**
          * pause用在已经停止的事情再次开始前，短时间停止在说或者做的。

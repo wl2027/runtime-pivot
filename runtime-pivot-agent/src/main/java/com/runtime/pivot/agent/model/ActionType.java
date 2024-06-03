@@ -29,8 +29,8 @@ public interface ActionType {
     }
     interface Object extends ActionType{
 
-        String internals = "internals";
-        String store = "store";
-        String load = "load";
+        String objectInternals = "objectInternals";
+        String objectStore = "objectStore";
+        String objectLoad = "objectLoad";
     }
 }

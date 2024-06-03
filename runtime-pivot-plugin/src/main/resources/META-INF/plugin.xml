@@ -14,9 +14,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <java.programPatcher implementation="com.runtime.pivot.plugin.PerRun"/>
-
+        <projectService serviceImplementation="com.runtime.pivot.plugin.service.XDebugMethodContext" />
     </extensions>
 
+<!--    com.intellij.icons.AllIcons.Actions.BuildAutoReloadChanges-->
 
     <actions>
         <group id="RuntimePivot.MainMenu" text="Runtime Pivot" popup="true"
@@ -66,30 +67,34 @@
             <action id="RuntimePivot.BreakpointRestore" text="Breakpoint Restore"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
                     class="com.runtime.pivot.plugin.actions.method.BreakpointRestoreAction"/>
-            <action id="RuntimePivot.ExceptionRestore" text="Exception Restore"
-                    icon="com.intellij.icons.AllIcons.Actions.BuildLoadChanges"
+            <action id="RuntimePivot.StartExceptionRestore" text="Start Exception Restore"
+                    icon="/icons/rerunAutomatically.svg"
+                    class="com.runtime.pivot.plugin.actions.method.ExceptionRestoreAction"/>
+
+            <action id="RuntimePivot.StopExceptionRestore" text="Stop Exception Restore"
+                    icon="/icons/stopRefresh.svg"
                     class="com.runtime.pivot.plugin.actions.method.ExceptionRestoreAction"/>
 
             <separator text="object"/>
-            <action id="RuntimePivot.ObjectInternals" text="Internals"
+            <action id="RuntimePivot.ObjectInternals" text="Object Internals"
                     icon="com.intellij.icons.AllIcons.General.BalloonInformation"
-                    class="com.runtime.pivot.plugin.actions.object.InternalsAction"/>
+                    class="com.runtime.pivot.plugin.actions.object.ObjectInternalsAction"/>
 
-            <action id="RuntimePivot.ObjectStore" text="Store"
+            <action id="RuntimePivot.ObjectStore" text="Object Store"
                     icon="com.intellij.icons.AllIcons.Actions.Install"
-                    class="com.runtime.pivot.plugin.actions.object.StoreAction"/>
+                    class="com.runtime.pivot.plugin.actions.object.ObjectStoreAction"/>
 
-            <action id="RuntimePivot.ObjectLoad" text="Load"
+            <action id="RuntimePivot.ObjectLoad" text="Object Load"
                     icon="com.intellij.icons.AllIcons.Actions.Uninstall"
-                    class="com.runtime.pivot.plugin.actions.object.LoadAction"/>
+                    class="com.runtime.pivot.plugin.actions.object.ObjectLoadAction"/>
 
 <!--            <action id="RuntimePivot.ObjectStore" text="Store"-->
 <!--                    icon="com.intellij.icons.AllIcons.Ide.IncomingChangesOn"-->
-<!--                    class="com.runtime.pivot.plugin.actions.object.StoreAction"/>-->
+<!--                    class="com.runtime.pivot.plugin.actions.object.ObjectStoreAction"/>-->
 
 <!--            <action id="RuntimePivot.ObjectLoad" text="Load"-->
 <!--                    icon="com.intellij.icons.AllIcons.Ide.OutgoingChangesOn"-->
-<!--                    class="com.runtime.pivot.plugin.actions.object.LoadAction"/>-->
+<!--                    class="com.runtime.pivot.plugin.actions.object.ObjectLoadAction"/>-->
 
             <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>

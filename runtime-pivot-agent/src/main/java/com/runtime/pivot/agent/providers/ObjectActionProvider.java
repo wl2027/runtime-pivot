@@ -32,7 +32,7 @@ public class ObjectActionProvider extends ActionProvider {
         objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule()); // Support for Java 8 date/time types
     }
 
-    @Action(ActionType.Object.internals)
+    @Action(ActionType.Object.objectInternals)
     public static void internals(Object object){
         // 打印对象头信息=>引用大小
         System.out.println("Object Size Layout:");
@@ -53,19 +53,19 @@ public class ObjectActionProvider extends ActionProvider {
 //      System.out.println(GraphLayout.parseInstance(object).toPrintable());
     }
 
-    @Action(ActionType.Object.store)
+    @Action(ActionType.Object.objectStore)
     public static String store(Object object,String path){
         ActionContext actionContext = ActionExecutor.getActionContext();
         String dateFileString = actionContext.getDateFileString();
         //转成JSON
-        path = path+ AgentConstants.PATH+File.separator+ActionType.Object.store+File.separator+dateFileString;
+        path = path+ AgentConstants.PATH+File.separator+ActionType.Object.objectStore +File.separator+dateFileString;
         String writePath = JSONFileTool.write(object,path);
         System.out.println("object store path: "+writePath);
         return writePath;
     }
 
 
-    @Action(ActionType.Object.load)
+    @Action(ActionType.Object.objectLoad)
     public static <E> E load(E object,String path) throws Exception {
         if (object == null) {
             throw new IllegalArgumentException("object must not be null");
