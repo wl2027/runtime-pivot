@@ -15,6 +15,8 @@
         <!-- Add your extensions here -->
         <java.programPatcher implementation="com.runtime.pivot.plugin.PerRun"/>
         <projectService serviceImplementation="com.runtime.pivot.plugin.service.XDebugMethodContext" />
+        <toolWindow id="RuntimePivotWindow" anchor="right" icon="AllIcons.General.Locate"
+                    factoryClass="com.runtime.pivot.plugin.view.RuntimePivotToolsWindow"/>
     </extensions>
 
 <!--    com.intellij.icons.AllIcons.Actions.BuildAutoReloadChanges-->
@@ -60,10 +62,10 @@
             <separator text="method"/>
             <action id="RuntimePivot.MethodStartWatch" text="Start Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
-                    class="com.runtime.pivot.plugin.actions.method.MethodStartWatchAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.MethodStartMonitoringAction"/>
             <action id="RuntimePivot.MethodStopWatch" text="Stop Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.Suspend"
-                    class="com.runtime.pivot.plugin.actions.method.MethodStopWatchAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.MethodStopMonitoringAction"/>
             <action id="RuntimePivot.BreakpointRestore" text="Breakpoint Restore"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
                     class="com.runtime.pivot.plugin.actions.method.BreakpointRestoreAction"/>
