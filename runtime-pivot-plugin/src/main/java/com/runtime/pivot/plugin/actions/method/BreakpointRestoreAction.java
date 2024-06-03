@@ -169,19 +169,18 @@ public class BreakpointRestoreAction extends AnAction {
 //                    }
 //                });
                 //========================20240603 第一次用自旋锁成功=================================
-                new Thread(
-                        ()->{
-                            while (isResetFrame(xStackFrame,xDebugSession)){
-                                ThreadUtil.sleep(10);
-                            }
-                            try {
-                                myDebugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext()).run();
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            //resumeAction.actionPerformed(e);
-                        }
-                ).start();
+                ApplicationManager.getApplication().executeOnPooledThread(()->{
+                    while (isResetFrame(xStackFrame,xDebugSession)){
+                        ThreadUtil.sleep(10);
+                    }
+                    try {
+                        myDebugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext()).run();
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    //resumeAction.actionPerformed(e);
+                });
+
 
                 //resumeAction.actionPerformed(e);
 
