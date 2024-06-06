@@ -66,16 +66,16 @@
             <action id="RuntimePivot.MethodStopWatch" text="Stop Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.Suspend"
                     class="com.runtime.pivot.plugin.actions.method.MethodStopMonitoringAction"/>
-            <action id="RuntimePivot.BreakpointRestore" text="Breakpoint Restore"
+            <action id="RuntimePivot.BreakpointBacktracking" text="Breakpoint Backtracking"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
-                    class="com.runtime.pivot.plugin.actions.method.BreakpointRestoreAction"/>
-            <action id="RuntimePivot.StartExceptionRestore" text="Start Exception Restore"
-                    icon="/icons/rerunAutomatically.svg"
-                    class="com.runtime.pivot.plugin.actions.method.ExceptionRestoreAction"/>
+                    class="com.runtime.pivot.plugin.actions.method.BreakpointBacktrackingAction"/>
+<!--            <action id="RuntimePivot.StartExceptionBacktracking" text="Start Exception Backtracking"-->
+<!--                    icon="/icons/rerunAutomatically.svg"-->
+<!--                    class="com.runtime.pivot.plugin.actions.method.ExceptionBacktrackingAction"/>-->
 
-            <action id="RuntimePivot.StopExceptionRestore" text="Stop Exception Restore"
-                    icon="/icons/stopRefresh.svg"
-                    class="com.runtime.pivot.plugin.actions.method.ExceptionRestoreAction"/>
+<!--            <action id="RuntimePivot.StopExceptionBacktracking" text="Stop Exception Backtracking"-->
+<!--                    icon="/icons/stopRefresh.svg"-->
+<!--                    class="com.runtime.pivot.plugin.actions.method.ExceptionBacktrackingAction"/>-->
 
             <separator text="object"/>
             <action id="RuntimePivot.ObjectInternals" text="Object Internals"
