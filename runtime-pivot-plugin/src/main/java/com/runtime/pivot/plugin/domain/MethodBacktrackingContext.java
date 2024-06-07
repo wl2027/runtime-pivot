@@ -58,7 +58,7 @@ public class MethodBacktrackingContext {
     public void buildMethodBacktrackingStack(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, Project project) {
         this.xStackFrameMethodAnchoringMap = new ConcurrentHashMap<>();
         this.xStackFrameRunnableMap = new ConcurrentHashMap<>();
-        if (xStackFrameList != null && xStackFrameList.size() > 1) {
+        if (xStackFrameList != null && xStackFrameList.size() > 1) {//TODO 当前栈是否可pop
             //栈顶到栈底遍历
             for (int i = 0; i < xStackFrameList.size() - 1; i++) {
                 XStackFrame xStackFrame = xStackFrameList.get(i);
