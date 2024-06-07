@@ -3,19 +3,9 @@ package com.runtime.pivot.plugin.model;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
-import cn.hutool.core.io.FileUtil;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.plugin.test.XTestEvaluationCallback;
-import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import com.runtime.pivot.plugin.view.RuntimePivotToolsWindow;
 
 import java.text.NumberFormat;
@@ -52,18 +42,6 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
 //        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow("RuntimePivotWindow");
 //        toolWindow.show();
         //toolWindow.activate(()->{},true,true);
-
-        /**===============20240603-更换成窗口====================
-        String prettyPrint = stopWatch.prettyPrint();
-        System.out.println(prettyPrint);
-        String text = ActionExecutorUtil.buildCode(ActionType.Method.trackTime,null,ActionExecutorUtil.buildStringObject(prettyPrint));
-        XStackFrame frame = xDebugSession.getCurrentStackFrame();
-        XDebuggerEvaluator evaluator = frame.getEvaluator();
-        XTestEvaluationCallback callback = new XTestEvaluationCallback();
-        XExpressionImpl xExpression = XExpressionImpl.fromText(text);
-//        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
-        evaluator.evaluate(xExpression, callback, xDebugSession.getCurrentPosition());
-         **/
     }
 
     private void prettyPrint(StopWatch stopWatch) {

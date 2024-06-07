@@ -1,17 +1,11 @@
 package com.runtime.pivot.plugin.domain;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.intellij.debugger.actions.DebuggerAction;
-import com.intellij.debugger.actions.JvmDropFrameActionHandler;
 import com.intellij.debugger.engine.DebugProcessImpl;
 import com.intellij.debugger.engine.JavaStackFrame;
 import com.intellij.debugger.engine.SuspendContextImpl;
 import com.intellij.debugger.engine.events.DebuggerContextCommandImpl;
 import com.intellij.debugger.impl.DebuggerSession;
-import com.intellij.debugger.ui.impl.watch.DebuggerTreeNodeImpl;
-import com.intellij.debugger.ui.impl.watch.NodeDescriptorImpl;
-import com.intellij.debugger.ui.impl.watch.StackFrameDescriptorImpl;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
@@ -19,8 +13,7 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XDropFrameHandler;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.plugin.actions.method.test2.StackFrameUtils;
+import com.runtime.pivot.plugin.utils.StackFrameUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -30,7 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class MethodBacktrackingContext {
     private final List<XBreakpoint<?>> xBreakpointList;
@@ -186,8 +178,7 @@ public class MethodBacktrackingContext {
 
     private DebuggerSession buildDebugSession(XDebugSession xDebugSession) {
         XDropFrameHandler dropFrameHandler = xDebugSession.getDebugProcess().getDropFrameHandler();
-        JvmDropFrameActionHandler jvmDropFrameActionHandler = (JvmDropFrameActionHandler) dropFrameHandler;
-        DebuggerSession myDebugSession = (DebuggerSession) ReflectUtil.getFieldValue(jvmDropFrameActionHandler, "myDebugSession");
+        DebuggerSession myDebugSession = (DebuggerSession) ReflectUtil.getFieldValue(dropFrameHandler, "myDebugSession");
         return myDebugSession;
     }
 

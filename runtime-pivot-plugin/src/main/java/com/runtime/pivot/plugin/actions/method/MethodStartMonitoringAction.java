@@ -1,18 +1,12 @@
 package com.runtime.pivot.plugin.actions.method;
 
-import com.intellij.debugger.JavaDebuggerBundle;
-import com.intellij.idea.ActionsBundle;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.util.ui.UIUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.plugin.model.XDebugMethodWatchListener;
 import com.runtime.pivot.plugin.service.XDebugMethodContext;
 import org.jetbrains.annotations.NotNull;
-
-import static com.intellij.debugger.actions.PopFrameAction.ACTION_NAME;
 
 public class MethodStartMonitoringAction extends AnAction {
     @Override
