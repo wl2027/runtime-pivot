@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.plugin.model.XDebugMethodWatchListener;
+import com.runtime.pivot.plugin.listeners.XDebugMethodWatchListener;
 import com.runtime.pivot.plugin.service.XDebugMethodContext;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.model;
+package com.runtime.pivot.plugin.listeners;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
@@ -35,7 +35,6 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
     //进入暂停
     @Override
     public void sessionPaused() {
-        System.out.println("XDebugSessionListener.super.sessionPaused();");
         //stop
         stopWatch.stop();
         prettyPrint(stopWatch);
@@ -70,39 +69,8 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
     //恢复执行
     @Override
     public void sessionResumed() {
-        System.out.println("XDebugSessionListener.super.sessionResumed();");
         //start 点下一步先进来这
         stopWatch.start("test:"+ DateUtil.format(new Date(), DatePattern.NORM_DATETIME_MS_PATTERN));
-
     }
 
-    //停止会话~清除
-    @Override
-    public void sessionStopped() {
-        System.out.println("XDebugSessionListener.super.sessionStopped();");
-    }
-
-    //堆栈更改
-    @Override
-    public void stackFrameChanged() {
-        System.out.println("XDebugSessionListener.super.stackFrameChanged();");
-    }
-
-    //在会话恢复之前
-    @Override
-    public void beforeSessionResume() {
-        System.out.println("XDebugSessionListener.super.beforeSessionResume();");
-    }
-
-    //配置改变
-    @Override
-    public void settingsChanged() {
-        System.out.println("XDebugSessionListener.super.settingsChanged();");
-    }
-
-    //断点静音
-    @Override
-    public void breakpointsMuted(boolean muted) {
-        System.out.println("XDebugSessionListener.super.breakpointsMuted(muted);");
-    }
 }

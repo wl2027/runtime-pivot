@@ -3,3 +3,5 @@ plugins {
 }
 
 rootProject.name = "runtime-pivot-plugin"
+include("runtime-pivot-java")
+include("runtime-pivot-core")

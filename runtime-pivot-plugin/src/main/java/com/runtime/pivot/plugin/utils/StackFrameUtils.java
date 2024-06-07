@@ -8,7 +8,7 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.runtime.pivot.plugin.domain.MethodAnchoring;
 import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
-import com.runtime.pivot.plugin.listeners.StackFrameChangedListener;
+import com.runtime.pivot.plugin.listeners.XStackFrameListener;
 
 import java.util.Queue;
 
@@ -25,37 +25,18 @@ public class StackFrameUtils {
         invokeListener(methodBacktrackingContext);
         //执行一个pop操作
         methodBacktrackingContext.popFrameCommonRunnable();
-        //invokeCommand(methodBacktrackingContext);
     }
 
     private static void invokeListener(MethodBacktrackingContext methodBacktrackingContext) {
-        StackFrameChangedListener stackFrameChangedListener = new StackFrameChangedListener(
-                methodBacktrackingContext.getxStackFrameRunnableMap(),
-                methodBacktrackingContext.getxDebugSession(),
-                methodBacktrackingContext.getEndXStackFrame()
-        );
-        methodBacktrackingContext.getxDebugSession().addSessionListener(stackFrameChangedListener);
-        //TODO 先执行一个再往后加监听器执行
-    }
-
-    /**
-     * TODO 需要编排异步执行任务链
-     * @param methodBacktrackingContext
-     */
-    private static void invokeCommand(MethodBacktrackingContext methodBacktrackingContext) {
-        Queue<String> commandQueue = methodBacktrackingContext.getCommandQueue();
-        while (!commandQueue.isEmpty()) {
-            String command = commandQueue.poll();
-            switch (command){
-                case MethodBacktrackingContext.popFrame :
-
-                    break;
-                case MethodBacktrackingContext.resume:
-
-                    break;
+        XStackFrameListener xStackFrameListener = new XStackFrameListener(methodBacktrackingContext.getxDebugSession(), methodBacktrackingContext.getEndXStackFrame()) {
+            @Override
+            public void stackFrameExecutionMethod() {
+                methodBacktrackingContext.resumeCommonRunnable();
             }
-        }
+        };
+        methodBacktrackingContext.getxDebugSession().addSessionListener(xStackFrameListener);
     }
+
 
     public static MethodAnchoring getMethodAnchoring(XStackFrame xStackFrame, Project project) {
         XSourcePosition sourcePosition = xStackFrame.getSourcePosition();
