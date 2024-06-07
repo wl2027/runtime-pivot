@@ -29,21 +29,21 @@ public class StackFrameChangedListener implements XDebugSessionListener {
 
     @Override
     public void stackFrameChanged() {
-        XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
-        Runnable runnable = xStackFrameRunnableMap.get(currentStackFrame);
-        if (runnable != null){
-            try {
-                runnable.run();
-            } catch (Exception e) {
-                xDebugSession.removeSessionListener(this);
-                throw new RuntimeException(e);
-            }
-        }
-        if (currentStackFrame.equals(endXStackFrame)){
-            xDebugSession.removeSessionListener(this);
-        }
+//        XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
+//        Runnable runnable = xStackFrameRunnableMap.get(currentStackFrame);
+//        if (runnable != null){
+//            try {
+//                runnable.run();
+//            } catch (Exception e) {
+//                xDebugSession.removeSessionListener(this);
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        if (currentStackFrame.equals(endXStackFrame)){
+//            xDebugSession.removeSessionListener(this);
+//        }
     }
-
+    //((XDebugSessionImpl) this.xDebugSession).myDispatcher
     @Override
     public void sessionPaused() {
         XDebugSessionListener.super.sessionPaused();

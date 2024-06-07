@@ -9,6 +9,8 @@ import com.intellij.debugger.ui.impl.watch.StackFrameDescriptorImpl;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageUtil;
+import com.intellij.util.PsiNavigateUtil;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
@@ -31,6 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.intellij.xdebugger.impl.XDebuggerUtilImpl.createNavigatable;
+
 public class BreakpointBacktrackingAction extends AnAction {
 
 
@@ -40,16 +45,34 @@ public class BreakpointBacktrackingAction extends AnAction {
         XDebuggerManager debuggerManager = XDebuggerManager.getInstance(e.getProject());
         XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
         XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
-        List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream().filter(bean -> bean.isEnabled()).collect(Collectors.toList());
+        XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
+        List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
+                .filter(bean -> bean.isEnabled())
+                .filter(bean->!(
+                        bean.getSourcePosition().getFile().getUrl().equals(currentStackFrame.getSourcePosition().getFile().getUrl())
+                        && bean.getSourcePosition().getLine()==(currentStackFrame.getSourcePosition().getLine())
+                        ))
+                .collect(Collectors.toList());
+
         List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(DebuggerUIUtil.getSession(e));
+        //TODO currentStackFrame 当前栈帧指的是选中的,而不是定点栈帧,先要到达选中栈帧再开始执行命令
         MethodBacktrackingContext methodBacktrackingContext = new MethodBacktrackingContext(
                 xBreakpointList,
                 xStackFrames,
                 xDebugSession
         );
-        StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
-
-
+        XSourcePosition sourcePosition = methodBacktrackingContext.getBacktrackingXBreakpoint().getSourcePosition();
+        sourcePosition.createNavigatable(e.getProject()).navigate(true);
+        //弹出确认回溯点
+        if (MessageUtil.showYesNoDialog("确认回溯点",
+                sourcePosition.getFile().getName()+":"+sourcePosition.getLine(),
+                e.getProject(),
+                "确认",
+                "取消",
+                null)
+        ){
+            StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
+        }
 //        if (methodBacktrackingContext.isBacktracking()){
 //            StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
 //        }else {

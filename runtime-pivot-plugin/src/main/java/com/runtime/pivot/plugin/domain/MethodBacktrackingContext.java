@@ -152,7 +152,9 @@ public class MethodBacktrackingContext {
         List<XBreakpoint<?>> regressionXBreakpointList = new ArrayList<>();
         for (XBreakpoint<?> xBreakpoint : xBreakpointList) {
             XSourcePosition sourcePosition = xBreakpoint.getSourcePosition();
-            if (sourcePosition.getFile().equals(methodAnchoring.getVirtualFile()) && sourcePosition.getLine() >= methodAnchoring.getStart() && sourcePosition.getLine() <= methodAnchoring.getLine()) {
+            if (sourcePosition.getFile().getUrl().equals(methodAnchoring.getVirtualFile().getUrl())
+                    && sourcePosition.getLine() >= methodAnchoring.getStart()
+                    && sourcePosition.getLine() <= methodAnchoring.getLine()) {
                 //有回退断点~代码块含多个
                 regressionXBreakpointList.add(xBreakpoint);
             }
