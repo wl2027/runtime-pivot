@@ -46,6 +46,9 @@ public class BreakpointBacktrackingAction extends AnAction {
                 xStackFrames,
                 xDebugSession
         );
+        if (!methodBacktrackingContext.isBacktracking()) {
+            //TODO无法回溯
+        }
         XSourcePosition sourcePosition = methodBacktrackingContext.getBacktrackingXBreakpoint().getSourcePosition();
         sourcePosition.createNavigatable(e.getProject()).navigate(true);
         //弹出确认回溯点

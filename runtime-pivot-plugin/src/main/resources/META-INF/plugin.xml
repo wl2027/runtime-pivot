@@ -28,17 +28,17 @@
             <action id="RuntimePivot.ClassLoaderTree" text="ClassLoader Tree"
                     icon="com.intellij.icons.AllIcons.Actions.ShowAsTree"
                     class="com.runtime.pivot.plugin.actions.program.ClassLoaderTreeAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt O"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt O"/>
             </action>
             <action id="RuntimePivot.ClassLoaderClassTree" text="ClassLoader Class Tree"
                     icon="com.intellij.icons.AllIcons.General.TreeHovered"
                     class="com.runtime.pivot.plugin.actions.program.ClassLoaderClassTreeAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt K"/>
             </action>
             <action id="RuntimePivot.TransformerList" text="Transformers"
                     icon="com.intellij.icons.AllIcons.Actions.ListFiles"
                     class="com.runtime.pivot.plugin.actions.program.TransformersAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt N"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt N"/>
             </action>
 
 <!--            BalloonInformation Information ShowInfos-->
@@ -48,57 +48,56 @@
             <action id="RuntimePivot.ClassLoadingProcess" text="Class Loading Process"
                     icon="com.intellij.icons.AllIcons.Nodes.Class"
                     class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt I"/>
             </action>
             <action id="RuntimePivot.ClassFileDump" text="Class File Dump"
                     icon="/icons/class-list.svg"
                     class="com.runtime.pivot.plugin.actions.struct.ClassFileDumpAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt J"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
             </action>
 
             <separator text="method"/>
             <action id="RuntimePivot.MethodStartWatch" text="Start Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
                     class="com.runtime.pivot.plugin.actions.method.MethodStartMonitoringAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt U"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt U"/>
             </action>
             <action id="RuntimePivot.MethodStopWatch" text="Stop Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.Suspend"
                     class="com.runtime.pivot.plugin.actions.method.MethodStopMonitoringAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt H"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt H"/>
             </action>
             <action id="RuntimePivot.BreakpointBacktracking" text="Breakpoint Backtracking"
                     icon="com.intellij.icons.AllIcons.Actions.Rollback"
                     class="com.runtime.pivot.plugin.actions.method.BreakpointBacktrackingAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt B"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt B"/>
             </action>
             <separator text="object"/>
             <action id="RuntimePivot.ObjectInternals" text="Object Internals"
                     icon="com.intellij.icons.AllIcons.General.BalloonInformation"
                     class="com.runtime.pivot.plugin.actions.object.ObjectInternalsAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Y"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt Y"/>
             </action>
 
             <action id="RuntimePivot.ObjectStore" text="Object Store"
                     icon="com.intellij.icons.AllIcons.Actions.Install"
                     class="com.runtime.pivot.plugin.actions.object.ObjectStoreAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt G"/>
             </action>
 
             <action id="RuntimePivot.ObjectLoad" text="Object Load"
                     icon="com.intellij.icons.AllIcons.Actions.Uninstall"
                     class="com.runtime.pivot.plugin.actions.object.ObjectLoadAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt V"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt V"/>
             </action>
             <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
 
-        <action id="TestKS" class="com.runtime.pivot.plugin.actions.method.test2.TestKS" text="TestKS"
-                description="TestKS">
-            <add-to-group group-id="XDebugger.Actions" anchor="first"/>
-<!--            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt O"/>-->
-        </action>
+<!--        <action id="TestKS" class="com.runtime.pivot.plugin.actions.TestKS" text="TestKS" description="TestKS">-->
+<!--            <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>-->
+<!--            <keyboard-shortcut keymap="$default" first-keystroke="shift alt O"/>-->
+<!--        </action>-->
     </actions>
 
 </idea-plugin>

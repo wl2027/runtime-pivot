@@ -73,9 +73,12 @@ public class MethodBacktrackingContext {
                 xStackFrameMethodAnchoringMap.put(xStackFrame, methodAnchoring);
                 XBreakpoint<?> xBreakpoint = getBacktrackingXBreakpoint(methodAnchoring, xBreakpointList);
                 if (xBreakpoint != null) {
+                    //xBreakpoint.isEnabled() 改写其他的断点状态,监听结束需要改写回来 传入一个List => 先set:false,恢复,set:true
                     this.backtrackingXBreakpoint = xBreakpoint;
                     this.backtrackingXStackFrame = xStackFrame;
-                    this.endXStackFrame = stack.pop();
+                    if (!stack.empty()) {
+                        this.endXStackFrame = stack.pop();
+                    }
                     break;
                 }
             }

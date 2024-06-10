@@ -7,13 +7,13 @@ import com.intellij.xdebugger.frame.XStackFrame;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StackFrameChangedListener implements XDebugSessionListener {
+public class XStackFrameChangedListener implements XDebugSessionListener {
 
     private final Map<XStackFrame,Runnable> xStackFrameRunnableMap;
     private final XDebugSession xDebugSession;
     private final XStackFrame endXStackFrame;
 
-    public StackFrameChangedListener(Map<XStackFrame, Runnable> xStackFrameRunnableMap, XDebugSession xDebugSession,XStackFrame endXStackFrame) {
+    public XStackFrameChangedListener(Map<XStackFrame, Runnable> xStackFrameRunnableMap, XDebugSession xDebugSession, XStackFrame endXStackFrame) {
         this.xDebugSession = xDebugSession;
         this.endXStackFrame = endXStackFrame;
         this.xStackFrameRunnableMap = new ConcurrentHashMap<>();
@@ -34,8 +34,9 @@ public class StackFrameChangedListener implements XDebugSessionListener {
             try {
                 runnable.run();
             } catch (Exception e) {
-                xDebugSession.removeSessionListener(this);
                 throw new RuntimeException(e);
+            } finally {
+                xDebugSession.removeSessionListener(this);
             }
         }
         if (currentStackFrame.equals(endXStackFrame)){
