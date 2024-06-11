@@ -59,6 +59,7 @@ public class BreakpointBacktrackingAction extends AnAction {
                 "取消",
                 null)
         ){
+            //断点列表-》{断点+断点类型+pop方法栈+pop方法栈的其他断点List+end方法栈}
             StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
         }
 //        if (methodBacktrackingContext.isBacktracking()){

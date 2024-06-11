@@ -24,6 +24,7 @@ public class MethodBacktrackingContext {
     public static final String resume = "Resume";
     //断点列表
     private final List<XBreakpoint<?>> xBreakpointList;
+    private List<BacktrackingXBreakpoint> backtrackingXBreakpointList;
     //栈帧列表
     private final List<XStackFrame> xStackFrameList;
     //当前选中栈帧
@@ -144,7 +145,16 @@ public class MethodBacktrackingContext {
         this.xDebugSession = xDebugSession;
         this.debugSession = buildDebugSession(xDebugSession);
         this.debugProcess = debugSession.getProcess();
+
+        this.backtrackingXBreakpointList = buildBacktrackingXBreakpointList(xBreakpointList,xStackFrameList,project);
+
         buildMethodBacktrackingStack(xBreakpointList, xStackFrameList, project);
+    }
+
+    private List<BacktrackingXBreakpoint> buildBacktrackingXBreakpointList(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, Project project) {
+        List<BacktrackingXBreakpoint> result = new ArrayList<>();
+
+        return result;
     }
 
     private DebuggerSession buildDebugSession(XDebugSession xDebugSession) {
