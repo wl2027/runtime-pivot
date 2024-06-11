@@ -56,8 +56,13 @@ public class ActionExecutorUtil {
 
     public static String buildStringObject(String string) {
 
-//        return StrUtil.isEmpty(string)?null:"new String(\""+string+"\")";
-        return StrUtil.isEmpty(string)?null:formatPrettyPrint(string);
+        return StrUtil.isEmpty(string)?null:"new String(\""+string+"\")";
+        /**
+         * 出现以下问题,"\n"
+         * new String(
+         *     "E:/002_Code/000_github/APM/apm-demo\n")
+         */
+//        return StrUtil.isEmpty(string)?null:formatPrettyPrint(string);
     }
 
     public static String formatPrettyPrint(String original) {

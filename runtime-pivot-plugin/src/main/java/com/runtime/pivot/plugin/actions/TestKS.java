@@ -30,7 +30,7 @@ public class TestKS extends AnAction {
 
             @Override
             public void stackFrameChanged() {
-                //选中不同栈帧时候会变
+                //选中不同栈帧时候会变,多线程切换也会触发
                 XDebugSessionListener.super.stackFrameChanged();
             }
 
