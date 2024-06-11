@@ -27,11 +27,11 @@ public class ShowListDialogAction extends AnAction {
 //            dialog = new ListDialog(project);
 //            dialog.setVisible(true);
 //        }
-        Project project = e.getProject();
-        if (breakpointListDialog == null || !breakpointListDialog.isVisible()) {
-            breakpointListDialog = new BreakpointListDialog(project, DebuggerUIUtil.getSession(e));
-            breakpointListDialog.setVisible(true);
-        }
+//        Project project = e.getProject();
+//        if (breakpointListDialog == null || !breakpointListDialog.isVisible()) {
+//            breakpointListDialog = new BreakpointListDialog(project, DebuggerUIUtil.getSession(e));
+//            breakpointListDialog.setVisible(true);
+//        }
     }
 
     private static class ListDialog extends JDialog {

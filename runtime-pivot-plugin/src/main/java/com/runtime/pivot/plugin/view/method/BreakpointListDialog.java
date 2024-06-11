@@ -1,9 +1,16 @@
 package com.runtime.pivot.plugin.view.method;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
+import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.domain.BreakpointListItem;
 import com.runtime.pivot.plugin.enums.BreakpointType;
+import com.runtime.pivot.plugin.listeners.XStackFrameListener;
+import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
+import com.runtime.pivot.plugin.utils.StackFrameUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +19,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-public class BreakpointListDialog extends JDialog{
+
+public class BreakpointListDialog extends JDialog {
     private final Project project;
     private final XDebugSession xDebugSession;
 
-    private JList<BreakpointListItem> dataList;
+    //private JList<BreakpointListItem> dataList;
+    private JList<BacktrackingXBreakpoint> dataList;
 
-    public BreakpointListDialog(Project project,XDebugSession xDebugSession) {
+    public BreakpointListDialog(Project project, XDebugSession xDebugSession, List<BacktrackingXBreakpoint> backtrackingXBreakpointList) {
         super(WindowManager.getInstance().getFrame(project), "Debugger Breakpoint List", false);
         this.project = project;
         this.xDebugSession = xDebugSession;
@@ -34,20 +43,40 @@ public class BreakpointListDialog extends JDialog{
             }
         });
 
-        DefaultListModel<BreakpointListItem> listModel = new DefaultListModel<>();
-        listModel.addElement(new BreakpointListItem("Item 1", BreakpointType.AVAILABLE));
-        listModel.addElement(new BreakpointListItem("Item 2", BreakpointType.AVAILABLE));
-        listModel.addElement(new BreakpointListItem("Item 3", BreakpointType.NOT_AVAILABLE));
+        DefaultListModel<BacktrackingXBreakpoint> listModel = new DefaultListModel<>();
+        // TODO 从栈底到栈顶
+        for (BacktrackingXBreakpoint backtrackingXBreakpoint : backtrackingXBreakpointList) {
+            listModel.addElement(backtrackingXBreakpoint);
+        }
+//        listModel.addElement(new BreakpointListItem("Item 1", BreakpointType.AVAILABLE));
+//        listModel.addElement(new BreakpointListItem("Item 2", BreakpointType.AVAILABLE));
+//        listModel.addElement(new BreakpointListItem("Item 3", BreakpointType.NOT_AVAILABLE));
 
         dataList = new JList<>(listModel);
         dataList.setCellRenderer(new ListItemRenderer());
         dataList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                BacktrackingXBreakpoint selectedValue = dataList.getSelectedValue();
                 if (e.getClickCount() == 1) {
-                    System.out.println("Single click on: " + dataList.getSelectedValue().getText());
+                    //单击-导航
+                    //System.out.println("Single click on: " + dataList.getSelectedValue().getText());
+                    selectedValue.getxBreakpoint().getNavigatable().navigate(true);
                 } else if (e.getClickCount() == 2) {
-                    System.out.println("Double click on: " + dataList.getSelectedValue().getText());
+                    //双击-回溯
+                    //System.out.println("Double click on: " + dataList.getSelectedValue().getText());
+                    if (selectedValue.getBreakpointType() != BreakpointType.NOT_AVAILABLE) {
+                        if (MessageUtil.showYesNoDialog(
+                                "回溯到断点",
+                                RuntimePivotUtil.getNextPositionName(selectedValue.getSourcePosition()),
+                                project,
+                                "确认",
+                                "取消",
+                                null
+                        )) {
+                            StackFrameUtils.invokeBacktracking(selectedValue);
+                        }
+                    }
                 }
             }
         });
@@ -70,9 +99,9 @@ public class BreakpointListDialog extends JDialog{
     }
 
     // 更新列表数据的方法
-    public void updateListData(List<BreakpointListItem> newData) {
-        DefaultListModel<BreakpointListItem> listModel = new DefaultListModel<>();
-        for (BreakpointListItem item : newData) {
+    public void updateListData(List<BacktrackingXBreakpoint> newData) {
+        DefaultListModel<BacktrackingXBreakpoint> listModel = new DefaultListModel<>();
+        for (BacktrackingXBreakpoint item : newData) {
             listModel.addElement(item);
         }
         dataList.setModel(listModel);
@@ -81,13 +110,14 @@ public class BreakpointListDialog extends JDialog{
     // 关闭窗口和点击关闭按钮时执行的操作
     private void onClose() {
         System.out.println("Dialog is closing");
+        //TODO 关闭断点列表
         // 在这里添加你需要执行的操作
     }
 
-    private static class ListItemRenderer extends JLabel implements ListCellRenderer<BreakpointListItem> {
+    private static class ListItemRenderer extends JLabel implements ListCellRenderer<BacktrackingXBreakpoint> {
         @Override
-        public Component getListCellRendererComponent(JList<? extends BreakpointListItem> list, BreakpointListItem value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.getText());
+        public Component getListCellRendererComponent(JList<? extends BacktrackingXBreakpoint> list, BacktrackingXBreakpoint value, int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value.toString());
             setIcon(value.getIcon());
             if (isSelected) {
                 setBackground(list.getSelectionBackground());

@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.plugin.listeners.XDebugMethodWatchListener;
 import com.runtime.pivot.plugin.service.XDebugMethodContext;
 import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
 import org.jetbrains.annotations.NotNull;

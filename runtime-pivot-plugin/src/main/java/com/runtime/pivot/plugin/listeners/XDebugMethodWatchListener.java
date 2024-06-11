@@ -1,20 +1,19 @@
 package com.runtime.pivot.plugin.listeners;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XSourcePosition;
 import com.runtime.pivot.plugin.service.XDebugMethodContext;
+import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
 import com.runtime.pivot.plugin.view.RuntimePivotToolsWindow;
 import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * 维护一个map<ssion,xdebug> => 服务组件的概念=>颗粒度=>全局/项目/程序/会话
  */
 public class XDebugMethodWatchListener implements XDebugSessionListener {
-    private final StopWatch stopWatch ;
+    private StopWatch stopWatch ;
     private String currentTaskName ;
     //TODO 关闭时需要清除
     private final Map<StopWatch.TaskInfo,XSourcePosition> taskInfoXSourcePositionMap = new ConcurrentHashMap<>();
@@ -36,6 +35,12 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
         this.xDebugSession = xDebugSession;
         this.project = project;
     }
+    
+    public void clear(String id){
+        stopWatch = new StopWatch(id);
+        currentTaskName = null;
+        taskInfoXSourcePositionMap.clear();
+    }
 
     public StopWatch getStopWatch() {
         return stopWatch;
@@ -44,7 +49,7 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
     @Override
     public void beforeSessionResume() {
         XDebugSessionListener.super.beforeSessionResume();
-        currentTaskName = getCurrentPositionName();
+        currentTaskName = getCurrentNextPositionName();
     }
 
     //进入暂停
@@ -60,8 +65,10 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
     }
 
     private void updateMonitoringTableDialog(StopWatch stopWatch) {
+        
         StopWatch.TaskInfo lastTaskInfo = stopWatch.getLastTaskInfo();
         taskInfoXSourcePositionMap.put(lastTaskInfo,xDebugSession.getCurrentPosition());
+        
         final long totalTimeNanos = stopWatch.getTotalTimeNanos();
         TimeUnit unit = chooseTimeUnit(totalTimeNanos);
         String shortSummary = stopWatch.shortSummary(unit);
@@ -72,18 +79,20 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
         pf.setMinimumIntegerDigits(2);
         pf.setGroupingUsed(false);
         List<String[]> dataList = new ArrayList<>();
+        List<XSourcePosition> xSourcePositions = new ArrayList<>();
         for (StopWatch.TaskInfo task : stopWatch.getTaskInfo()) {
             dataList.add(new String[]{
                     nf.format(task.getTime(unit)),
                     pf.format((double) task.getTimeNanos() / totalTimeNanos),
-                    "["+task.getTaskName()+","+getPositionName(taskInfoXSourcePositionMap.get(task))+"]"
+                    "["+task.getTaskName()+","+ RuntimePivotUtil.getPositionName(taskInfoXSourcePositionMap.get(task))+"]"
             });
+            XSourcePosition xSourcePosition = taskInfoXSourcePositionMap.get(task);
+            xSourcePositions.add(xSourcePosition);
         }
-
         MonitoringTableDialog monitoringTableDialog = XDebugMethodContext.getInstance(project).getSessionMonitoringTableMap().get(xDebugSession);
         monitoringTableDialog.updateTextArea(shortSummary);
         String[] columnNames = new String[]{unit.name(),"%", "Task Intervals"};
-        monitoringTableDialog.updateTableData(columnNames,dataList);
+        monitoringTableDialog.updateTableData(columnNames,dataList,xSourcePositions);
     }
 
     private static TimeUnit chooseTimeUnit(long totalTimeNanos) {
@@ -136,10 +145,12 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
 
     private String getCurrentPositionName() {
         XSourcePosition currentPosition = xDebugSession.getCurrentPosition();
-        return getPositionName(currentPosition);
+        return RuntimePivotUtil.getPositionName(currentPosition);
     }
-    private String getPositionName(@NotNull XSourcePosition currentPosition) {
-        return currentPosition==null?"":currentPosition.getFile().getName() + ":" + currentPosition.getLine();
+    private String getCurrentNextPositionName() {
+        XSourcePosition currentPosition = xDebugSession.getCurrentPosition();
+        return RuntimePivotUtil.getNextPositionName(currentPosition);
     }
+    
 
 }

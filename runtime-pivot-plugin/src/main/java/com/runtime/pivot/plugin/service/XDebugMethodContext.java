@@ -3,7 +3,6 @@ package com.runtime.pivot.plugin.service;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
-import com.runtime.pivot.plugin.listeners.XDebugMethodWatchListener;
 import com.runtime.pivot.plugin.utils.ProjectUtils;
 import com.runtime.pivot.plugin.view.method.BreakpointListDialog;
 import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;

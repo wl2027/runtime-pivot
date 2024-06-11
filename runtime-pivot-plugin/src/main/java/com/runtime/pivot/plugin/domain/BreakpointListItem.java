@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.view.method;
+package com.runtime.pivot.plugin.domain;
 
 import com.intellij.icons.AllIcons;
 import com.runtime.pivot.plugin.enums.BreakpointType;

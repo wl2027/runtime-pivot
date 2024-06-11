@@ -2,6 +2,7 @@ package com.runtime.pivot.plugin.actions.method;
 
 import cn.hutool.core.collection.ListUtil;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
@@ -12,9 +13,13 @@ import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
+import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
 import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
+import com.runtime.pivot.plugin.service.XDebugMethodContext;
 import com.runtime.pivot.plugin.test.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
+import com.runtime.pivot.plugin.view.method.BreakpointListDialog;
+import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -33,10 +38,11 @@ public class BreakpointBacktrackingAction extends AnAction {
         XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
         List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
                 .filter(bean -> bean.isEnabled())
-                .filter(bean->!(
-                        bean.getSourcePosition().getFile().getUrl().equals(currentStackFrame.getSourcePosition().getFile().getUrl())
-                        && bean.getSourcePosition().getLine()==(currentStackFrame.getSourcePosition().getLine())
-                        ))
+                //应抽象成可达性分析,传入context去判断
+//                .filter(bean->!(
+//                        bean.getSourcePosition().getFile().getUrl().equals(currentStackFrame.getSourcePosition().getFile().getUrl())
+//                        && bean.getSourcePosition().getLine()==(currentStackFrame.getSourcePosition().getLine())
+//                        ))
                 .collect(Collectors.toList());
 
         List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(DebuggerUIUtil.getSession(e));
@@ -46,22 +52,34 @@ public class BreakpointBacktrackingAction extends AnAction {
                 xStackFrames,
                 xDebugSession
         );
-        if (!methodBacktrackingContext.isBacktracking()) {
-            //TODO无法回溯
+        List<BacktrackingXBreakpoint> backtrackingXBreakpointList = methodBacktrackingContext.getBacktrackingXBreakpointList();
+        BreakpointListDialog breakpointListDialog = XDebugMethodContext.getInstance(e.getProject()).getSessionBreakpointListMap().get(xDebugSession);
+        Project project = e.getProject();
+        if (breakpointListDialog == null || !breakpointListDialog.isVisible()) {
+            breakpointListDialog = new BreakpointListDialog(project, DebuggerUIUtil.getSession(e),backtrackingXBreakpointList);
+            XDebugMethodContext.getInstance(e.getProject()).getSessionBreakpointListMap().put(xDebugSession,breakpointListDialog);
+            breakpointListDialog.setVisible(true);
+        } else {
+            breakpointListDialog.updateListData(backtrackingXBreakpointList);
+            breakpointListDialog.setVisible(true);
+            //TODO 提示已存在监听器
         }
-        XSourcePosition sourcePosition = methodBacktrackingContext.getBacktrackingXBreakpoint().getSourcePosition();
-        sourcePosition.createNavigatable(e.getProject()).navigate(true);
-        //弹出确认回溯点
-        if (MessageUtil.showYesNoDialog("确认回溯点",
-                sourcePosition.getFile().getName()+":"+sourcePosition.getLine(),
-                e.getProject(),
-                "确认",
-                "取消",
-                null)
-        ){
-            //断点列表-》{断点+断点类型+pop方法栈+pop方法栈的其他断点List+end方法栈}
-            StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
-        }
+//        if (!methodBacktrackingContext.isBacktracking()) {
+//            //TODO无法回溯
+//        }
+//        XSourcePosition sourcePosition = methodBacktrackingContext.getBacktrackingXBreakpoint().getSourcePosition();
+//        sourcePosition.createNavigatable(e.getProject()).navigate(true);
+//        //弹出确认回溯点
+//        if (MessageUtil.showYesNoDialog("确认回溯点",
+//                sourcePosition.getFile().getName()+":"+sourcePosition.getLine(),
+//                e.getProject(),
+//                "确认",
+//                "取消",
+//                null)
+//        ){
+//            //断点列表-》{断点+断点类型+pop方法栈+pop方法栈的其他断点List+end方法栈}
+//            StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
+//        }
 //        if (methodBacktrackingContext.isBacktracking()){
 //            StackFrameUtils.invokeBacktracking(methodBacktrackingContext);
 //        }else {

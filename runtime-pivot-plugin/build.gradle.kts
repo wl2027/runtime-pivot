@@ -18,11 +18,11 @@ version = properties("pluginVersion").get()
 
 // Configure project's dependencies
 repositories {
-    mavenLocal()
-    maven(url = "https://maven.aliyun.com/repository/public")
-    maven(url = "https://maven-central.storage-download.googleapis.com/repos/central/data/")
-    maven(url = "https://www.jetbrains.com/intellij-repository/releases")
-    maven(url = "https://jitpack.io")
+//    mavenLocal()
+//    maven(url = "https://maven.aliyun.com/repository/public")
+//    maven(url = "https://maven-central.storage-download.googleapis.com/repos/central/data/")
+//    maven(url = "https://www.jetbrains.com/intellij-repository/releases")
+//    maven(url = "https://jitpack.io")
     mavenCentral()
 }
 
@@ -33,7 +33,7 @@ dependencies {
 //    implementation(fileTree(projectDir.resolve("libs")) {
 //        include("*.jar")
 //    })
-    implementation(files("C:\\Users\\wlong\\Desktop\\runtime-pivot\\runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
+    implementation(files("E:\\002_Code\\000_github\\IDEA\\runtime-pivot\\runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 //    implementation(files("./../aa/runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 }
 //println("agentLib:"+fileTree(projectDir.resolve("libs"));
