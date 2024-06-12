@@ -58,22 +58,23 @@ public class StackFrameUtils {
     }
 
     public static void resumeCommonRunnable(DebugProcessImpl debugProcess, XDebugSession xDebugSession, List<XBreakpoint<?>> jumpBreakpointList) throws Exception {
-//        java.util.List<Boolean> stateList = new ArrayList<>() ;
-//        for (XBreakpoint<?> xBreakpoint : jumpBreakpointList) {
-//            stateList.add(xBreakpoint.isEnabled());
-//            xBreakpoint.setEnabled(false);
-//        }
-//        DebugProcessImpl.ResumeCommand resumeCommand = debugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext());
-//        try {
-//            resumeCommand.run();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        for (int i = 0; i < jumpBreakpointList.size(); i++) {
-//            jumpBreakpointList.get(i).setEnabled(stateList.get(i));
-//        }
+        java.util.List<Boolean> stateList = new ArrayList<>() ;
+        for (XBreakpoint<?> xBreakpoint : jumpBreakpointList) {
+            stateList.add(xBreakpoint.isEnabled());
+            xBreakpoint.setEnabled(false);
+        }
         DebugProcessImpl.ResumeCommand resumeCommand = debugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext());
-        resumeCommand.run();
+        try {
+            resumeCommand.run();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        //jumpBreakpointList 多禁用一个end栈帧的断点就能解决
+        for (int i = 0; i < jumpBreakpointList.size(); i++) {
+            jumpBreakpointList.get(i).setEnabled(stateList.get(i));
+        }
+//        DebugProcessImpl.ResumeCommand resumeCommand = debugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext());
+//        resumeCommand.run();
 //        ApplicationManager.getApplication().executeOnPooledThread(() -> {
 //            try {
 //                java.util.List<Boolean> stateList = new ArrayList<>() ;

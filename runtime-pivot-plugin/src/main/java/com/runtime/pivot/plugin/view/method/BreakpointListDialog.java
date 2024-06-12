@@ -27,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class BreakpointListDialog extends JDialog {
 
     //private JList<BreakpointListItem> dataList;
     private JList<BacktrackingXBreakpoint> dataList;
+    private List<BacktrackingXBreakpoint> backtrackingXBreakpointList = new ArrayList<>();
 
     public BreakpointListDialog(Project project, XDebugSession xDebugSession, List<BacktrackingXBreakpoint> backtrackingXBreakpointList) {
         super(WindowManager.getInstance().getFrame(project), "Debugger Breakpoint List", false);
@@ -55,6 +57,8 @@ public class BreakpointListDialog extends JDialog {
         });
 
         DefaultListModel<BacktrackingXBreakpoint> listModel = new DefaultListModel<>();
+        this.backtrackingXBreakpointList.clear();
+        this.backtrackingXBreakpointList.addAll(backtrackingXBreakpointList);
         // TODO 从栈底到栈顶
         for (BacktrackingXBreakpoint backtrackingXBreakpoint : backtrackingXBreakpointList) {
             listModel.addElement(backtrackingXBreakpoint);
@@ -86,6 +90,7 @@ public class BreakpointListDialog extends JDialog {
                                 null
                         )) {
                             StackFrameUtils.invokeBacktracking(selectedValue);
+                            dispose();
                         }
                     }
                 }
@@ -108,14 +113,20 @@ public class BreakpointListDialog extends JDialog {
 
         setLocationRelativeTo(WindowManager.getInstance().getFrame(project));
 
-        initListeners(xDebugSession);
+//        initListeners(xDebugSession);
 
+    }
+
+    public void close(){
+        onClose();
+        dispose();
     }
 
     private void initListeners(XDebugSession xDebugSession) {
         xDebugSessionListener = new XDebugSessionListener() {
             @Override
             public void sessionPaused() {
+                //执行任何操作停下来+回溯成功时
                 XDebugSessionListener.super.sessionPaused();
                 updateData();
             }
@@ -139,6 +150,7 @@ public class BreakpointListDialog extends JDialog {
 
             @Override
             public void stackFrameChanged() {
+                //栈帧改变&线程切换时
                 XDebugSessionListener.super.stackFrameChanged();
                 updateData();
             }
@@ -148,6 +160,8 @@ public class BreakpointListDialog extends JDialog {
 
     // 更新列表数据的方法
     public void updateListData(List<BacktrackingXBreakpoint> newData) {
+        this.backtrackingXBreakpointList.clear();
+        this.backtrackingXBreakpointList.addAll(newData);
         DefaultListModel<BacktrackingXBreakpoint> listModel = new DefaultListModel<>();
         for (BacktrackingXBreakpoint item : newData) {
             listModel.addElement(item);
@@ -157,7 +171,7 @@ public class BreakpointListDialog extends JDialog {
 
     // 关闭窗口和点击关闭按钮时执行的操作
     private void onClose() {
-        xDebugSession.removeSessionListener(xDebugSessionListener);
+//        xDebugSession.removeSessionListener(xDebugSessionListener);
         System.out.println("Dialog is closing");
         //TODO 关闭断点列表
         // 在这里添加你需要执行的操作
@@ -180,5 +194,9 @@ public class BreakpointListDialog extends JDialog {
             setOpaque(true);
             return this;
         }
+    }
+
+    public List<BacktrackingXBreakpoint> getBacktrackingXBreakpointList() {
+        return backtrackingXBreakpointList;
     }
 }
