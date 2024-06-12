@@ -1,14 +1,23 @@
 package com.runtime.pivot.plugin.view.method;
 
+import cn.hutool.core.collection.ListUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
+import com.intellij.xdebugger.XDebugSessionListener;
+import com.intellij.xdebugger.XDebuggerManager;
+import com.intellij.xdebugger.breakpoints.XBreakpoint;
+import com.intellij.xdebugger.breakpoints.XBreakpointManager;
+import com.intellij.xdebugger.frame.XStackFrame;
+import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
 import com.runtime.pivot.plugin.domain.BreakpointListItem;
+import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
 import com.runtime.pivot.plugin.enums.BreakpointType;
 import com.runtime.pivot.plugin.listeners.XStackFrameListener;
+import com.runtime.pivot.plugin.test.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
 
@@ -19,10 +28,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BreakpointListDialog extends JDialog {
     private final Project project;
     private final XDebugSession xDebugSession;
+    private XDebugSessionListener xDebugSessionListener;
 
     //private JList<BreakpointListItem> dataList;
     private JList<BacktrackingXBreakpoint> dataList;
@@ -96,6 +107,43 @@ public class BreakpointListDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
 
         setLocationRelativeTo(WindowManager.getInstance().getFrame(project));
+
+        initListeners(xDebugSession);
+
+    }
+
+    private void initListeners(XDebugSession xDebugSession) {
+        xDebugSessionListener = new XDebugSessionListener() {
+            @Override
+            public void sessionPaused() {
+                XDebugSessionListener.super.sessionPaused();
+                updateData();
+            }
+
+            private void updateData() {
+                //java.lang.Throwable: Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
+                XDebuggerManager debuggerManager = XDebuggerManager.getInstance(project);
+                XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
+                XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
+                List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
+                        .filter(bean -> bean.isEnabled())
+                        .collect(Collectors.toList());
+                List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(xDebugSession);
+                MethodBacktrackingContext methodBacktrackingContext = new MethodBacktrackingContext(
+                        xBreakpointList,
+                        xStackFrames,
+                        xDebugSession
+                );
+                updateListData(methodBacktrackingContext.getBacktrackingXBreakpointList());
+            }
+
+            @Override
+            public void stackFrameChanged() {
+                XDebugSessionListener.super.stackFrameChanged();
+                updateData();
+            }
+        };
+        xDebugSession.addSessionListener(xDebugSessionListener);
     }
 
     // 更新列表数据的方法
@@ -109,6 +157,7 @@ public class BreakpointListDialog extends JDialog {
 
     // 关闭窗口和点击关闭按钮时执行的操作
     private void onClose() {
+        xDebugSession.removeSessionListener(xDebugSessionListener);
         System.out.println("Dialog is closing");
         //TODO 关闭断点列表
         // 在这里添加你需要执行的操作

@@ -38,13 +38,7 @@ public class BreakpointBacktrackingAction extends AnAction {
         XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
         List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
                 .filter(bean -> bean.isEnabled())
-                //应抽象成可达性分析,传入context去判断
-//                .filter(bean->!(
-//                        bean.getSourcePosition().getFile().getUrl().equals(currentStackFrame.getSourcePosition().getFile().getUrl())
-//                        && bean.getSourcePosition().getLine()==(currentStackFrame.getSourcePosition().getLine())
-//                        ))
                 .collect(Collectors.toList());
-
         List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(DebuggerUIUtil.getSession(e));
         //TODO currentStackFrame 当前栈帧指的是选中的,而不是定点栈帧,先要到达选中栈帧再开始执行命令
         MethodBacktrackingContext methodBacktrackingContext = new MethodBacktrackingContext(
