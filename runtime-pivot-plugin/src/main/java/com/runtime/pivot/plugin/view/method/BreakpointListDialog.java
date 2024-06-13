@@ -89,7 +89,8 @@ public class BreakpointListDialog extends JDialog {
                                 "取消",
                                 null
                         )) {
-                            StackFrameUtils.invokeBacktracking(selectedValue);
+//                            StackFrameUtils.invokeBacktracking(selectedValue);
+                            StackFrameUtils.invokeBacktrackingTest(selectedValue);
                             dispose();
                         }
                     }

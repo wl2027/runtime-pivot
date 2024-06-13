@@ -116,13 +116,18 @@ public class BreakpointBacktrackingAction extends AnAction {
 
             @Override
             public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
-                updateData(); //断点增删没有调用,断点属性修改会调用 主要关注isEnable
+                //改变的是breakpoint.isEnabled()才去调用
+                //updateData(); //断点增删没有调用,断点属性修改会调用 主要关注isEnable
+                XDebugSession currentSession = XDebuggerManager.getInstance(project).getCurrentSession();
+                BreakpointListDialog breakpointListDialog1 = XDebugMethodContext.getInstance(e.getProject()).getSessionBreakpointListMap().get(currentSession);
+                breakpointListDialog1.getBacktrackingXBreakpointList().forEach(BacktrackingXBreakpoint::updateType);
+                breakpointListDialog1.updateListData(breakpointListDialog1.getBacktrackingXBreakpointList());
                 XBreakpointListener.super.breakpointChanged(breakpoint);
             }
-            //视图已更新
+            //断点视图已更新
             @Override
             public void breakpointPresentationUpdated(@NotNull XBreakpoint breakpoint, @Nullable XDebugSession session) {
-                updateData();
+                //updateData();//调试会话启动也会调用,因为也属于断点视图更新
                 XBreakpointListener.super.breakpointPresentationUpdated(breakpoint, session);
             }
         };

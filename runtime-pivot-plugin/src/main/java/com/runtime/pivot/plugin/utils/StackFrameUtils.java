@@ -2,6 +2,9 @@ package com.runtime.pivot.plugin.utils;
 
 import com.intellij.debugger.engine.DebugProcessImpl;
 import com.intellij.debugger.engine.SuspendContextImpl;
+import com.intellij.debugger.engine.events.DebuggerCommandImpl;
+import com.intellij.debugger.engine.events.DebuggerContextCommandImpl;
+import com.intellij.debugger.impl.DebuggerContextImpl;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
@@ -15,6 +18,7 @@ import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
 import com.runtime.pivot.plugin.domain.MethodAnchoring;
 import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
 import com.runtime.pivot.plugin.listeners.XStackFrameListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,19 +60,30 @@ public class StackFrameUtils {
         backtrackingXBreakpoint.getxDebugSession().addSessionListener(xStackFrameListener);
         popFrameCommonRunnable(backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getPopXStackFrame());
     }
+    public static void invokeBacktrackingTest(BacktrackingXBreakpoint backtrackingXBreakpoint) {
+        backtrackingXBreakpoint.getDebugProcess().getManagerThread().schedule(new DebuggerContextCommandImpl(backtrackingXBreakpoint.getDebugProcess().getDebuggerContext()) {
+            @Override
+            public void threadAction(@NotNull SuspendContextImpl suspendContext) {
+                popFrameCommonRunnable(backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getPopXStackFrame());
+                resumeCommonRunnable(backtrackingXBreakpoint.getDebugProcess(),backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getJumpBreakpointList());
+            }
+        });
+    }
 
-    public static void resumeCommonRunnable(DebugProcessImpl debugProcess, XDebugSession xDebugSession, List<XBreakpoint<?>> jumpBreakpointList) throws Exception {
+    public static void resumeCommonRunnable(DebugProcessImpl debugProcess, XDebugSession xDebugSession, List<XBreakpoint<?>> jumpBreakpointList) {
+        //Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
         java.util.List<Boolean> stateList = new ArrayList<>() ;
         for (XBreakpoint<?> xBreakpoint : jumpBreakpointList) {
             stateList.add(xBreakpoint.isEnabled());
             xBreakpoint.setEnabled(false);
         }
-        DebugProcessImpl.ResumeCommand resumeCommand = debugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext());
-        try {
-            resumeCommand.run();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        DebugProcessImpl.ResumeCommand resumeCommand = debugProcess.createResumeCommand((SuspendContextImpl) xDebugSession.getSuspendContext());
+//        try {
+//            resumeCommand.run();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+        debugProcess.getSuspendManager().resume(debugProcess.getSuspendManager().getPausedContext());
         //jumpBreakpointList 多禁用一个end栈帧的断点就能解决
         for (int i = 0; i < jumpBreakpointList.size(); i++) {
             jumpBreakpointList.get(i).setEnabled(stateList.get(i));

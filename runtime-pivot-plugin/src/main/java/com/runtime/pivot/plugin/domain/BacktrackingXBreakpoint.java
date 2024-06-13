@@ -21,8 +21,8 @@ public class BacktrackingXBreakpoint {
     private final DebugProcessImpl debugProcess;
     private final XDebugSession xDebugSession;
     private final XBreakpoint<?> xBreakpoint;
-    private final Icon icon;
-    private final BreakpointType breakpointType;
+    private Icon icon;
+    private BreakpointType breakpointType;
     private final XStackFrame popXStackFrame;
     private final XStackFrame endXStackFrame;
     //跳跃断点列表
@@ -38,6 +38,10 @@ public class BacktrackingXBreakpoint {
         this.endXStackFrame = endXStackFrame;
         this.jumpBreakpointList = jumpBreakpointList;
         this.sourcePosition = sourcePosition;
+        buildIcon(breakpointType);
+    }
+
+    private void buildIcon(BreakpointType breakpointType) {
         switch (breakpointType) {
             case AVAILABLE:
                 this.icon = AllIcons.Debugger.Db_verified_breakpoint;
@@ -46,6 +50,17 @@ public class BacktrackingXBreakpoint {
                 this.icon = AllIcons.Debugger.Db_muted_breakpoint;
                 break;
             default:this.icon = AllIcons.Debugger.Db_muted_breakpoint;
+        }
+    }
+
+    public void updateType(){
+        if (this.xBreakpoint!=null) {
+            if (xBreakpoint.isEnabled()) {
+                this.breakpointType = BreakpointType.AVAILABLE;
+            } else {
+                this.breakpointType = BreakpointType.NOT_AVAILABLE;
+            }
+            buildIcon(breakpointType);
         }
     }
 
