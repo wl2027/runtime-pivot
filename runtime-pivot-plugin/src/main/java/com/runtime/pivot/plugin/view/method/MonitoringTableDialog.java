@@ -28,7 +28,11 @@ public class MonitoringTableDialog extends JDialog {
     private final XDebugSession xDebugSession;
     private final XDebugMethodWatchListener xDebugMethodWatchListener;
 
-    public MonitoringTableDialog(Project project, XDebugSession xDebugSession) {
+    public static MonitoringTableDialog getInstance(Project project, XDebugSession xDebugSession){
+        return new MonitoringTableDialog(project, xDebugSession);
+    }
+
+    private MonitoringTableDialog(Project project, XDebugSession xDebugSession) {
         super(WindowManager.getInstance().getFrame(project), "Method Monitoring", false);
         this.project = project;
         this.xDebugSession = xDebugSession;

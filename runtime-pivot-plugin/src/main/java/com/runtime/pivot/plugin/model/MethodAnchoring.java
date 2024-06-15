@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.domain;
+package com.runtime.pivot.plugin.model;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiMethod;

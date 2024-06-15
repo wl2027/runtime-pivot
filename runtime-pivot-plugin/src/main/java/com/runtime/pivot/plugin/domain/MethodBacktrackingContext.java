@@ -1,6 +1,5 @@
 package com.runtime.pivot.plugin.domain;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.intellij.debugger.engine.DebugProcessImpl;
@@ -9,15 +8,21 @@ import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
+import com.intellij.xdebugger.XDebuggerManager;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
+import com.intellij.xdebugger.breakpoints.XBreakpointManager;
 import com.intellij.xdebugger.frame.XDropFrameHandler;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.runtime.pivot.plugin.enums.BreakpointType;
+import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.model.MethodAnchoring;
+import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class MethodBacktrackingContext {
     public static final String popFrame = "Debugger.PopFrame";
@@ -141,9 +146,17 @@ public class MethodBacktrackingContext {
         return backtrackingXBreakpoint;
     }
 
-    public MethodBacktrackingContext(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, XDebugSession xDebugSession) {
+    public MethodBacktrackingContext( XDebugSession xDebugSession) {
+        XDebuggerManager debuggerManager = XDebuggerManager.getInstance(xDebugSession.getProject());
+        XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
+        XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
+        List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
+                .filter(bean -> bean.isEnabled())
+                .collect(Collectors.toList());
+        List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(xDebugSession);
+
         this.xBreakpointList = xBreakpointList;
-        this.xStackFrameList = xStackFrameList;
+        this.xStackFrameList = xStackFrames;
         this.currentXStackFrame = xDebugSession.getCurrentStackFrame();
         this.project = xDebugSession.getProject();
         this.xDebugSession = xDebugSession;

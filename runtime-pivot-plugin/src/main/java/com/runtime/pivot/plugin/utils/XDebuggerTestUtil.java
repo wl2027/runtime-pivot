@@ -1,5 +1,5 @@
 // Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-package com.runtime.pivot.plugin.test;
+package com.runtime.pivot.plugin.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.intellij.execution.impl.ConsoleViewImpl;

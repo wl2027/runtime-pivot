@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin;
+package com.runtime.pivot.plugin.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.intellij.execution.Executor;
@@ -14,7 +14,7 @@ import com.runtime.pivot.plugin.utils.PluginUtil;
 
 import java.util.Objects;
 
-public class PerRun extends JavaProgramPatcher {
+public class JavaAgentConfig extends JavaProgramPatcher {
 
     @Override
     public void patchJavaParameters(Executor executor, RunProfile configuration, JavaParameters javaParameters) {

@@ -56,6 +56,7 @@ intellij {
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     groups.empty()
+    path = file("../CHANGELOG.md").absolutePath
     repositoryUrl = properties("pluginRepositoryUrl")
 }
 
@@ -84,7 +85,7 @@ tasks {
         untilBuild = properties("pluginUntilBuild")
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-        pluginDescription = providers.fileContents(layout.projectDirectory.file("README.md")).asText.map {
+        pluginDescription = providers.fileContents(layout.projectDirectory.file("./../README.md")).asText.map {
             val start = "<!-- Plugin description -->"
             val end = "<!-- Plugin description end -->"
 
@@ -96,7 +97,22 @@ tasks {
             }
         }
 
-        val changelog = project.changelog // local variable for configuration cache compatibility
+// 设置 changelog 文件的路径
+
+//        val changelogPath = project.rootProject.file("../changelog/CHANGELOG.md")
+//
+//        val changelog = Changelog.fromFile(changelogPath)
+
+//// 从 changelog 文件中获取最新的变更日志
+//        val changeNotes = project.findProperty("pluginVersion")?.let { pluginVersion ->
+//            changelog.renderItem(
+//                    changelog.getOrNull(pluginVersion.toString()) ?: changelog.getUnreleased(),
+//                    Changelog.OutputType.HTML
+//            )
+//        }
+//
+        val changelog = project.changelog
+        // local variable for configuration cache compatibility
         // Get the latest available change notes from the changelog file
         changeNotes = properties("pluginVersion").map { pluginVersion ->
             with(changelog) {

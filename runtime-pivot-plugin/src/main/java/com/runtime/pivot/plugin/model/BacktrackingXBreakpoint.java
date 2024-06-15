@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.domain;
+package com.runtime.pivot.plugin.model;
 
 import com.intellij.debugger.engine.DebugProcessImpl;
 import com.intellij.icons.AllIcons;

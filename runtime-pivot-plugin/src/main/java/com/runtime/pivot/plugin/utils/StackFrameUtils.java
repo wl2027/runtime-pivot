@@ -2,10 +2,7 @@ package com.runtime.pivot.plugin.utils;
 
 import com.intellij.debugger.engine.DebugProcessImpl;
 import com.intellij.debugger.engine.SuspendContextImpl;
-import com.intellij.debugger.engine.events.DebuggerCommandImpl;
 import com.intellij.debugger.engine.events.DebuggerContextCommandImpl;
-import com.intellij.debugger.impl.DebuggerContextImpl;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -14,15 +11,14 @@ import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
-import com.runtime.pivot.plugin.domain.MethodAnchoring;
+import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.model.MethodAnchoring;
 import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
 import com.runtime.pivot.plugin.listeners.XStackFrameListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class StackFrameUtils {
 

@@ -1,23 +1,13 @@
 package com.runtime.pivot.plugin.view.method;
 
-import cn.hutool.core.collection.ListUtil;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
-import com.intellij.xdebugger.XDebuggerManager;
-import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import com.intellij.xdebugger.breakpoints.XBreakpointManager;
-import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.plugin.domain.BacktrackingXBreakpoint;
-import com.runtime.pivot.plugin.domain.BreakpointListItem;
+import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
 import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
 import com.runtime.pivot.plugin.enums.BreakpointType;
-import com.runtime.pivot.plugin.listeners.XStackFrameListener;
-import com.runtime.pivot.plugin.test.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
 
@@ -29,7 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BreakpointListDialog extends JDialog {
     private final Project project;
@@ -134,16 +123,7 @@ public class BreakpointListDialog extends JDialog {
 
             private void updateData() {
                 //java.lang.Throwable: Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
-                XDebuggerManager debuggerManager = XDebuggerManager.getInstance(project);
-                XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
-                XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
-                List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
-                        .filter(bean -> bean.isEnabled())
-                        .collect(Collectors.toList());
-                List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(xDebugSession);
                 MethodBacktrackingContext methodBacktrackingContext = new MethodBacktrackingContext(
-                        xBreakpointList,
-                        xStackFrames,
                         xDebugSession
                 );
                 updateListData(methodBacktrackingContext.getBacktrackingXBreakpointList());

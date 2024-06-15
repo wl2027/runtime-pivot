@@ -10,29 +10,22 @@ import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class XDebugMethodContext {
-    private final Project project;
+public class RuntimePivotMethodService {
+    private Project project;
+    private Map<XDebugSession, BreakpointListDialog> sessionBreakpointListMap = new ConcurrentHashMap<>();
+    private Map<XDebugSession, MonitoringTableDialog> sessionMonitoringTableMap = new ConcurrentHashMap<>();
 
-//    private final Map<XDebugSession, XDebugMethodWatchListener> sessionListenerMap = new ConcurrentHashMap<>();
-    private final Map<XDebugSession, BreakpointListDialog> sessionBreakpointListMap = new ConcurrentHashMap<>();
-    private final Map<XDebugSession, MonitoringTableDialog> sessionMonitoringTableMap = new ConcurrentHashMap<>();
-
-    public XDebugMethodContext(Project project) {
+    public RuntimePivotMethodService(Project project) {
         this.project = project;
     }
 
-    public static XDebugMethodContext getInstance(){
+    public static RuntimePivotMethodService getInstance(){
         return getInstance(ProjectUtils.getCurrProject());
     }
 
-    public static XDebugMethodContext getInstance(Project project){
-        return ServiceManager.getService(project, XDebugMethodContext.class);
+    public static RuntimePivotMethodService getInstance(Project project){
+        return ServiceManager.getService(project, RuntimePivotMethodService.class);
     }
-
-//    public Map<XDebugSession, XDebugMethodWatchListener> getSessionListenerMap() {
-//        return sessionListenerMap;
-//    }
-
 
     public Map<XDebugSession, BreakpointListDialog> getSessionBreakpointListMap() {
         return sessionBreakpointListMap;
@@ -40,5 +33,10 @@ public class XDebugMethodContext {
 
     public Map<XDebugSession, MonitoringTableDialog> getSessionMonitoringTableMap() {
         return sessionMonitoringTableMap;
+    }
+
+    public void clear(){
+        this.sessionBreakpointListMap.clear();
+        this.sessionMonitoringTableMap.clear();
     }
 }

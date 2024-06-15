@@ -1,7 +1,7 @@
 /*
  * Copyright 2000-2017 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
-package com.runtime.pivot.plugin.test;
+package com.runtime.pivot.plugin.utils;
 
 import com.intellij.xdebugger.frame.XFullValueEvaluator;
 import com.intellij.xdebugger.frame.presentation.XValuePresentation;

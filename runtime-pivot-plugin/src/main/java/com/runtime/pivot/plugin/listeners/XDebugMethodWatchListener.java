@@ -5,15 +5,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XSourcePosition;
-import com.runtime.pivot.plugin.service.XDebugMethodContext;
+import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
-import com.runtime.pivot.plugin.view.RuntimePivotToolsWindow;
 import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,7 +86,7 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
             XSourcePosition xSourcePosition = taskInfoXSourcePositionMap.get(task);
             xSourcePositions.add(xSourcePosition);
         }
-        MonitoringTableDialog monitoringTableDialog = XDebugMethodContext.getInstance(project).getSessionMonitoringTableMap().get(xDebugSession);
+        MonitoringTableDialog monitoringTableDialog = RuntimePivotMethodService.getInstance(project).getSessionMonitoringTableMap().get(xDebugSession);
         monitoringTableDialog.updateTextArea(shortSummary);
         String[] columnNames = new String[]{unit.name(),"%", "Task Intervals"};
         monitoringTableDialog.updateTableData(columnNames,dataList,xSourcePositions);
@@ -109,29 +106,6 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
             // 当总时间大于或等于1分钟时，使用分钟作为时间单位
             return TimeUnit.MINUTES;
         }
-    }
-
-    private void prettyPrint(StopWatch stopWatch) {
-        TimeUnit unit = null;
-        if (null == unit) {
-            unit = TimeUnit.NANOSECONDS;
-        }
-        String shortSummary = stopWatch.shortSummary(unit);
-        final NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMinimumIntegerDigits(9);
-        nf.setGroupingUsed(false);
-        final NumberFormat pf = NumberFormat.getPercentInstance();
-        pf.setMinimumIntegerDigits(2);
-        pf.setGroupingUsed(false);
-        List<String[]> dataList = new ArrayList<>();
-        for (StopWatch.TaskInfo task : stopWatch.getTaskInfo()) {
-            dataList.add(new String[]{
-                    nf.format(task.getTime(unit)),
-                    pf.format((double) task.getTimeNanos() / stopWatch.getTotalTimeNanos()),
-                    task.getTaskName()
-            });
-        }
-        RuntimePivotToolsWindow.addData(shortSummary,dataList);
     }
 
     //恢复执行
