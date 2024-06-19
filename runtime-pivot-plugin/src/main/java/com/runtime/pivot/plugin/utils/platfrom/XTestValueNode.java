@@ -1,12 +1,13 @@
 /*
  * Copyright 2000-2017 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
-package com.runtime.pivot.plugin.utils;
+package com.runtime.pivot.plugin.utils.platfrom;
 
 import com.intellij.xdebugger.frame.XFullValueEvaluator;
 import com.intellij.xdebugger.frame.presentation.XValuePresentation;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodePresentationConfigurator;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValuePresentationUtil;
+import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

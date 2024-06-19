@@ -48,7 +48,7 @@ public class JavaAgentConfig extends JavaProgramPatcher {
         RunConfiguration runConfiguration = (RunConfiguration) configuration;
         ParametersList vmParametersList = javaParameters.getVMParametersList();
         vmParametersList.addParametersString("-javaagent:" + agentCoreJarPath);
-        vmParametersList.addNotEmptyProperty("runtim-pivot-plugin.projectId", runConfiguration.getProject().getLocationHash());
+        vmParametersList.addNotEmptyProperty("runtime-pivot-plugin.projectId", runConfiguration.getProject().getLocationHash());
         vmParametersList.addNotEmptyProperty("runtime.pivot.agent.path", agentCoreJarPath);
 
     }

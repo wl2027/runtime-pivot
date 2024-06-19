@@ -1,10 +1,11 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-package com.runtime.pivot.plugin.utils;
+package com.runtime.pivot.plugin.utils.platfrom;
 
 import com.intellij.openapi.util.Pair;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.SmartList;
 import com.intellij.xdebugger.frame.XDebuggerTreeNodeHyperlink;
+import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;

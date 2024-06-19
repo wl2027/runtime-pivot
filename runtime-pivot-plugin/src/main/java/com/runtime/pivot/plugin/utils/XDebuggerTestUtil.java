@@ -38,6 +38,10 @@ import com.intellij.xdebugger.impl.XDebuggerUtilImpl;
 import com.intellij.xdebugger.impl.breakpoints.XBreakpointUtil;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.frame.XStackFrameContainerEx;
+import com.runtime.pivot.plugin.utils.platfrom.XTestCompositeNode;
+import com.runtime.pivot.plugin.utils.platfrom.XTestContainer;
+import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
+import com.runtime.pivot.plugin.utils.platfrom.XTestValueNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
@@ -202,28 +206,6 @@ public class XDebuggerTestUtil {
   @NotNull
   public static Pair<List<XValue>, String> collectChildrenWithError(XValueContainer value) {
     return new XTestCompositeNode(value).collectChildrenWithError();
-  }
-
-  public static Pair<XValue, String> evaluate(XDebugSession session, XExpression expression) {
-    return evaluate(session, expression, TIMEOUT_MS);
-  }
-
-  public static Pair<XValue, String> evaluate(XDebugSession session, String expression) {
-    return evaluate(session, XExpressionImpl.fromText(expression), TIMEOUT_MS);
-  }
-
-  public static Pair<XValue, String> evaluate(XDebugSession session, String expression, long timeout) {
-    return evaluate(session, XExpressionImpl.fromText(expression), timeout);
-  }
-
-  private static Pair<XValue, String> evaluate(XDebugSession session, XExpression expression, long timeout) {
-    XStackFrame frame = session.getCurrentStackFrame();
-    assertNotNull(frame);
-    XDebuggerEvaluator evaluator = frame.getEvaluator();
-    assertNotNull(evaluator);
-    XTestEvaluationCallback callback = new XTestEvaluationCallback();
-    evaluator.evaluate(expression, callback, session.getCurrentPosition());
-    return callback.waitFor(timeout);
   }
 
 //  public static void waitForSwing() throws InterruptedException {

@@ -1,5 +1,5 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-package com.runtime.pivot.plugin.utils;
+package com.runtime.pivot.plugin.utils.platfrom;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
@@ -23,6 +23,7 @@ import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.frame.XValue;
 import com.intellij.xdebugger.impl.XDebuggerUtilImpl;
 import com.intellij.xdebugger.impl.breakpoints.XLineBreakpointImpl;
+import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
 import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

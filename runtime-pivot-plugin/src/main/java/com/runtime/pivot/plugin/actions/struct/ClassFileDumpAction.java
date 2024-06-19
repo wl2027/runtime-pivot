@@ -16,7 +16,7 @@ import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.plugin.utils.XTestEvaluationCallback;
+import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +51,7 @@ public class ClassFileDumpAction extends XDebuggerTreeActionBase {
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = frame.getEvaluator();
-        XTestEvaluationCallback callback = new XTestEvaluationCallback(()->{
+        XTestEvaluationCallback callback = new XTestEvaluationCallback((xValue)->{
             VirtualFile baseDir = ProjectUtil.guessProjectDir(e.getProject());
             VirtualFile child = baseDir.findChild(".runtime");
             com.intellij.ide.actions.SynchronizeCurrentFileAction.synchronizeFiles(ListUtil.of(child),e.getProject(),false);

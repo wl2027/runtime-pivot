@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.runtime.pivot.plugin.utils;
+package com.runtime.pivot.plugin.utils.platfrom;
 
 import com.intellij.openapi.util.Pair;
 import com.intellij.xdebugger.frame.XValue;
@@ -21,27 +21,27 @@ import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Semaphore;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class XTestEvaluationCallback extends XEvaluationCallbackBase {
   private XValue myResult;
   private String myErrorMessage;
-  private Runnable myEvaluated;
-  private Runnable myErrorOccurred;
-  private final Semaphore myFinished = new Semaphore(0);
+  private Consumer<XValue> myEvaluated;
+  private Consumer<String> myErrorOccurred;
   public XTestEvaluationCallback() {
   }
 
-  public XTestEvaluationCallback(Runnable myEvaluated, Runnable myErrorOccurred) {
-    this.myEvaluated = myEvaluated;
-    this.myErrorOccurred = myErrorOccurred;
+  public XTestEvaluationCallback(Consumer<XValue> evaluated, Consumer<String> errorOccurred) {
+    this.myEvaluated = evaluated;
+    this.myErrorOccurred = errorOccurred;
   }
 
   @Override
   public void evaluated(@NotNull XValue result) {
     myResult = result;
-//    myFinished.release();
     if (myEvaluated != null) {
-      myEvaluated.run();
+      myEvaluated.accept(result);
     }
 
   }
@@ -51,14 +51,8 @@ public class XTestEvaluationCallback extends XEvaluationCallbackBase {
 
     myErrorMessage = errorMessage;
     if (myErrorOccurred != null) {
-      myErrorOccurred.run();
+      myErrorOccurred.accept(errorMessage);
     }
-//    myFinished.release();
   }
 
-  public Pair<XValue, String> waitFor(long timeoutInMilliseconds) {
-//    XDebuggerTestUtil.waitFor(myFinished, timeoutInMilliseconds);
-    //assertTrue("timed out", XDebuggerTestUtil.waitFor(myFinished, timeoutInMilliseconds));
-    return Pair.create(myResult, myErrorMessage);
-  }
 }
