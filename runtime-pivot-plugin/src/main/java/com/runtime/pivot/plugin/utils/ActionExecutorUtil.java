@@ -11,7 +11,7 @@ public class ActionExecutorUtil {
     private static final String EXECUTE_EXPRESSION =
             "java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
             "java.lang.reflect.Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
-            "Object returnObject = method.invoke(null,\"{actionType}\",new Object[]{{args}});\n" +
+            "Object "+RETURN_OBJECT+" = method.invoke(null,\"{actionType}\",new Object[]{{args}});\n" +
             "{script};";
 
     public static String buildCode(String actionType,String script, String... args) {
