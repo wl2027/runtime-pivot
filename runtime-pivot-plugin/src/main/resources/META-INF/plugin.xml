@@ -10,9 +10,14 @@
 
     <resource-bundle>messages.RuntimePivotBundle</resource-bundle>
 
+    <projectListeners>
+        <listener class="com.runtime.pivot.plugin.listeners.RuntimeBreakpointDialogListener" topic="com.intellij.xdebugger.XDebuggerManagerListener"/>
+        <listener class="com.runtime.pivot.plugin.listeners.RuntimeBreakpointDialogListener" topic="com.intellij.xdebugger.breakpoints.XBreakpointListener"/>
+    </projectListeners>
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <java.programPatcher implementation="com.runtime.pivot.plugin.config.JavaAgentConfig"/>
+        <java.programPatcher implementation="com.runtime.pivot.plugin.config.RuntimeJavaAgentConfig"/>
         <projectService serviceImplementation="com.runtime.pivot.plugin.service.RuntimePivotMethodService" />
     </extensions>
 

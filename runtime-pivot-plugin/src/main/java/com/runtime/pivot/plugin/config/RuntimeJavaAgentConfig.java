@@ -14,7 +14,7 @@ import com.runtime.pivot.plugin.utils.PluginUtil;
 
 import java.util.Objects;
 
-public class JavaAgentConfig extends JavaProgramPatcher {
+public class RuntimeJavaAgentConfig extends JavaProgramPatcher {
 
     @Override
     public void patchJavaParameters(Executor executor, RunProfile configuration, JavaParameters javaParameters) {

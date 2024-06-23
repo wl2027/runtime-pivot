@@ -1,4 +1,4 @@
-package com.runtime.pivot.plugin.domain;
+package com.runtime.pivot.plugin.model;
 
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -14,9 +14,7 @@ import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointManager;
 import com.intellij.xdebugger.frame.XDropFrameHandler;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.runtime.pivot.plugin.enums.BreakpointType;
-import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
-import com.runtime.pivot.plugin.model.MethodAnchoring;
+import com.runtime.pivot.plugin.enums.RuntimeBreakpointType;
 import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
 
@@ -24,7 +22,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MethodBacktrackingContext {
+
+//TODO 执行器+当前栈信息
+
+public class RuntimeContext {
     public static final String popFrame = "Debugger.PopFrame";
     public static final String resume = "Resume";
     //断点列表
@@ -50,6 +51,10 @@ public class MethodBacktrackingContext {
     private XStackFrame endXStackFrame;
     //栈帧=>方法锚点{文件,psiMethod,开始,结束,当前位置}
     private Map<XStackFrame, MethodAnchoring> xStackFrameMethodAnchoringMap = new ConcurrentHashMap<>();
+    
+    public static RuntimeContext getInstance(XDebugSession xDebugSession){
+        return RuntimeContext.getInstance(xDebugSession);
+    }
 
     public void buildMethodBacktrackingStack(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, Project project) {
         if (xStackFrameList != null && xStackFrameList.size() > 1) {
@@ -146,7 +151,7 @@ public class MethodBacktrackingContext {
         return backtrackingXBreakpoint;
     }
 
-    public MethodBacktrackingContext( XDebugSession xDebugSession) {
+    private RuntimeContext(XDebugSession xDebugSession) {
         XDebuggerManager debuggerManager = XDebuggerManager.getInstance(xDebugSession.getProject());
         XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
         XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
@@ -250,15 +255,15 @@ public class MethodBacktrackingContext {
         return result;
     }
 
-    private BreakpointType accessibilityAnalysis(XStackFrame currentXStackFrame, XBreakpoint<?> breakpoint, XStackFrame endXStackFrame) {
+    private RuntimeBreakpointType accessibilityAnalysis(XStackFrame currentXStackFrame, XBreakpoint<?> breakpoint, XStackFrame endXStackFrame) {
         if (breakpoint.getSourcePosition().getFile().getUrl().equals(currentXStackFrame.getSourcePosition().getFile().getUrl())
                         && breakpoint.getSourcePosition().getLine()==(currentXStackFrame.getSourcePosition().getLine())) {
-            return BreakpointType.NOT_AVAILABLE;
+            return RuntimeBreakpointType.NOT_AVAILABLE;
         }
         if (endXStackFrame==null){
-            return BreakpointType.NOT_AVAILABLE;
+            return RuntimeBreakpointType.NOT_AVAILABLE;
         }
-        return BreakpointType.AVAILABLE;
+        return RuntimeBreakpointType.AVAILABLE;
     }
 
     private DebuggerSession buildDebugSession(XDebugSession xDebugSession) {

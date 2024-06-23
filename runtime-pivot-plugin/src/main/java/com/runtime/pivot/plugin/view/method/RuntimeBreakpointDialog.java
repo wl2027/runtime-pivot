@@ -6,10 +6,11 @@ import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
-import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
-import com.runtime.pivot.plugin.enums.BreakpointType;
+import com.runtime.pivot.plugin.model.RuntimeContext;
+import com.runtime.pivot.plugin.enums.RuntimeBreakpointType;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +21,14 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BreakpointListDialog extends JDialog {
+public class RuntimeBreakpointDialog extends JDialog {
     private final Project project;
     private final XDebugSession xDebugSession;
     private XDebugSessionListener xDebugSessionListener;
-
-    //private JList<BreakpointListItem> dataList;
     private JList<BacktrackingXBreakpoint> dataList;
     private List<BacktrackingXBreakpoint> backtrackingXBreakpointList = new ArrayList<>();
 
-    public BreakpointListDialog(Project project, XDebugSession xDebugSession, List<BacktrackingXBreakpoint> backtrackingXBreakpointList) {
+    public RuntimeBreakpointDialog(Project project, XDebugSession xDebugSession, List<BacktrackingXBreakpoint> backtrackingXBreakpointList) {
         super(WindowManager.getInstance().getFrame(project), "Debugger Breakpoint List", false);
         this.project = project;
         this.xDebugSession = xDebugSession;
@@ -52,9 +51,6 @@ public class BreakpointListDialog extends JDialog {
         for (BacktrackingXBreakpoint backtrackingXBreakpoint : backtrackingXBreakpointList) {
             listModel.addElement(backtrackingXBreakpoint);
         }
-//        listModel.addElement(new BreakpointListItem("Item 1", BreakpointType.AVAILABLE));
-//        listModel.addElement(new BreakpointListItem("Item 2", BreakpointType.AVAILABLE));
-//        listModel.addElement(new BreakpointListItem("Item 3", BreakpointType.NOT_AVAILABLE));
 
         dataList = new JList<>(listModel);
         dataList.setCellRenderer(new ListItemRenderer());
@@ -69,7 +65,7 @@ public class BreakpointListDialog extends JDialog {
                 } else if (e.getClickCount() == 2) {
                     //双击-回溯
                     //System.out.println("Double click on: " + dataList.getSelectedValue().getText());
-                    if (selectedValue.getBreakpointType() != BreakpointType.NOT_AVAILABLE) {
+                    if (selectedValue.getBreakpointType() != RuntimeBreakpointType.NOT_AVAILABLE) {
                         if (MessageUtil.showYesNoDialog(
                                 "回溯到断点",
                                 RuntimePivotUtil.getNextPositionName(selectedValue.getSourcePosition()),
@@ -100,11 +96,12 @@ public class BreakpointListDialog extends JDialog {
         buttonPanel.add(closeButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-
         setLocationRelativeTo(WindowManager.getInstance().getFrame(project));
 
-//        initListeners(xDebugSession);
+    }
 
+    public static RuntimeBreakpointDialog getInstance(Project project, XDebugSession xDebugSession, List<BacktrackingXBreakpoint> backtrackingXBreakpointList) {
+        return new RuntimeBreakpointDialog(project,xDebugSession,backtrackingXBreakpointList);
     }
 
     public void close(){
@@ -112,27 +109,24 @@ public class BreakpointListDialog extends JDialog {
         dispose();
     }
 
-    private void initListeners(XDebugSession xDebugSession) {
+    //一次性回溯,所以没必要做这种监听
+    private void updateListeners(XDebugSession xDebugSession) {
         xDebugSessionListener = new XDebugSessionListener() {
             @Override
             public void sessionPaused() {
                 //执行任何操作停下来+回溯成功时
-                XDebugSessionListener.super.sessionPaused();
                 updateData();
             }
 
             private void updateData() {
                 //java.lang.Throwable: Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
-                MethodBacktrackingContext methodBacktrackingContext = new MethodBacktrackingContext(
-                        xDebugSession
-                );
-                updateListData(methodBacktrackingContext.getBacktrackingXBreakpointList());
+                RuntimeContext runtimeContext = RuntimeContext.getInstance(xDebugSession);
+                updateListData(runtimeContext.getBacktrackingXBreakpointList());
             }
 
             @Override
             public void stackFrameChanged() {
                 //栈帧改变&线程切换时
-                XDebugSessionListener.super.stackFrameChanged();
                 updateData();
             }
         };

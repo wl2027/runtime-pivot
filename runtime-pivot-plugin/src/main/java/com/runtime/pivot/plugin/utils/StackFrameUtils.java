@@ -13,7 +13,7 @@ import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
 import com.runtime.pivot.plugin.model.MethodAnchoring;
-import com.runtime.pivot.plugin.domain.MethodBacktrackingContext;
+import com.runtime.pivot.plugin.model.RuntimeContext;
 import com.runtime.pivot.plugin.listeners.XStackFrameListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,10 +29,10 @@ public class StackFrameUtils {
         return (PsiMethod) element;
     }
 
-    public static void invokeBacktracking(MethodBacktrackingContext methodBacktrackingContext) {
-        invokeListener(methodBacktrackingContext);
+    public static void invokeBacktracking(RuntimeContext runtimeContext) {
+        invokeListener(runtimeContext);
         //执行一个pop操作
-        methodBacktrackingContext.popFrameCommonRunnable();
+        runtimeContext.popFrameCommonRunnable();
     }
 
     public static void invokeBacktracking(BacktrackingXBreakpoint backtrackingXBreakpoint) {
@@ -108,19 +108,19 @@ public class StackFrameUtils {
         xDebugSession.getDebugProcess().getDropFrameHandler().drop(popXStackFrame);
     }
 
-    private static void invokeListener(MethodBacktrackingContext methodBacktrackingContext) {
+    private static void invokeListener(RuntimeContext runtimeContext) {
         XStackFrameListener xStackFrameListener = new XStackFrameListener(
-                methodBacktrackingContext.getxDebugSession(),
-                methodBacktrackingContext.getEndXStackFrame(),
+                runtimeContext.getxDebugSession(),
+                runtimeContext.getEndXStackFrame(),
                 null,
                 null
         ) {
             @Override
             public void stackFrameExecutionMethod() {
-                methodBacktrackingContext.resumeCommonRunnable();
+                runtimeContext.resumeCommonRunnable();
             }
         };
-        methodBacktrackingContext.getxDebugSession().addSessionListener(xStackFrameListener);
+        runtimeContext.getxDebugSession().addSessionListener(xStackFrameListener);
     }
 
 

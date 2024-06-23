@@ -1,6 +1,6 @@
 package com.runtime.pivot.plugin.enums;
 
-public enum BreakpointType {
+public enum RuntimeBreakpointType {
     AVAILABLE,
     NOT_AVAILABLE
 }

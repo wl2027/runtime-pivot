@@ -7,7 +7,7 @@ import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XSourcePosition;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
-import com.runtime.pivot.plugin.view.method.MonitoringTableDialog;
+import com.runtime.pivot.plugin.view.method.RuntimeMonitoringDialog;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -86,10 +86,10 @@ public class XDebugMethodWatchListener implements XDebugSessionListener {
             XSourcePosition xSourcePosition = taskInfoXSourcePositionMap.get(task);
             xSourcePositions.add(xSourcePosition);
         }
-        MonitoringTableDialog monitoringTableDialog = RuntimePivotMethodService.getInstance(project).getSessionMonitoringTableMap().get(xDebugSession);
-        monitoringTableDialog.updateTextArea(shortSummary);
+        RuntimeMonitoringDialog runtimeMonitoringDialog = RuntimePivotMethodService.getInstance(project).getSessionMonitoringTableMap().get(xDebugSession);
+        runtimeMonitoringDialog.updateTextArea(shortSummary);
         String[] columnNames = new String[]{unit.name(),"%", "Task Intervals"};
-        monitoringTableDialog.updateTableData(columnNames,dataList,xSourcePositions);
+        runtimeMonitoringDialog.updateTableData(columnNames,dataList,xSourcePositions);
     }
 
     private static TimeUnit chooseTimeUnit(long totalTimeNanos) {

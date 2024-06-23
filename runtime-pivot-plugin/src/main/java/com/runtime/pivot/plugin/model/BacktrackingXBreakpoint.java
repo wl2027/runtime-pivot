@@ -7,8 +7,7 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XBreakpointUtil;
-import com.runtime.pivot.plugin.enums.BreakpointType;
-import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
+import com.runtime.pivot.plugin.enums.RuntimeBreakpointType;
 
 import javax.swing.*;
 import java.util.List;
@@ -22,27 +21,27 @@ public class BacktrackingXBreakpoint {
     private final XDebugSession xDebugSession;
     private final XBreakpoint<?> xBreakpoint;
     private Icon icon;
-    private BreakpointType breakpointType;
+    private RuntimeBreakpointType runtimeBreakpointType;
     private final XStackFrame popXStackFrame;
     private final XStackFrame endXStackFrame;
     //跳跃断点列表
     private final List<XBreakpoint<?>> jumpBreakpointList;
     private final XSourcePosition sourcePosition;
 
-    public BacktrackingXBreakpoint(DebugProcessImpl debugProcess, XDebugSession xDebugSession, XBreakpoint<?> xBreakpoint, BreakpointType breakpointType, XStackFrame popXStackFrame, XStackFrame endXStackFrame, List<XBreakpoint<?>> jumpBreakpointList, XSourcePosition sourcePosition) {
+    public BacktrackingXBreakpoint(DebugProcessImpl debugProcess, XDebugSession xDebugSession, XBreakpoint<?> xBreakpoint, RuntimeBreakpointType runtimeBreakpointType, XStackFrame popXStackFrame, XStackFrame endXStackFrame, List<XBreakpoint<?>> jumpBreakpointList, XSourcePosition sourcePosition) {
         this.debugProcess = debugProcess;
         this.xDebugSession = xDebugSession;
         this.xBreakpoint = xBreakpoint;
-        this.breakpointType = breakpointType;
+        this.runtimeBreakpointType = runtimeBreakpointType;
         this.popXStackFrame = popXStackFrame;
         this.endXStackFrame = endXStackFrame;
         this.jumpBreakpointList = jumpBreakpointList;
         this.sourcePosition = sourcePosition;
-        buildIcon(breakpointType);
+        buildIcon(runtimeBreakpointType);
     }
 
-    private void buildIcon(BreakpointType breakpointType) {
-        switch (breakpointType) {
+    private void buildIcon(RuntimeBreakpointType runtimeBreakpointType) {
+        switch (runtimeBreakpointType) {
             case AVAILABLE:
                 this.icon = AllIcons.Debugger.Db_verified_breakpoint;
                 break;
@@ -56,11 +55,11 @@ public class BacktrackingXBreakpoint {
     public void updateType(){
         if (this.xBreakpoint!=null) {
             if (xBreakpoint.isEnabled()) {
-                this.breakpointType = BreakpointType.AVAILABLE;
+                this.runtimeBreakpointType = RuntimeBreakpointType.AVAILABLE;
             } else {
-                this.breakpointType = BreakpointType.NOT_AVAILABLE;
+                this.runtimeBreakpointType = RuntimeBreakpointType.NOT_AVAILABLE;
             }
-            buildIcon(breakpointType);
+            buildIcon(runtimeBreakpointType);
         }
     }
 
@@ -77,8 +76,8 @@ public class BacktrackingXBreakpoint {
         return icon;
     }
 
-    public BreakpointType getBreakpointType() {
-        return breakpointType;
+    public RuntimeBreakpointType getBreakpointType() {
+        return runtimeBreakpointType;
     }
 
     public XStackFrame getPopXStackFrame() {

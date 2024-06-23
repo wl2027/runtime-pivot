@@ -4,7 +4,6 @@ import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.runtime.pivot.plugin.enums.BreakpointType;
 
 public abstract class XStackFrameListener implements XDebugSessionListener {
 

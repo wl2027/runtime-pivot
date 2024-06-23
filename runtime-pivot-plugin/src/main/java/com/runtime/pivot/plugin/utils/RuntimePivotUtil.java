@@ -2,7 +2,6 @@ package com.runtime.pivot.plugin.utils;
 
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import com.runtime.pivot.plugin.enums.BreakpointType;
 import org.jetbrains.annotations.NotNull;
 
 public class RuntimePivotUtil {
