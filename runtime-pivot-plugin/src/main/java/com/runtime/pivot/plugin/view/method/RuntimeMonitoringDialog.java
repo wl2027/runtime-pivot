@@ -8,7 +8,7 @@ import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.table.JBTable;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XSourcePosition;
-import com.runtime.pivot.plugin.listeners.XDebugMethodWatchListener;
+import com.runtime.pivot.plugin.listeners.RuntimeMonitoringDialogListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +30,7 @@ public class RuntimeMonitoringDialog extends JDialog {
     private Map<Integer, Object> rowDataMap;
     private final Project project;
     private final XDebugSession xDebugSession;
-    private final XDebugMethodWatchListener xDebugMethodWatchListener;
+    private final RuntimeMonitoringDialogListener runtimeMonitoringDialogListener;
 
     public static RuntimeMonitoringDialog getInstance(Project project, XDebugSession xDebugSession){
         return new RuntimeMonitoringDialog(project, xDebugSession);
@@ -43,8 +43,8 @@ public class RuntimeMonitoringDialog extends JDialog {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 400);
-        xDebugMethodWatchListener = new XDebugMethodWatchListener(project,getTaskName(),xDebugSession);
-        xDebugSession.addSessionListener(xDebugMethodWatchListener);
+        runtimeMonitoringDialogListener = new RuntimeMonitoringDialogListener(project,getTaskName(),xDebugSession);
+        xDebugSession.addSessionListener(runtimeMonitoringDialogListener);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -103,7 +103,7 @@ public class RuntimeMonitoringDialog extends JDialog {
         tableModel.setRowCount(0);
         rowDataMap.clear();
         textArea.setText("No monitoring data");
-        xDebugMethodWatchListener.clear(getTaskName());
+        runtimeMonitoringDialogListener.clear(getTaskName());
     }
 
     private void onRowSelected(int rowIndex, Object hiddenData) {
@@ -120,11 +120,7 @@ public class RuntimeMonitoringDialog extends JDialog {
     }
 
     public void updateTableData(String[] newColumnNames, java.util.List<String[]> newData, java.util.List<XSourcePosition> hiddenDataArray) {
-        tableModel.setDataVector((Object[][]) convertListToArray(newData), newColumnNames);
-        rowDataMap.clear();
-        for (int i = 0; i < newData.size(); i++) {
-            rowDataMap.put(i, hiddenDataArray.get(i));
-        }
+        updateTableData(newColumnNames,(Object[][]) convertListToArray(newData), hiddenDataArray.toArray());
     }
 
     public static <T> Object convertListToArray(java.util.List<T> list) {
@@ -144,7 +140,7 @@ public class RuntimeMonitoringDialog extends JDialog {
     }
 
     private void onClose() {
-        xDebugSession.removeSessionListener(xDebugMethodWatchListener);
+        xDebugSession.removeSessionListener(runtimeMonitoringDialogListener);
     }
 }
 

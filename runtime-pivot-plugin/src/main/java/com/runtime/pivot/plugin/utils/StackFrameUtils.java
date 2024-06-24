@@ -11,7 +11,7 @@ import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.model.BacktrackingBreakpoint;
 import com.runtime.pivot.plugin.model.MethodAnchoring;
 import com.runtime.pivot.plugin.model.RuntimeContext;
 import com.runtime.pivot.plugin.listeners.XStackFrameListener;
@@ -35,14 +35,14 @@ public class StackFrameUtils {
         runtimeContext.popFrameCommonRunnable();
     }
 
-    public static void invokeBacktracking(BacktrackingXBreakpoint backtrackingXBreakpoint) {
+    public static void invokeBacktracking(BacktrackingBreakpoint backtrackingBreakpoint) {
         XStackFrameListener xStackFrameListener = new XStackFrameListener(
-                backtrackingXBreakpoint.getxDebugSession(),
-                backtrackingXBreakpoint.getEndXStackFrame(),
-                backtrackingXBreakpoint.getSourcePosition(),
+                backtrackingBreakpoint.getxDebugSession(),
+                backtrackingBreakpoint.getEndXStackFrame(),
+                backtrackingBreakpoint.getSourcePosition(),
                 ()->{
                     try {
-                        resumeCommonRunnable(backtrackingXBreakpoint.getDebugProcess(),backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getJumpBreakpointList());
+                        resumeCommonRunnable(backtrackingBreakpoint.getDebugProcess(), backtrackingBreakpoint.getxDebugSession(), backtrackingBreakpoint.getJumpBreakpointList());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -50,18 +50,18 @@ public class StackFrameUtils {
         ) {
             @Override
             public void stackFrameExecutionMethod() throws Exception {
-                resumeCommonRunnable(backtrackingXBreakpoint.getDebugProcess(),backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getJumpBreakpointList());
+                resumeCommonRunnable(backtrackingBreakpoint.getDebugProcess(), backtrackingBreakpoint.getxDebugSession(), backtrackingBreakpoint.getJumpBreakpointList());
             }
         };
-        backtrackingXBreakpoint.getxDebugSession().addSessionListener(xStackFrameListener);
-        popFrameCommonRunnable(backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getPopXStackFrame());
+        backtrackingBreakpoint.getxDebugSession().addSessionListener(xStackFrameListener);
+        popFrameCommonRunnable(backtrackingBreakpoint.getxDebugSession(), backtrackingBreakpoint.getPopXStackFrame());
     }
-    public static void invokeBacktrackingTest(BacktrackingXBreakpoint backtrackingXBreakpoint) {
-        backtrackingXBreakpoint.getDebugProcess().getManagerThread().schedule(new DebuggerContextCommandImpl(backtrackingXBreakpoint.getDebugProcess().getDebuggerContext()) {
+    public static void invokeBacktrackingTest(BacktrackingBreakpoint backtrackingBreakpoint) {
+        backtrackingBreakpoint.getDebugProcess().getManagerThread().schedule(new DebuggerContextCommandImpl(backtrackingBreakpoint.getDebugProcess().getDebuggerContext()) {
             @Override
             public void threadAction(@NotNull SuspendContextImpl suspendContext) {
-                popFrameCommonRunnable(backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getPopXStackFrame());
-                resumeCommonRunnable(backtrackingXBreakpoint.getDebugProcess(),backtrackingXBreakpoint.getxDebugSession(),backtrackingXBreakpoint.getJumpBreakpointList());
+                popFrameCommonRunnable(backtrackingBreakpoint.getxDebugSession(), backtrackingBreakpoint.getPopXStackFrame());
+                resumeCommonRunnable(backtrackingBreakpoint.getDebugProcess(), backtrackingBreakpoint.getxDebugSession(), backtrackingBreakpoint.getJumpBreakpointList());
             }
         });
     }

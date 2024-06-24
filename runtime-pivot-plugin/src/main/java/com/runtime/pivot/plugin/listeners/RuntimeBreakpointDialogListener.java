@@ -6,9 +6,10 @@ import com.intellij.xdebugger.XDebuggerManager;
 import com.intellij.xdebugger.XDebuggerManagerListener;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointListener;
-import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.model.BacktrackingBreakpoint;
 import com.runtime.pivot.plugin.model.RuntimeContext;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+import com.runtime.pivot.plugin.utils.ProjectUtils;
 import com.runtime.pivot.plugin.view.method.RuntimeBreakpointDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,19 +57,20 @@ public class RuntimeBreakpointDialogListener implements XDebuggerManagerListener
 
     @Override
     public void breakpointAdded(@NotNull XBreakpoint breakpoint) {
-        updateDialogData();
+        XDebugSession currentSession = XDebuggerManager.getInstance(ProjectUtils.getCurrProject()).getCurrentSession();
+        updateDialogData(currentSession);
     }
 
     @Override
     public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
         //updateDialogData();//没必要重构,只需要排除
-        XDebugSession currentSession = XDebuggerManager.getInstance(project).getCurrentSession();
-        RuntimeBreakpointDialog runtimeBreakpointDialog1 = RuntimePivotMethodService.getInstance(e.getProject()).getSessionBreakpointListMap().get(currentSession);
-        List<BacktrackingXBreakpoint> collect = runtimeBreakpointDialog1.getBacktrackingXBreakpointList().stream().filter(
+        XDebugSession currentSession = XDebuggerManager.getInstance(ProjectUtils.getCurrProject()).getCurrentSession();
+        RuntimeBreakpointDialog runtimeBreakpointDialog = RuntimePivotMethodService.getInstance(ProjectUtils.getCurrProject()).getSessionRuntimeBreakpointDialogMap().get(currentSession);
+        List<BacktrackingBreakpoint> collect = runtimeBreakpointDialog.getBacktrackingXBreakpointList().stream().filter(
                 bean -> !bean.getxBreakpoint().equals(breakpoint)
 //                        bean-> !RuntimePivotUtil.compareBreakpoints(bean.getxBreakpoint(),breakpoint)
         ).collect(Collectors.toList());
-        runtimeBreakpointDialog1.updateListData(collect);
+        runtimeBreakpointDialog.updateListData(collect);
         XBreakpointListener.super.breakpointRemoved(breakpoint);
     }
 
@@ -76,10 +78,10 @@ public class RuntimeBreakpointDialogListener implements XDebuggerManagerListener
     public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
         //改变的是breakpoint.isEnabled()才去调用
         //updateData(); //断点增删没有调用,断点属性修改会调用 主要关注isEnable
-        XDebugSession currentSession = XDebuggerManager.getInstance(project).getCurrentSession();
-        RuntimeBreakpointDialog runtimeBreakpointDialog1 = RuntimePivotMethodService.getInstance(e.getProject()).getSessionBreakpointListMap().get(currentSession);
-        runtimeBreakpointDialog1.getBacktrackingXBreakpointList().forEach(BacktrackingXBreakpoint::updateType);
-        runtimeBreakpointDialog1.updateListData(runtimeBreakpointDialog1.getBacktrackingXBreakpointList());
+        XDebugSession currentSession = XDebuggerManager.getInstance(ProjectUtils.getCurrProject()).getCurrentSession();
+        RuntimeBreakpointDialog runtimeBreakpointDialog = RuntimePivotMethodService.getInstance(ProjectUtils.getCurrProject()).getSessionRuntimeBreakpointDialogMap().get(currentSession);
+        runtimeBreakpointDialog.getBacktrackingXBreakpointList().forEach(BacktrackingBreakpoint::updateType);
+        runtimeBreakpointDialog.updateListData(runtimeBreakpointDialog.getBacktrackingXBreakpointList());
         XBreakpointListener.super.breakpointChanged(breakpoint);
     }
 

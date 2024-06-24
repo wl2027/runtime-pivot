@@ -2,25 +2,16 @@ package com.runtime.pivot.plugin.service;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
-import com.intellij.xdebugger.XDebuggerManager;
-import com.intellij.xdebugger.XDebuggerManagerListener;
-import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import com.intellij.xdebugger.breakpoints.XBreakpointListener;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.runtime.pivot.plugin.model.BacktrackingXBreakpoint;
+import com.runtime.pivot.plugin.model.BacktrackingBreakpoint;
 import com.runtime.pivot.plugin.model.RuntimeContext;
 import com.runtime.pivot.plugin.utils.ProjectUtils;
 import com.runtime.pivot.plugin.view.method.RuntimeBreakpointDialog;
 import com.runtime.pivot.plugin.view.method.RuntimeMonitoringDialog;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class RuntimePivotMethodService {
     private Project project;
@@ -49,13 +40,13 @@ public class RuntimePivotMethodService {
 
     public RuntimeBreakpointDialog getRuntimeBreakpointDialog(RuntimeContext runtimeContext) {
         XDebugSession xDebugSession = runtimeContext.getxDebugSession();
-        List<BacktrackingXBreakpoint> backtrackingXBreakpointList = runtimeContext.getBacktrackingXBreakpointList();
+        List<BacktrackingBreakpoint> backtrackingBreakpointList = runtimeContext.getBacktrackingXBreakpointList();
         RuntimeBreakpointDialog runtimeBreakpointDialog = sessionRuntimeBreakpointDialogMap.get(xDebugSession);
         if (runtimeBreakpointDialog == null) {
-            runtimeBreakpointDialog = RuntimeBreakpointDialog.getInstance(project, xDebugSession,backtrackingXBreakpointList);
+            runtimeBreakpointDialog = RuntimeBreakpointDialog.getInstance(project, xDebugSession, backtrackingBreakpointList);
             sessionRuntimeBreakpointDialogMap.put(runtimeContext.getxDebugSession(), runtimeBreakpointDialog);
         } else {
-            runtimeBreakpointDialog.updateListData(backtrackingXBreakpointList);
+            runtimeBreakpointDialog.updateListData(backtrackingBreakpointList);
         }
         return runtimeBreakpointDialog;
     }

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Time Travel Debugging
  */
-public class BacktrackingXBreakpoint {
+public class BacktrackingBreakpoint {
     
     private final DebugProcessImpl debugProcess;
     private final XDebugSession xDebugSession;
@@ -28,7 +28,7 @@ public class BacktrackingXBreakpoint {
     private final List<XBreakpoint<?>> jumpBreakpointList;
     private final XSourcePosition sourcePosition;
 
-    public BacktrackingXBreakpoint(DebugProcessImpl debugProcess, XDebugSession xDebugSession, XBreakpoint<?> xBreakpoint, RuntimeBreakpointType runtimeBreakpointType, XStackFrame popXStackFrame, XStackFrame endXStackFrame, List<XBreakpoint<?>> jumpBreakpointList, XSourcePosition sourcePosition) {
+    public BacktrackingBreakpoint(DebugProcessImpl debugProcess, XDebugSession xDebugSession, XBreakpoint<?> xBreakpoint, RuntimeBreakpointType runtimeBreakpointType, XStackFrame popXStackFrame, XStackFrame endXStackFrame, List<XBreakpoint<?>> jumpBreakpointList, XSourcePosition sourcePosition) {
         this.debugProcess = debugProcess;
         this.xDebugSession = xDebugSession;
         this.xBreakpoint = xBreakpoint;

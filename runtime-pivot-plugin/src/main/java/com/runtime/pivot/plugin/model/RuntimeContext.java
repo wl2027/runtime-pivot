@@ -30,7 +30,7 @@ public class RuntimeContext {
     public static final String resume = "Resume";
     //断点列表
     private final List<XBreakpoint<?>> xBreakpointList;
-    private List<BacktrackingXBreakpoint> backtrackingXBreakpointList;
+    private List<BacktrackingBreakpoint> backtrackingBreakpointList;
     //栈帧列表
     private final List<XStackFrame> xStackFrameList;
     //当前选中栈帧
@@ -168,13 +168,13 @@ public class RuntimeContext {
         this.debugSession = buildDebugSession(xDebugSession);
         this.debugProcess = debugSession.getProcess();
 
-        this.backtrackingXBreakpointList = buildBacktrackingXBreakpointList(xBreakpointList, xStackFrameList, project);
+        this.backtrackingBreakpointList = buildBacktrackingXBreakpointList(xBreakpointList, xStackFrameList, project);
 
         buildMethodBacktrackingStack(xBreakpointList, xStackFrameList, project);
     }
 
-    private List<BacktrackingXBreakpoint> buildBacktrackingXBreakpointList(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, Project project) {
-        List<BacktrackingXBreakpoint> result = new ArrayList<>();
+    private List<BacktrackingBreakpoint> buildBacktrackingXBreakpointList(List<XBreakpoint<?>> xBreakpointList, List<XStackFrame> xStackFrameList, Project project) {
+        List<BacktrackingBreakpoint> result = new ArrayList<>();
         boolean mark = false;
         Stack<XStackFrame> stack = new Stack<>();
         for (int i = xStackFrameList.size() - 1; i >= 0; i--) {
@@ -201,17 +201,17 @@ public class RuntimeContext {
             }
             MethodAnchoring methodAnchoring = StackFrameUtils.getMethodAnchoring(xStackFrame, project);
             xStackFrameMethodAnchoringMap.put(xStackFrame, methodAnchoring);
-            List<BacktrackingXBreakpoint> backtrackingXBreakpoints = getBacktrackingXBreakpointWithMethodAnchoring(xStackFrame, bottomXStackFrame, methodAnchoring, xBreakpointList);
+            List<BacktrackingBreakpoint> backtrackingBreakpoints = getBacktrackingXBreakpointWithMethodAnchoring(xStackFrame, bottomXStackFrame, methodAnchoring, xBreakpointList);
             //
-            result.addAll(backtrackingXBreakpoints);
+            result.addAll(backtrackingBreakpoints);
         }
         //本身就是倒序,所以不需要反转
         //return CollUtil.reverse(result);
         return result;
     }
 
-    private List<BacktrackingXBreakpoint> getBacktrackingXBreakpointWithMethodAnchoring(XStackFrame xStackFrame, XStackFrame bottomXStackFrame, MethodAnchoring methodAnchoring, List<XBreakpoint<?>> xBreakpointList) {
-        List<BacktrackingXBreakpoint> result = new ArrayList<>();
+    private List<BacktrackingBreakpoint> getBacktrackingXBreakpointWithMethodAnchoring(XStackFrame xStackFrame, XStackFrame bottomXStackFrame, MethodAnchoring methodAnchoring, List<XBreakpoint<?>> xBreakpointList) {
+        List<BacktrackingBreakpoint> result = new ArrayList<>();
         if (xBreakpointList == null || xBreakpointList.isEmpty()) {
             return result;
         }
@@ -238,7 +238,7 @@ public class RuntimeContext {
             for (int i = 0; i < regressionXBreakpointList.size(); i++) {
                 XBreakpoint<?> breakpoint = regressionXBreakpointList.get(i);
                 List<XBreakpoint<?>> sub = ListUtil.sub(regressionXBreakpointList, i + 1, regressionXBreakpointList.size());
-                BacktrackingXBreakpoint bean = new BacktrackingXBreakpoint(
+                BacktrackingBreakpoint bean = new BacktrackingBreakpoint(
                         debugProcess,
                         xDebugSession,
                         breakpoint,
@@ -320,7 +320,7 @@ public class RuntimeContext {
         return xStackFrameMethodAnchoringMap;
     }
 
-    public List<BacktrackingXBreakpoint> getBacktrackingXBreakpointList() {
-        return backtrackingXBreakpointList;
+    public List<BacktrackingBreakpoint> getBacktrackingXBreakpointList() {
+        return backtrackingBreakpointList;
     }
 }
