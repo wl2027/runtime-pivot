@@ -149,7 +149,7 @@ public class RuntimeBreakpointDialog extends JDialog {
 //        xDebugSession.removeSessionListener(xDebugSessionListener);
         System.out.println("Dialog is closing");
         //TODO 关闭断点列表
-        // 在这里添加你需要执行的操作
+
     }
 
     private static class ListItemRenderer extends JLabel implements ListCellRenderer<BacktrackingBreakpoint> {
