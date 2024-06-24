@@ -1,5 +1,6 @@
 package com.runtime.pivot.plugin.service;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RuntimePivotMethodService {
+public class RuntimePivotMethodService implements Disposable {
     private Project project;
     private Map<XDebugSession, RuntimeBreakpointDialog> sessionRuntimeBreakpointDialogMap = new ConcurrentHashMap<>();
     private Map<XDebugSession, RuntimeMonitoringDialog> sessionRuntimeMonitoringDialogMap = new ConcurrentHashMap<>();
@@ -62,5 +63,11 @@ public class RuntimePivotMethodService {
             runtimeMonitoringDialog.onClearButtonClicked();
         }
         return runtimeMonitoringDialog;
+    }
+
+    @Override
+    public void dispose() {
+        this.sessionRuntimeBreakpointDialogMap.clear();
+        this.sessionRuntimeMonitoringDialogMap.clear();
     }
 }
