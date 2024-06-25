@@ -32,6 +32,14 @@ public class RuntimePivotMethodService implements Disposable {
         return ServiceManager.getService(project, RuntimePivotMethodService.class);
     }
 
+    public Map<XDebugSession, XSessionBreakpointDialog> getSessionBreakpointDialogMap() {
+        return sessionBreakpointDialogMap;
+    }
+
+    public Map<XDebugSession, XSessionMonitoringDialog> getSessionMonitoringDialogMap() {
+        return sessionMonitoringDialogMap;
+    }
+
     public @Nullable XSessionBreakpointDialog getXSessionBreakpointDialog(@NotNull XDebugSession xDebugSession) {
         return sessionBreakpointDialogMap.get(xDebugSession);
     }

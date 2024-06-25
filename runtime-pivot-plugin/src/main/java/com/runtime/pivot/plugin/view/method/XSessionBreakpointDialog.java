@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpointDialog> {
     private JBList<XStackBreakpoint> dataList = new JBList<>();
-    private List<XStackBreakpoint> XStackBreakpointList = new ArrayList<>();
+    private List<XStackBreakpoint> myXStackBreakpointList = new ArrayList<>();
 
     protected XSessionBreakpointDialog(XDebugSession xDebugSession) {
         super(xDebugSession, "XStack Breakpoint List");
@@ -61,7 +61,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
             public void mouseClicked(MouseEvent e) {
                 XStackBreakpoint selectedValue = selectedValueSupplier.get();
                 if (e.getClickCount() == 1 && selectedValue != null) {
-                    selectedValue.getxBreakpoint().getNavigatable().navigate(true);
+                    selectedValue.getXBreakpoint().getNavigatable().navigate(true);
                 }
             }
         };
@@ -95,9 +95,11 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public void updateData(XStackContext xStackContext) {
-        List<XStackBreakpoint> newData = xStackContext.getCurrentXStackBreakpointList();
-        this.XStackBreakpointList.clear();
-        this.XStackBreakpointList.addAll(newData);
+        updateData(xStackContext.getCurrentXStackBreakpointList());
+    }
+    public void updateData(List<XStackBreakpoint> newData) {
+        this.myXStackBreakpointList.clear();
+        this.myXStackBreakpointList.addAll(newData);
         DefaultListModel<XStackBreakpoint> listModel = new DefaultListModel<>();
         for (XStackBreakpoint item : newData) {
             listModel.addElement(item);
@@ -133,5 +135,9 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
             setOpaque(true);
             return this;
         }
+    }
+
+    public List<XStackBreakpoint> getXStackBreakpointList() {
+        return myXStackBreakpointList;
     }
 }
