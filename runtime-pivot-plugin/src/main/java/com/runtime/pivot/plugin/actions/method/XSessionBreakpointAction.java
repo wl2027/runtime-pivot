@@ -2,13 +2,13 @@ package com.runtime.pivot.plugin.actions.method;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
-import com.runtime.pivot.plugin.model.RuntimeContext;
+import com.runtime.pivot.plugin.model.XStackContext;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
-import com.runtime.pivot.plugin.view.method.RuntimeBreakpointDialog;
+import com.runtime.pivot.plugin.view.method.XSessionBreakpointDialog;
 import org.jetbrains.annotations.NotNull;
 
 
-public class BreakpointBacktrackingAction extends RuntimeBaseAction {
+public class XSessionBreakpointAction extends RuntimeBaseAction {
 
 
     @Override
@@ -18,11 +18,10 @@ public class BreakpointBacktrackingAction extends RuntimeBaseAction {
 
     @Override
     public void action(@NotNull AnActionEvent e) {
-        RuntimeContext runtimeContext = getRuntimeContext();
-        RuntimeBreakpointDialog runtimeBreakpointDialog =
+        XSessionBreakpointDialog xSessionBreakpointDialog =
                 RuntimePivotMethodService.getInstance(e.getProject())
-                        .getRuntimeBreakpointDialog(runtimeContext);
-        runtimeBreakpointDialog.setVisible(true);
+                        .buildXSessionBreakpointDialog(myXDebugSession);
+        xSessionBreakpointDialog.setVisible(true);
     }
 
 }

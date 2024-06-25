@@ -5,23 +5,20 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.plugin.model.RuntimeContext;
+import com.runtime.pivot.plugin.model.XStackContext;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class RuntimeBaseAction extends AnAction {
-
-    private RuntimeContext myRuntimeContext;
+    protected XDebugSession myXDebugSession;
+    protected RuntimeContext runtimeContext;
 
     @Override
     final public void actionPerformed(@NotNull AnActionEvent e) {
         //TODO 通用校验
         //TODO 构造上下文
-        myRuntimeContext = loadRuntimeContext(e);
+        myXDebugSession = DebuggerUIUtil.getSession(e);
+        runtimeContext = RuntimeContext.getInstance(myXDebugSession);
         action(e);
-    }
-
-    private RuntimeContext loadRuntimeContext(AnActionEvent e) {
-        XDebugSession xDebugSession = DebuggerUIUtil.getSession(e);
-        return RuntimeContext.getInstance(xDebugSession);
     }
 
     @Override
@@ -31,7 +28,7 @@ public abstract class RuntimeBaseAction extends AnAction {
     }
 
     protected RuntimeContext getRuntimeContext() {
-        return myRuntimeContext;
+        return runtimeContext;
     }
 
     protected abstract boolean isEnable(AnActionEvent e);

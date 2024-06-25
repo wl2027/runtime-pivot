@@ -14,7 +14,7 @@ public class PluginUtil {
     private static final IdeaPluginDescriptor IDEA_PLUGIN_DESCRIPTOR;
 
     static {
-        PluginId pluginId = PluginId.getId("com.github.wl2027.runtime.pivot.plugin");
+        PluginId pluginId = PluginId.getId("com.runtime.pivot.plugin");
         IDEA_PLUGIN_DESCRIPTOR = PluginManagerCore.getPlugin(pluginId);
     }
 

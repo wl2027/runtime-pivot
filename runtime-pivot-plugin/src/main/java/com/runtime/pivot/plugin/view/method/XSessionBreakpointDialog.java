@@ -7,6 +7,11 @@ import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
 
+import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
+import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpointDialog>{
-    private JList<XStackBreakpoint> dataList = new JList<>();
+public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpointDialog> {
+    private JBList<XStackBreakpoint> dataList = new JBList<>();
     private List<XStackBreakpoint> XStackBreakpointList = new ArrayList<>();
 
     protected XSessionBreakpointDialog(XDebugSession xDebugSession) {
@@ -27,44 +32,42 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(300, 500);
-        // 添加窗口关闭事件
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeComponent();
             }
         });
+
         dataList.setCellRenderer(new ListItemRenderer());
         dataList.addMouseListener(getMouseListener(dataList::getSelectedValue));
-        add(new JScrollPane(dataList), BorderLayout.CENTER);
-        // 创建关闭按钮并添加到右下角
+        add(new JBScrollPane(dataList), BorderLayout.CENTER);
+
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> {
-            closeComponent();
-        });
+        closeButton.addActionListener(e -> closeComponent());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(closeButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
         setLocationRelativeTo(WindowManager.getInstance().getFrame(myProject));
         XStackContext xStackContext = XStackContext.getInstance(xDebugSession);
         initData(xStackContext);
     }
 
-    public MouseAdapter getMouseListener(Supplier<XStackBreakpoint> selectedValueSupplier){
+    public MouseAdapter getMouseListener(Supplier<XStackBreakpoint> selectedValueSupplier) {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 XStackBreakpoint selectedValue = selectedValueSupplier.get();
-                if (e.getClickCount() == 1) {
-                    //单击-导航
+                if (e.getClickCount() == 1 && selectedValue != null) {
                     selectedValue.getxBreakpoint().getNavigatable().navigate(true);
                 }
             }
         };
     }
 
-    @Override
-    public XSessionBreakpointDialog getInstance(XDebugSession xDebugSession) {
+    public static XSessionBreakpointDialog getInstance(XDebugSession xDebugSession) {
         XSessionBreakpointDialog xSessionBreakpointDialog = new XSessionBreakpointDialog(xDebugSession);
         xSessionBreakpointDialog.initData(XStackContext.getInstance(xDebugSession));
         return xSessionBreakpointDialog;
@@ -75,12 +78,11 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         return new XDebugSessionListener() {
             @Override
             public void sessionPaused() {
-                //执行任何操作停下来+回溯成功时
                 updateData(XStackContext.getInstance(myXDebugSession));
             }
+
             @Override
             public void stackFrameChanged() {
-                //栈帧改变&线程切换时-依旧是当前调试会话
                 updateData(XStackContext.getInstance(myXDebugSession));
             }
         };
@@ -93,7 +95,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public void updateData(XStackContext xStackContext) {
-        List<XStackBreakpoint> newData = xStackContext.getXStackBreakpointList();
+        List<XStackBreakpoint> newData = xStackContext.getCurrentXStackBreakpointList();
         this.XStackBreakpointList.clear();
         this.XStackBreakpointList.addAll(newData);
         DefaultListModel<XStackBreakpoint> listModel = new DefaultListModel<>();
@@ -101,6 +103,11 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
             listModel.addElement(item);
         }
         dataList.setModel(listModel);
+    }
+
+    @Override
+    public void removeXSessionComponent() {
+        RuntimePivotMethodService.getInstance(myProject).removeXSessionBreakpointDialog(myXDebugSession);
     }
 
     @Override
@@ -115,11 +122,11 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
             setText(value.toString());
             setIcon(value.getIcon());
             if (isSelected) {
-                setBackground(list.getSelectionBackground());
-                setForeground(list.getSelectionForeground());
+                setBackground(JBColor.background().darker());
+                setForeground(JBColor.foreground().brighter());
             } else {
-                setBackground(list.getBackground());
-                setForeground(list.getForeground());
+                setBackground(JBColor.background());
+                setForeground(JBColor.foreground());
             }
             setEnabled(list.isEnabled());
             setFont(list.getFont());

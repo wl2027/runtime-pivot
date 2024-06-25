@@ -11,8 +11,8 @@
     <resource-bundle>messages.RuntimePivotBundle</resource-bundle>
 
     <projectListeners>
-        <listener class="com.runtime.pivot.plugin.listeners.RuntimeBreakpointDialogListener" topic="com.intellij.xdebugger.XDebuggerManagerListener"/>
-        <listener class="com.runtime.pivot.plugin.listeners.RuntimeBreakpointDialogListener" topic="com.intellij.xdebugger.breakpoints.XBreakpointListener"/>
+        <listener class="com.runtime.pivot.plugin.listeners.XSessionComponentListener" topic="com.intellij.xdebugger.XDebuggerManagerListener"/>
+        <listener class="com.runtime.pivot.plugin.listeners.XSessionBreakpointListener" topic="com.intellij.xdebugger.breakpoints.XBreakpointListener"/>
     </projectListeners>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -55,12 +55,12 @@
             <separator text="method"/>
             <action id="RuntimePivot.MethodStartWatch" text="Method Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
-                    class="com.runtime.pivot.plugin.actions.method.MethodMonitoringAction">
+                    class="com.runtime.pivot.plugin.actions.method.XSessionMonitoringAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt U"/>
             </action>
             <action id="RuntimePivot.BreakpointBacktracking" text="Breakpoint Backtracking"
                     icon="/icons/rerunAutomatically.svg"
-                    class="com.runtime.pivot.plugin.actions.method.BreakpointBacktrackingAction">
+                    class="com.runtime.pivot.plugin.actions.method.XSessionBreakpointAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt B"/>
             </action>
             <separator text="object"/>
