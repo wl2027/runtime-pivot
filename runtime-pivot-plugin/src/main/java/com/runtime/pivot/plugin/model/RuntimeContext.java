@@ -167,9 +167,9 @@ public class RuntimeContext {
         this.xDebugSession = xDebugSession;
         this.debugSession = buildDebugSession(xDebugSession);
         this.debugProcess = debugSession.getProcess();
-
+        //取所有的可回溯断点
         this.backtrackingBreakpointList = buildBacktrackingXBreakpointList(xBreakpointList, xStackFrameList, project);
-
+        //取最近的可回溯断点
         buildMethodBacktrackingStack(xBreakpointList, xStackFrameList, project);
     }
 
@@ -201,8 +201,9 @@ public class RuntimeContext {
             }
             MethodAnchoring methodAnchoring = StackFrameUtils.getMethodAnchoring(xStackFrame, project);
             xStackFrameMethodAnchoringMap.put(xStackFrame, methodAnchoring);
+            //获取当前栈帧的全部断点
             List<BacktrackingBreakpoint> backtrackingBreakpoints = getBacktrackingXBreakpointWithMethodAnchoring(xStackFrame, bottomXStackFrame, methodAnchoring, xBreakpointList);
-            //
+            //往后添加
             result.addAll(backtrackingBreakpoints);
         }
         //本身就是倒序,所以不需要反转
@@ -216,6 +217,7 @@ public class RuntimeContext {
             return result;
         }
         List<XBreakpoint<?>> regressionXBreakpointList = new ArrayList<>();
+        //当前断点位置在栈帧方法的区域内
         for (XBreakpoint<?> xBreakpoint : xBreakpointList) {
             XSourcePosition sourcePosition = xBreakpoint.getSourcePosition();
             if (sourcePosition.getFile().getUrl().equals(methodAnchoring.getVirtualFile().getUrl())
@@ -229,12 +231,13 @@ public class RuntimeContext {
         if (!regressionXBreakpointList.isEmpty()) {
             //降序
             regressionXBreakpointList.sort(new Comparator<XBreakpoint<?>>() {
+                //从大到小   654 321 ...
                 @Override
                 public int compare(XBreakpoint<?> o1, XBreakpoint<?> o2) {
                     return o2.getSourcePosition().getLine() - o1.getSourcePosition().getLine();
                 }
             });
-            //降序构造
+            //降序构造前缀断点~哪些是这个断点的前缀,前缀范围可以是当前栈,也可以是上一个栈
             for (int i = 0; i < regressionXBreakpointList.size(); i++) {
                 XBreakpoint<?> breakpoint = regressionXBreakpointList.get(i);
                 List<XBreakpoint<?>> sub = ListUtil.sub(regressionXBreakpointList, i + 1, regressionXBreakpointList.size());
