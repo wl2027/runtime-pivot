@@ -78,6 +78,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         return new XDebugSessionListener() {
             @Override
             public void sessionPaused() {
+                //TODO Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
                 updateData(XStackContext.getInstance(myXDebugSession));
             }
 

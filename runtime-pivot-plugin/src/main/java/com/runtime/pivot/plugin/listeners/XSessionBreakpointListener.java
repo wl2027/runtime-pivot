@@ -32,42 +32,49 @@ public class XSessionBreakpointListener implements XBreakpointListener {
         });
     }
 
-    @Override
-    public void breakpointAdded(@NotNull XBreakpoint breakpoint) {
-        updateData((session,dialog)->{
-            dialog.updateData(XStackContext.getInstance(session));
-        });
-    }
+    //添加断点不一定要加入到当前断点列表中,因为当前断点列表指的是已经过的断点,属于历史记录
+    //不过还是需要-因为回溯时不将其记录进去会被影响而卡住
+//    @Override
+//    public void breakpointAdded(@NotNull XBreakpoint breakpoint) {
+//        updateData((session,dialog)->{
+//            dialog.updateData(XStackContext.getInstance(session));
+//        });
+//    }
+//
+//    @Override
+//    public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
+//        updateData((session,dialog)->{
+//            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
+//            List<XStackBreakpoint> collect = xStackBreakpointList.stream().filter(
+//                    bean -> !bean.getXBreakpoint().equals(breakpoint)
+//                    //bean-> !RuntimePivotUtil.compareBreakpoints(bean.getXBreakpoint(),breakpoint)
+//            ).collect(Collectors.toList());
+//            dialog.updateData(collect);
+//        });
+//    }
+//
+//    @Override
+//    public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
+//        updateData((session,dialog)->{
+//            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
+//            xStackBreakpointList.forEach(XStackBreakpoint::updateType);
+//            dialog.updateData(xStackBreakpointList);
+//        });
+//    }
 
-    @Override
-    public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
-        updateData((session,dialog)->{
-            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
-            List<XStackBreakpoint> collect = xStackBreakpointList.stream().filter(
-                    bean -> !bean.getXBreakpoint().equals(breakpoint)
-                    //bean-> !RuntimePivotUtil.compareBreakpoints(bean.getXBreakpoint(),breakpoint)
-            ).collect(Collectors.toList());
-            dialog.updateData(collect);
-        });
-    }
-
-    @Override
-    public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
-        updateData((session,dialog)->{
-            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
-            xStackBreakpointList.forEach(XStackBreakpoint::updateType);
-            dialog.updateData(xStackBreakpointList);
-        });
-    }
-
+    //当前线程相关则调用
     @Override
     public void breakpointPresentationUpdated(@NotNull XBreakpoint breakpoint, @Nullable XDebugSession session) {
         //断点视图已更新-调试会话启动也会调用,因为也属于断点视图更新
-//        XSessionBreakpointDialog xSessionBreakpointDialog = RuntimePivotMethodService.getInstance().getXSessionBreakpointDialog(session);
-//        if (xSessionBreakpointDialog != null) {
-//            if (xSessionBreakpointDialog.isVisible()) {
-//                xSessionBreakpointDialog.updateData(XStackContext.getInstance(session));
-//            }
-//        }
+        //breakpointChanged,breakpointRemoved,breakpointAdded 都会调用
+        XSessionBreakpointDialog xSessionBreakpointDialog = RuntimePivotMethodService.getInstance().getXSessionBreakpointDialog(session);
+        if (xSessionBreakpointDialog != null) {
+            if (xSessionBreakpointDialog.isVisible()) {
+                XStackContext xStackContext = XStackContext.getInstance(session);
+                if (xStackContext != null) {
+                    xSessionBreakpointDialog.updateData(xStackContext);
+                }
+            }
+        }
     }
 }

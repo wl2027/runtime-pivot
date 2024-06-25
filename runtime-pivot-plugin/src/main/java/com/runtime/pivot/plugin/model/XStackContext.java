@@ -36,6 +36,7 @@ public class XStackContext {
         try {
             xStackContext = new XStackContext(xDebugSession);
         }catch (Exception exception){
+            exception.printStackTrace();
             return null;
         }
         return xStackContext;
@@ -58,7 +59,7 @@ public class XStackContext {
     }
 
     private List<XStackBreakpoint> getXStackBreakpointList(List<XBreakpoint<?>> xBreakpointList) {
-        if (xBreakpointList==null || xBreakpointList.isEmpty() || myXStackFrameList==null || !myXStackFrameList.isEmpty() || currentXStackFrame!=null) {
+        if (xBreakpointList==null || xBreakpointList.isEmpty() || myXStackFrameList==null || myXStackFrameList.isEmpty() || currentXStackFrame==null) {
             return new ArrayList<>();
         }
         List<XStackBreakpoint> result = new ArrayList<>();

@@ -103,8 +103,10 @@ public class XSessionMonitoringDialog extends XSessionComponent<XSessionMonitori
             //进入暂停
             @Override
             public void sessionPaused() {
-                stopWatch.stop();
-                updateMonitoringTableDialog(stopWatch);
+                if (stopWatch.isRunning()) {
+                    stopWatch.stop();
+                    updateMonitoringTableDialog(stopWatch);
+                }
             }
 
             //恢复执行
