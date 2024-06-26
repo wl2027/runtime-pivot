@@ -12,6 +12,7 @@ import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
@@ -22,9 +23,14 @@ import java.util.List;
 /**
  * 参考 {@link com.intellij.xdebugger.impl.ui.tree.actions.XCopyNameAction}
  */
-public class ObjectInternalsAction extends XDebuggerTreeActionBase {
+public class ObjectInternalsAction extends RuntimeBaseAction {
+
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    protected boolean isEnable(AnActionEvent e) {
+        return false;
+    }
+
+    public void action(@NotNull AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
 
@@ -42,17 +48,5 @@ public class ObjectInternalsAction extends XDebuggerTreeActionBase {
         XExpressionImpl xExpression = XExpressionImpl.fromText(text);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
         evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
-    }
-
-    @Override
-    protected void perform(XValueNodeImpl node, @NotNull String nodeName, AnActionEvent e) {
-
-    }
-
-    public static @Nullable XValueNodeImpl getSelectedNode(@NotNull DataContext dataContext) {
-        return ContainerUtil.getFirstItem(getSelectedNodes(dataContext));
-    }
-    public static @NotNull List<XValueNodeImpl> getSelectedNodes(@NotNull DataContext dataContext) {
-        return XDebuggerTree.getSelectedNodes(dataContext);
     }
 }

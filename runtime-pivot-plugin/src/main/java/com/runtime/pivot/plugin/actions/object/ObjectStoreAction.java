@@ -14,6 +14,7 @@ import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
@@ -21,9 +22,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ObjectStoreAction extends XDebuggerTreeActionBase {
+public class ObjectStoreAction extends RuntimeBaseAction {
+
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    protected boolean isEnable(AnActionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void action(@NotNull AnActionEvent e) {
         //com.intellij.ide.actions.SynchronizeCurrentFileAction
         String basePath = e.getProject().getBasePath();
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
@@ -40,17 +47,5 @@ public class ObjectStoreAction extends XDebuggerTreeActionBase {
         VirtualFile baseDir = ProjectUtil.guessProjectDir(e.getProject());
         VirtualFile child = baseDir.findChild(".runtime");
         child.getFileSystem().refresh(false);
-    }
-
-    @Override
-    protected void perform(XValueNodeImpl node, @NotNull String nodeName, AnActionEvent e) {
-
-    }
-
-    public static @Nullable XValueNodeImpl getSelectedNode(@NotNull DataContext dataContext) {
-        return ContainerUtil.getFirstItem(getSelectedNodes(dataContext));
-    }
-    public static @NotNull List<XValueNodeImpl> getSelectedNodes(@NotNull DataContext dataContext) {
-        return XDebuggerTree.getSelectedNodes(dataContext);
     }
 }

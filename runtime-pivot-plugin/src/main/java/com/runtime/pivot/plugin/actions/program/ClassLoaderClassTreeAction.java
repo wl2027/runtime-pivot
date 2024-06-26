@@ -8,14 +8,20 @@ import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class ClassLoaderClassTreeAction extends AnAction {
+public class ClassLoaderClassTreeAction extends RuntimeBaseAction {
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    protected boolean isEnable(AnActionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void action(@NotNull AnActionEvent e) {
         String text = ActionExecutorUtil.buildCode(ActionType.Program.classLoaderClassTree,null);
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();

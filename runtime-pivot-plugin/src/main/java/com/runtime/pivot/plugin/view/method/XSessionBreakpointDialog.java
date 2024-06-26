@@ -84,7 +84,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public XDebugSessionListener getXDebugSessionListener() {
-        //异步编排invokeAndWait而不是invokeLater,避免同时在更新Dialog的视图导致并发问题
+        //异步编排invokeAndWait而不是invokeLater,避免同时在更新Dialog的视图导致并发问题,但invokeAndWait任意超时,所以用synchronized
         return new XDebugSessionListener() {
             //多线程中进入断点都会调用
             @Override

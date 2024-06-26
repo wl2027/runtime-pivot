@@ -13,6 +13,7 @@ import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
+import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
@@ -20,23 +21,28 @@ import org.jetbrains.annotations.NotNull;
 /**
  * 取对象 or 类?
  */
-public class ClassLoadingProcessAction extends XDebuggerTreeActionBase {
+public class ClassLoadingProcessAction extends RuntimeBaseAction {
+//    @Override
+//    public void update(@NotNull AnActionEvent e) {
+//        //psi&变量&
+//        XValueNodeImpl node = getSelectedNode(e.getDataContext());
+//        e.getPresentation().setEnabled(node != null && isEnabled(node, e));
+//        /**
+//         * //启用
+//         * e.getPresentation().setEnabledAndVisible(true);
+//         * e.getPresentation().setEnabledAndVisible(false);
+//         */
+//        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
+//        e.getPresentation().setEnabled(psiElement != null && psiElement instanceof PsiClass);
+//    }
+
     @Override
-    public void update(@NotNull AnActionEvent e) {
-        //psi&变量&
-        XValueNodeImpl node = getSelectedNode(e.getDataContext());
-        e.getPresentation().setEnabled(node != null && isEnabled(node, e));
-        /**
-         * //启用
-         * e.getPresentation().setEnabledAndVisible(true);
-         * e.getPresentation().setEnabledAndVisible(false);
-         */
-        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
-        e.getPresentation().setEnabled(psiElement != null && psiElement instanceof PsiClass);
+    protected boolean isEnable(AnActionEvent e) {
+        return false;
     }
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    public void action(@NotNull AnActionEvent e) {
         PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
         //e.getData(CommonDataKeys.PSI_FILE)
         PsiClass psiClass = null;
@@ -56,10 +62,5 @@ public class ClassLoadingProcessAction extends XDebuggerTreeActionBase {
         XExpressionImpl xExpression = XExpressionImpl.fromText(text);
 //        XExpressionImpl xExpression = XExpressionImpl.fromText(text, EvaluationMode.CODE_FRAGMENT);
         evaluator.evaluate(xExpression, callback, session.getCurrentPosition());
-    }
-
-    @Override
-    protected void perform(XValueNodeImpl node, @NotNull String nodeName, AnActionEvent e) {
-
     }
 }
