@@ -15,6 +15,7 @@ import com.runtime.pivot.plugin.view.method.XSessionBreakpointDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -41,26 +42,26 @@ public class XSessionBreakpointListener implements XBreakpointListener {
 //        });
 //    }
 //
-//    @Override
-//    public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
-//        updateData((session,dialog)->{
-//            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
-//            List<XStackBreakpoint> collect = xStackBreakpointList.stream().filter(
-//                    bean -> !bean.getXBreakpoint().equals(breakpoint)
-//                    //bean-> !RuntimePivotUtil.compareBreakpoints(bean.getXBreakpoint(),breakpoint)
-//            ).collect(Collectors.toList());
-//            dialog.updateData(collect);
-//        });
-//    }
+    @Override
+    public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
+        updateData((session,dialog)->{
+            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
+            List<XStackBreakpoint> collect = xStackBreakpointList.stream().filter(
+                    bean -> !bean.getXBreakpoint().equals(breakpoint)
+                    //bean-> !RuntimePivotUtil.compareBreakpoints(bean.getXBreakpoint(),breakpoint)
+            ).collect(Collectors.toList());
+            dialog.updateListData(collect);
+        });
+    }
 //
-//    @Override
-//    public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
-//        updateData((session,dialog)->{
-//            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
-//            xStackBreakpointList.forEach(XStackBreakpoint::updateType);
-//            dialog.updateData(xStackBreakpointList);
-//        });
-//    }
+    @Override
+    public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
+        updateData((session,dialog)->{
+            List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
+            xStackBreakpointList.forEach(XStackBreakpoint::updateType);
+            dialog.updateListData(new ArrayList<>(xStackBreakpointList));
+        });
+    }
 
     //当前线程相关则调用
     @Override

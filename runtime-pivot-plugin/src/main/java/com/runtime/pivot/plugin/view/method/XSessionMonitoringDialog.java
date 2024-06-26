@@ -120,7 +120,7 @@ public class XSessionMonitoringDialog extends XSessionComponent<XSessionMonitori
                 return RuntimePivotUtil.getNextPositionName(currentPosition);
             }
 
-            private void updateMonitoringTableDialog(StopWatch stopWatch) {
+            synchronized private void updateMonitoringTableDialog(StopWatch stopWatch) {
                 StopWatch.TaskInfo lastTaskInfo = stopWatch.getLastTaskInfo();
                 taskInfoXSourcePositionMap.put(lastTaskInfo,myXDebugSession.getCurrentPosition());
                 final long totalTimeNanos = stopWatch.getTotalTimeNanos();

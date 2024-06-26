@@ -80,6 +80,9 @@ public class XStackContext {
             }
             //获取当前栈帧方法区
             XStackFrameMethod xStackFrameMethod = StackFrameUtils.getXStackFrameMethod(xStackFrame, myProject);
+            if (xStackFrameMethod == null) {
+                continue;
+            }
             myXStackFrameMethodMap.put(xStackFrame, xStackFrameMethod);
             List<XStackBreakpoint> XStackBreakpoints = getMethodXStackBreakpointList(
                     isBottomCurrentXStackFrame,

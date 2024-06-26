@@ -20,29 +20,34 @@ public class StackFrameUtils {
     public static XStackFrameMethod getXStackFrameMethod(XStackFrame xStackFrame, Project project) {
         XSourcePosition sourcePosition = xStackFrame.getSourcePosition();
         if (sourcePosition == null) {
-            throw new IllegalArgumentException("SourcePosition is null");
+            return null;
+            //throw new IllegalArgumentException("SourcePosition is null");
         }
 
         VirtualFile virtualFile = sourcePosition.getFile();
         PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
         if (!(psiFile instanceof PsiJavaFile)) {
-            throw new IllegalArgumentException("PsiFile must be an instance of PsiJavaFile");
+            return null;
+            //throw new IllegalArgumentException("PsiFile must be an instance of PsiJavaFile");
         }
 
         PsiElement element = psiFile.findElementAt(sourcePosition.getOffset());
         PsiMethod method = getParentMethod(element);
         if (method == null) {
-            throw new IllegalArgumentException("Method not found at the given source position");
+            return null;
+            //throw new IllegalArgumentException("Method not found at the given source position");
         }
 
         PsiCodeBlock methodBody = method.getBody();
         if (methodBody == null) {
-            throw new IllegalArgumentException("Method body is null");
+            return null;
+            //throw new IllegalArgumentException("Method body is null");
         }
 
         Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
         if (document == null) {
-            throw new IllegalArgumentException("Document is null");
+            return null;
+            //throw new IllegalArgumentException("Document is null");
         }
 
         int startLine = document.getLineNumber(methodBody.getTextRange().getStartOffset());

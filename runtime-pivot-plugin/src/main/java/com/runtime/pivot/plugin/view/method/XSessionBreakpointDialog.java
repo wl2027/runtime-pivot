@@ -1,5 +1,6 @@
 package com.runtime.pivot.plugin.view.method;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
@@ -61,8 +62,6 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         add(buttonPanel, BorderLayout.SOUTH);
 
         setLocationRelativeTo(WindowManager.getInstance().getFrame(myProject));
-        XStackContext xStackContext = XStackContext.getInstance(xDebugSession);
-        initData(xStackContext);
     }
 
     public MouseAdapter getMouseListener(Supplier<XStackBreakpoint> selectedValueSupplier) {
@@ -85,15 +84,21 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public XDebugSessionListener getXDebugSessionListener() {
+        //异步编排invokeAndWait而不是invokeLater,避免同时在更新Dialog的视图导致并发问题
         return new XDebugSessionListener() {
+            //多线程中进入断点都会调用
             @Override
             public void sessionPaused() {
-                updateData(XStackContext.getInstance(myXDebugSession));
+                ApplicationManager.getApplication().invokeLater(() -> {
+                    updateData(XStackContext.getInstance(myXDebugSession));
+                });
             }
-
+            //手动改变栈 or 改变栈帧 时调用
             @Override
             public void stackFrameChanged() {
-                updateData(XStackContext.getInstance(myXDebugSession));
+                ApplicationManager.getApplication().invokeLater(() -> {
+                    updateData(XStackContext.getInstance(myXDebugSession));
+                });
             }
         };
     }
@@ -104,16 +109,18 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
     }
 
     @Override
-    public void updateData(XStackContext xStackContext) {
-        updateLabelData(xStackContext.getXDebugSession().getSuspendContext().getActiveExecutionStack().getDisplayName());
-        updateListData(xStackContext.getCurrentXStackBreakpointList());
+    synchronized public void updateData(XStackContext xStackContext) {
+        if (xStackContext!=null) {
+            updateLabelData(xStackContext.getXDebugSession().getSuspendContext().getActiveExecutionStack().getDisplayName());
+            updateListData(xStackContext.getCurrentXStackBreakpointList());
+        }
     }
 
     private void updateLabelData(String text) {
         descriptionLabel.setText(text);
     }
 
-    public void updateListData(List<XStackBreakpoint> newData) {
+    synchronized public void updateListData(List<XStackBreakpoint> newData) {
         this.myXStackBreakpointList.clear();
         this.myXStackBreakpointList.addAll(newData);
         DefaultListModel<XStackBreakpoint> listModel = new DefaultListModel<>();

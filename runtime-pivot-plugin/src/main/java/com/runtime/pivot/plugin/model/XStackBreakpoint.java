@@ -66,7 +66,7 @@ public class XStackBreakpoint {
         //断点位置是否为当前调用位置
         if (myXBreakpoint.getSourcePosition().getFile().getUrl().equals(currentXStackFrame.getSourcePosition().getFile().getUrl())
                 && myXBreakpoint.getSourcePosition().getLine()==(currentXStackFrame.getSourcePosition().getLine())) {
-            return XStackBreakpointType.UNAVAILABLE;
+            return XStackBreakpointType.CURRENT;
         }
         return xStackBreakpointType;
     }
@@ -84,6 +84,9 @@ public class XStackBreakpoint {
                 break;
             case DISABLE:
                 this.myIcon = AllIcons.Debugger.Db_disabled_breakpoint;
+                break;
+            case CURRENT:
+                this.myIcon = AllIcons.Debugger.Db_verified_no_suspend_breakpoint;
                 break;
         }
     }
