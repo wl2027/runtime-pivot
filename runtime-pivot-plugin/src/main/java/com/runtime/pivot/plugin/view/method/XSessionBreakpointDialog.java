@@ -6,12 +6,13 @@ import com.intellij.xdebugger.XDebugSessionListener;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
-
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBScrollPane;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
 
+import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpointDialog> {
+
+    private JBLabel descriptionLabel = new JBLabel();
     private JBList<XStackBreakpoint> dataList = new JBList<>();
     private List<XStackBreakpoint> myXStackBreakpointList = new ArrayList<>();
 
@@ -39,6 +42,13 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
                 closeComponent();
             }
         });
+
+        // 添加顶部说明文本
+        JPanel topPanel = new JPanel(new BorderLayout());
+
+        descriptionLabel.setBorder(JBUI.Borders.empty(5));
+        topPanel.add(descriptionLabel, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH);
 
         dataList.setCellRenderer(new ListItemRenderer());
         dataList.addMouseListener(getMouseListener(dataList::getSelectedValue));
@@ -78,7 +88,6 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         return new XDebugSessionListener() {
             @Override
             public void sessionPaused() {
-                //TODO Read access is allowed from inside read-action (or EDT) only (see com.intellij.openapi.application.Application.runReadAction())
                 updateData(XStackContext.getInstance(myXDebugSession));
             }
 
@@ -96,9 +105,15 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public void updateData(XStackContext xStackContext) {
-        updateData(xStackContext.getCurrentXStackBreakpointList());
+        updateLabelData(xStackContext.getXDebugSession().getSuspendContext().getActiveExecutionStack().getDisplayName());
+        updateListData(xStackContext.getCurrentXStackBreakpointList());
     }
-    public void updateData(List<XStackBreakpoint> newData) {
+
+    private void updateLabelData(String text) {
+        descriptionLabel.setText(text);
+    }
+
+    public void updateListData(List<XStackBreakpoint> newData) {
         this.myXStackBreakpointList.clear();
         this.myXStackBreakpointList.addAll(newData);
         DefaultListModel<XStackBreakpoint> listModel = new DefaultListModel<>();
