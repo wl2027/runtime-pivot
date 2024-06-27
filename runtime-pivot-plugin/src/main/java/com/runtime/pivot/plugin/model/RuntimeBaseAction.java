@@ -56,7 +56,8 @@ public abstract class RuntimeBaseAction extends AnAction {
         //可执行栈帧条件下才可见可用
         XDebugSession session = DebuggerUIUtil.getSession(e);
         if (session == null) {
-            presentation.setEnabledAndVisible(false);
+            presentation.setVisible(false);
+            presentation.setEnabled(false);
             return;
         }
         XStackFrame currentStackFrame = session.getCurrentStackFrame();

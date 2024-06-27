@@ -6,6 +6,7 @@ import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
+import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +38,10 @@ public class RuntimeContext {
      */
     public Object executeAttachCode(String code) {
         XTestEvaluationCallback callback = new XTestEvaluationCallback();
+        return executeAttachCode(code,callback);
+    }
+
+    public XEvaluationCallbackBase executeAttachCode(String code, XEvaluationCallbackBase callback) {
         XExpressionImpl xExpression = XExpressionImpl.fromText(code, EvaluationMode.CODE_FRAGMENT);
         myXDebuggerEvaluator.evaluate(xExpression,callback,myXDebugSession.getCurrentPosition());
         return callback;

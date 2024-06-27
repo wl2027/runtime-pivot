@@ -134,22 +134,5 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
                 throw new RuntimeException(e);
             }
         }));
-
-
-
     }
-
-//    @Action(ActionType.Class.dumpClassList)
-//    public static void dumpClassList(String className) {
-//        //模糊查询
-//
-//    }
-//
-//    @Action(ActionType.Class.dumpObjectClass)
-//    public static void dumpObjectClass(Object object) {
-//        //精准查询
-//    }
-
-
-
 }

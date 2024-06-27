@@ -2,19 +2,18 @@ package com.runtime.pivot.agent.model;
 
 public interface ActionType {
     interface Program extends ActionType{
+        //CL 树
         String classLoaderTree = "classLoaderTree";
+        //CL Class树
         String classLoaderClassTree = "classLoaderClassTree";
         String transformers = "transformers";
     }
     interface Class extends ActionType{
 
-        //加载顺序
+        //类加载过程
         String classLoadingProcess = "classLoadingProcess";
+        //类文件转储
         String classFileDump = "classFileDump";
-//        String dumpClass = "dumpClass";
-//        String dumpObjectClass = "dumpObjectClass";
-//        String dumpClassList = "dumpClassList";
-
     }
     interface Thread extends ActionType{
 
@@ -28,9 +27,11 @@ public interface ActionType {
         String exceptionRestore = "exceptionRestore";
     }
     interface Object extends ActionType{
-
+        //对象内部信息
         String objectInternals = "objectInternals";
+        //对象存储
         String objectStore = "objectStore";
+        //对象加载
         String objectLoad = "objectLoad";
     }
 }
