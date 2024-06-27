@@ -1,37 +1,29 @@
 package com.runtime.pivot.plugin.actions.object;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
-import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
+import com.runtime.pivot.plugin.actions.ObjectAction;
+import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class ObjectStoreAction extends RuntimeBaseAction {
-
-    @Override
-    protected boolean isEnable(AnActionEvent e) {
-        return false;
-    }
+/**
+ * @see com.intellij.ide.actions.SynchronizeCurrentFileAction
+ */
+public class ObjectStoreAction extends ObjectAction {
 
     @Override
     public void action(@NotNull AnActionEvent e) {
-        //com.intellij.ide.actions.SynchronizeCurrentFileAction
+        //
         String basePath = e.getProject().getBasePath();
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();

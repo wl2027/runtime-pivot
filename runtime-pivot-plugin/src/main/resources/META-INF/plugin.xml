@@ -53,13 +53,13 @@
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
             </action>
             <separator text="method"/>
-            <action id="RuntimePivot.MethodStartWatch" text="Method Monitoring"
+            <action id="RuntimePivot.XSessionMonitoring" text="XSession Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
                     class="com.runtime.pivot.plugin.actions.method.XSessionMonitoringAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt U"/>
             </action>
-            <action id="RuntimePivot.BreakpointBacktracking" text="Breakpoint Backtracking"
-                    icon="/icons/rerunAutomatically.svg"
+            <action id="RuntimePivot.XSessionBreakpoint" text="XSession Breakpoint"
+                    icon="com.intellij.icons.AllIcons.Debugger.MultipleBreakpoints"
                     class="com.runtime.pivot.plugin.actions.method.XSessionBreakpointAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt B"/>
             </action>

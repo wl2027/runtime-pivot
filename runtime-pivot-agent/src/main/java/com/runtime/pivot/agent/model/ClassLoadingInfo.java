@@ -14,7 +14,7 @@ public class ClassLoadingInfo {
     private final byte[] classfileBuffer;
     private final Date loadingTime;
     private final String loadingTimeStr;
-    private final String state;//open or close
+    private final String state;//install or uninstall
 
     public ClassLoadingInfo(ClassLoader classLoader, String qualifiedName,String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         this.classLoader = classLoader;
@@ -28,7 +28,7 @@ public class ClassLoadingInfo {
             //this.loadingTimeStr = DateUtil.format(loadingTime, DatePattern.NORM_DATETIME_MS_PATTERN);
             this.loadingTimeStr = simpleDateFormat.format(this.loadingTime);
         }
-        this.state = "install";//install or uninstall
+        this.state = "install";
     }
 
     public static SimpleDateFormat getSimpleDateFormat() {

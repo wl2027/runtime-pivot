@@ -13,33 +13,24 @@ import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.plugin.actions.RuntimeBaseAction;
+import com.runtime.pivot.plugin.actions.ObjectAction;
+import com.runtime.pivot.plugin.actions.StructAction;
+import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class ClassFileDumpAction extends RuntimeBaseAction {
-    @Override
-    protected boolean isEnable(AnActionEvent e) {
-        return false;
-    }
+public class ClassFileDumpAction extends StructAction {
 
-    //    @Override
-//    public void update(@NotNull AnActionEvent e) {
-//        //psi&变量&
-//        XValueNodeImpl node = getSelectedNode(e.getDataContext());
-//        e.getPresentation().setEnabled(node != null && isEnabled(node, e));
-//        /**
-//         * //启用
-//         * e.getPresentation().setEnabledAndVisible(true);
-//         * e.getPresentation().setEnabledAndVisible(false);
-//         */
-//        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
-//        e.getPresentation().setEnabled(psiElement != null && psiElement instanceof PsiClass);
-//    }
+    /**
+     * 作用域
+     *  - 项目 : 模糊匹配+搜索框
+     *  - 类文件 : 模糊匹配
+     *  - 对象 : 模糊匹配
+     * @param e
+     */
     @Override
     public void action(@NotNull AnActionEvent e) {
         PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
@@ -49,10 +40,8 @@ public class ClassFileDumpAction extends RuntimeBaseAction {
             psiClass = (PsiClass) psiElement;
         }
         String qualifiedName = psiClass==null?null:psiClass.getQualifiedName();
-        XValueNodeImpl node = getSelectedNode(e.getDataContext());
+        XValueNodeImpl node = ObjectAction.getSelectedNode(e.getDataContext());
         String name = node==null?null:node.getName();
-
-        Project project = e.getProject();
         String text = ActionExecutorUtil.buildCode(ActionType.Class.classFileDump,null,name,ActionExecutorUtil.buildStringObject(qualifiedName),ActionExecutorUtil.buildStringObject(e.getProject().getBasePath()));
         XDebugSession session = DebuggerUIUtil.getSession(e);
         XStackFrame frame = session.getCurrentStackFrame();

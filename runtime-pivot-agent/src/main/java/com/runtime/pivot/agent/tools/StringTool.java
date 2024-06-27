@@ -2,6 +2,9 @@ package com.runtime.pivot.agent.tools;
 
 import cn.hutool.core.util.ArrayUtil;
 
+/**
+ * @see cn.hutool.core.util.StrUtil
+ */
 public class StringTool {
     /**
      * <p>字符串是否为空，空的定义如下：</p>

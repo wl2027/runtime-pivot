@@ -22,9 +22,7 @@ public class ProgramActionProvider extends ActionProvider {
 
     @Action(ActionType.Program.classLoaderClassTree)
     public static void classLoaderClassTree() throws Exception{
-        System.out.println("sout");
         List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
-        System.out.println("sout2");
         ClassLoaderUtil.printClassLoaderClassTree(classLoaderTree);
     }
 
