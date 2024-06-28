@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
+import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
@@ -32,7 +33,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
     private List<XStackBreakpoint> myXStackBreakpointList = new ArrayList<>();
 
     protected XSessionBreakpointDialog(XDebugSession xDebugSession) {
-        super(xDebugSession, "XStack Breakpoint List");
+        super(xDebugSession, RuntimePivotConstants.X_SESSION_BREAKPOINT);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(300, 500);

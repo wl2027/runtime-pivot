@@ -1,15 +1,15 @@
 package com.runtime.pivot.plugin.model;
 
+import com.intellij.debugger.engine.JavaValue;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.EvaluationMode;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;
-import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public class RuntimeContext {
 
@@ -37,7 +37,17 @@ public class RuntimeContext {
      * @throws Exception
      */
     public Object executeAttachCode(String code) {
-        XTestEvaluationCallback callback = new XTestEvaluationCallback();
+        RuntimeEvaluationCallback callback = new RuntimeEvaluationCallback();
+        return executeAttachCode(code,callback);
+    }
+
+    public XEvaluationCallbackBase executeAttachCode(String code, Consumer<JavaValue> javaValueConsumer) {
+        RuntimeEvaluationCallback callback = new RuntimeEvaluationCallback(javaValueConsumer);
+        return executeAttachCode(code,callback);
+    }
+
+    public XEvaluationCallbackBase executeAttachCode(String code, Consumer<JavaValue> javaValueConsumer,Consumer<String> errorOccurredConsumer) {
+        RuntimeEvaluationCallback callback = new RuntimeEvaluationCallback(javaValueConsumer,errorOccurredConsumer);
         return executeAttachCode(code,callback);
     }
 

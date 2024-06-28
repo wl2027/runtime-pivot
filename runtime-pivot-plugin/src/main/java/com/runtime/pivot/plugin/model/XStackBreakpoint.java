@@ -11,11 +11,11 @@ import com.runtime.pivot.plugin.enums.XStackBreakpointType;
 import javax.swing.*;
 
 /**
- * Time Travel Debugging
+ * @Version 2.0.0 Time Travel Debugging
  */
 public class XStackBreakpoint {
     private boolean isBottomCurrentXStackFrame;
-    //栈底: xStackFramePosition = 1
+    //如果是栈底: xStackFramePosition = 1
     private int xStackFramePosition;
     private XStackFrame xStackFrame;
     private XStackFrame currentXStackFrame;

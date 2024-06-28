@@ -30,9 +30,6 @@
                     class="com.runtime.pivot.plugin.actions.program.ClassLoaderTreeAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt O"/>
             </action>
-            <action id="RuntimePivot.XValueAction" text="XValueAction"
-                    class="com.runtime.pivot.plugin.actions.XValueAction">
-            </action>
             <action id="RuntimePivot.ClassLoaderClassTree" text="ClassLoader Class Tree"
                     icon="com.intellij.icons.AllIcons.General.TreeHovered"
                     class="com.runtime.pivot.plugin.actions.program.ClassLoaderClassTreeAction">

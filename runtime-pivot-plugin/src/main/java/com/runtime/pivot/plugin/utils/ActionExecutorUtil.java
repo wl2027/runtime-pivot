@@ -7,12 +7,15 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 public class ActionExecutorUtil {
+    public static final String ACTION_TYPE = "actionType" ;
+    public static final String ARGS = "args" ;
+    public static final String SCRIPT = "script" ;
     public static final String RETURN_OBJECT = "returnObject" ;
     private static final String EXECUTE_EXPRESSION =
             "java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
             "java.lang.reflect.Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
-            "Object "+RETURN_OBJECT+" = method.invoke(null,\"{actionType}\",new Object[]{{args}});\n" +
-            "{script};";
+            "Object "+RETURN_OBJECT+" = method.invoke(null,\"{"+ACTION_TYPE+"}\",new Object[]{{"+ARGS+"}});\n" +
+            "{"+SCRIPT+"};";
 
     public static String buildCode(String actionType,String script, String... args) {
         StringJoiner joiner = new StringJoiner(",");
@@ -20,9 +23,9 @@ public class ActionExecutorUtil {
             joiner.add(arg);
         }
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("actionType",actionType);
-        paramMap.put("args",args.length==0?"":joiner.toString());
-        paramMap.put("script",StrUtil.isEmpty(script)?"":script);
+        paramMap.put(ACTION_TYPE,actionType);
+        paramMap.put(ARGS,args.length==0?"":joiner.toString());
+        paramMap.put(SCRIPT,StrUtil.isEmpty(script)?"":script);
         String formatExecuteExpression = StrUtil.format(EXECUTE_EXPRESSION,paramMap);
         return formatExecuteExpression;
     }

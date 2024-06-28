@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextArea;
+import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackContext;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
@@ -43,7 +44,7 @@ public class XSessionMonitoringDialog extends XSessionComponent<XSessionMonitori
     private final Map<StopWatch.TaskInfo,XSourcePosition> taskInfoXSourcePositionMap = new ConcurrentHashMap<>();
 
     protected XSessionMonitoringDialog(XDebugSession xDebugSession) {
-        super(xDebugSession, "Method Monitoring");
+        super(xDebugSession, RuntimePivotConstants.X_SESSION_MONITORING);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 400);

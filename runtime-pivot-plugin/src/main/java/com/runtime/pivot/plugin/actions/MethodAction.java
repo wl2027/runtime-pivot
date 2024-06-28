@@ -1,6 +1,7 @@
 package com.runtime.pivot.plugin.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 
 public abstract class MethodAction extends RuntimeBaseAction {
@@ -13,6 +14,6 @@ public abstract class MethodAction extends RuntimeBaseAction {
      */
     @Override
     final protected boolean isEnable(AnActionEvent e) {
-        return getRuntimeContext().getXDebugSession().isPaused();
+        return DebuggerUIUtil.getSession(e).isPaused();
     }
 }

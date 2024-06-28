@@ -8,8 +8,7 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointManager;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.runtime.pivot.plugin.enums.XStackBreakpointType;
-import com.runtime.pivot.plugin.utils.XDebuggerTestUtil;
+import com.runtime.pivot.plugin.utils.platfrom.XDebuggerTestUtil;
 import com.runtime.pivot.plugin.utils.StackFrameUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,12 +42,14 @@ public class XStackContext {
     }
 
     private XStackContext(@NotNull XDebugSession xDebugSession) {
+        //获取可用断点列表
         XDebuggerManager debuggerManager = XDebuggerManager.getInstance(xDebugSession.getProject());
         XBreakpointManager breakpointManager = debuggerManager.getBreakpointManager();
         XBreakpoint<?>[] allBreakpoints = breakpointManager.getAllBreakpoints();
         List<XBreakpoint<?>> xBreakpointList = ListUtil.of(allBreakpoints).stream()
                 .filter(bean -> bean.isEnabled())
                 .collect(Collectors.toList());
+        //初始化栈帧数据
         List<XStackFrame> xStackFrames = XDebuggerTestUtil.collectFrames(xDebugSession);
         this.myXStackFrameList = xStackFrames;
         this.currentXStackFrame = xDebugSession.getCurrentStackFrame();

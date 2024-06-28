@@ -2,24 +2,18 @@ package com.runtime.pivot.plugin.model;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageUtil;
-import com.intellij.util.containers.ContainerUtil;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.frame.XValue;
 import com.intellij.xdebugger.impl.actions.XDebuggerActionBase;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
-import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
-import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
-import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public abstract class RuntimeBaseAction extends AnAction {
 
@@ -33,17 +27,15 @@ public abstract class RuntimeBaseAction extends AnAction {
         myRuntimeContext = RuntimeContext.getInstance(session);
         //通用校验
         if (session == null || myRuntimeContext == null) {
-            MessageUtil.showOkCancelDialog("runtime-pivot",
-                    "action context is null",
-                    null,
-                    null,
-                    null,
-                    null,
-                    e.getProject());
+            Messages.showInfoMessage("action context is null", RuntimePivotConstants.MSG_TITLE);
             log.info("action context is null");
             return;
         }
-        action(e);
+        try {
+            action(e);
+        }catch (Exception exception){
+            Messages.showInfoMessage("异常信息: \n"+exception.getMessage(),RuntimePivotConstants.ERROR_MSG_TITLE);
+        }
     }
 
     /**
@@ -56,8 +48,7 @@ public abstract class RuntimeBaseAction extends AnAction {
         //可执行栈帧条件下才可见可用
         XDebugSession session = DebuggerUIUtil.getSession(e);
         if (session == null) {
-            presentation.setVisible(false);
-            presentation.setEnabled(false);
+            presentation.setEnabledAndVisible(false);
             return;
         }
         XStackFrame currentStackFrame = session.getCurrentStackFrame();
@@ -95,7 +86,7 @@ public abstract class RuntimeBaseAction extends AnAction {
      * 执行事件
      * @param e
      */
-    protected abstract void action(AnActionEvent e);
+    protected abstract void action(AnActionEvent e) throws Exception;
 
 
     protected RuntimeContext getRuntimeContext() {

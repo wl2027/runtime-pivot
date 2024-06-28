@@ -1,5 +1,5 @@
 // Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-package com.runtime.pivot.plugin.utils;
+package com.runtime.pivot.plugin.utils.platfrom;
 
 import cn.hutool.core.util.StrUtil;
 import com.intellij.execution.impl.ConsoleViewImpl;
@@ -17,14 +17,12 @@ import com.intellij.util.ui.UIUtil;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
 import com.intellij.xdebugger.XDebuggerUtil;
-import com.intellij.xdebugger.XExpression;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointManager;
 import com.intellij.xdebugger.breakpoints.XBreakpointProperties;
 import com.intellij.xdebugger.breakpoints.XBreakpointType;
 import com.intellij.xdebugger.breakpoints.XLineBreakpoint;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XExecutionStack;
 import com.intellij.xdebugger.frame.XNamedValue;
 import com.intellij.xdebugger.frame.XNavigatable;
@@ -36,12 +34,11 @@ import com.intellij.xdebugger.frame.XValuePlace;
 import com.intellij.xdebugger.impl.XDebugSessionImpl;
 import com.intellij.xdebugger.impl.XDebuggerUtilImpl;
 import com.intellij.xdebugger.impl.breakpoints.XBreakpointUtil;
-import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl;
 import com.intellij.xdebugger.impl.frame.XStackFrameContainerEx;
 import com.runtime.pivot.plugin.utils.platfrom.XTestCompositeNode;
 import com.runtime.pivot.plugin.utils.platfrom.XTestContainer;
-import com.runtime.pivot.plugin.utils.platfrom.XTestEvaluationCallback;
 import com.runtime.pivot.plugin.utils.platfrom.XTestValueNode;
+import org.bouncycastle.jcajce.provider.symmetric.IDEA;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
@@ -59,6 +56,9 @@ import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @see IDEA
+ */
 @TestOnly
 public class XDebuggerTestUtil {
 //  public static final int TIMEOUT_MS = 25_000;
