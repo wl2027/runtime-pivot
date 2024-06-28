@@ -22,9 +22,7 @@
     </extensions>
 
     <actions>
-        <group id="RuntimePivot.MainMenu" text="Runtime Pivot" popup="true" class="com.runtime.pivot.plugin.model.RuntimeBaseGroup"
-               icon="AllIcons.General.Locate">
-            <separator text="program"/>
+        <group id="RuntimePivot.Program" text="program" popup="false">
             <action id="RuntimePivot.ClassLoaderTree" text="ClassLoader Tree"
                     icon="com.intellij.icons.AllIcons.Actions.ShowAsTree"
                     class="com.runtime.pivot.plugin.actions.program.ClassLoaderTreeAction">
@@ -38,10 +36,10 @@
             <action id="RuntimePivot.TransformerList" text="Transformers"
                     icon="com.intellij.icons.AllIcons.Actions.ListFiles"
                     class="com.runtime.pivot.plugin.actions.program.TransformersAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="shift alt N"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt M"/>
             </action>
-<!--            作用在类或对象上-->
-            <separator text="class"/>
+        </group>
+        <group id="RuntimePivot.Class" text="class" popup="false">
             <action id="RuntimePivot.ClassLoadingProcess" text="Class Loading Process"
                     icon="com.intellij.icons.AllIcons.Nodes.Class"
                     class="com.runtime.pivot.plugin.actions.struct.ClassLoadingProcessAction">
@@ -52,7 +50,8 @@
                     class="com.runtime.pivot.plugin.actions.struct.ClassFileDumpAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
             </action>
-            <separator text="method"/>
+        </group>
+        <group id="RuntimePivot.Method" text="method" popup="false">
             <action id="RuntimePivot.XSessionMonitoring" text="XSession Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
                     class="com.runtime.pivot.plugin.actions.method.XSessionMonitoringAction">
@@ -61,9 +60,10 @@
             <action id="RuntimePivot.XSessionBreakpoint" text="XSession Breakpoint"
                     icon="com.intellij.icons.AllIcons.Debugger.MultipleBreakpoints"
                     class="com.runtime.pivot.plugin.actions.method.XSessionBreakpointAction">
-                <keyboard-shortcut keymap="$default" first-keystroke="shift alt B"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt H"/>
             </action>
-            <separator text="object"/>
+        </group>
+        <group id="RuntimePivot.Object" text="object" popup="false">
             <action id="RuntimePivot.ObjectInternals" text="Object Internals"
                     icon="com.intellij.icons.AllIcons.General.BalloonInformation"
                     class="com.runtime.pivot.plugin.actions.object.ObjectInternalsAction">
@@ -81,6 +81,18 @@
                     class="com.runtime.pivot.plugin.actions.object.ObjectLoadAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt V"/>
             </action>
+        </group>
+
+        <group id="RuntimePivot.MainMenu" text="Runtime Pivot" popup="true" class="com.runtime.pivot.plugin.model.RuntimeBaseGroup"
+               icon="AllIcons.General.Locate">
+            <separator text="program"/>
+            <reference ref="RuntimePivot.Program"/>
+            <separator text="class"/>
+            <reference ref="RuntimePivot.Class"/>
+            <separator text="method"/>
+            <reference ref="RuntimePivot.Method"/>
+            <separator text="object"/>
+            <reference ref="RuntimePivot.Object"/>
             <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>

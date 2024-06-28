@@ -52,7 +52,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myEvaluated != null) {
       myEvaluated.accept(myJavaResult);
     }
-    Messages.showInfoMessage("runtime-pivot result",myResultString);
+    Messages.showMessageDialog("执行结果: \n"+myResultString,RuntimePivotConstants.ERROR_MSG_TITLE,null);
   }
 
   @Override
@@ -61,28 +61,18 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myErrorOccurred != null) {
       myErrorOccurred.accept(errorMessage);
     }
-    MessageUtil.showOkCancelDialog(
-            RuntimePivotConstants.ERROR_MSG_TITLE,
-            "异常信息: \n"+myErrorOccurred,
-            "Copy",
-            null,
-            null,
-             null,
-            null
-
-    );
-    Messages.showInfoMessage("runtime-pivot error",errorMessage);
+    Messages.showErrorDialog("异常信息: \n"+myErrorOccurred,RuntimePivotConstants.ERROR_MSG_TITLE);
   }
 
-  public JavaValue getMyJavaResult() {
+  public JavaValue getJavaResult() {
     return myJavaResult;
   }
 
-  public String getMyResultString() {
+  public String getResultString() {
     return myResultString;
   }
 
-  public String getMyErrorMessage() {
+  public String getErrorMessage() {
     return myErrorMessage;
   }
 }
