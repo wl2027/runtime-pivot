@@ -17,6 +17,7 @@ package com.runtime.pivot.plugin.model;
 
 import com.intellij.debugger.engine.JavaValue;
 import com.intellij.ide.impl.ProjectNewWindowDoNotAskOption;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.frame.XValue;
@@ -52,7 +53,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myEvaluated != null) {
       myEvaluated.accept(myJavaResult);
     }
-    Messages.showMessageDialog("执行结果: \n"+myResultString,RuntimePivotConstants.ERROR_MSG_TITLE,null);
+    ApplicationManager.getApplication().invokeLater(()->Messages.showMessageDialog("执行结果: \n"+myResultString,RuntimePivotConstants.RESULT_MSG_TITLE,null));
   }
 
   @Override
@@ -61,7 +62,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myErrorOccurred != null) {
       myErrorOccurred.accept(errorMessage);
     }
-    Messages.showErrorDialog("异常信息: \n"+myErrorOccurred,RuntimePivotConstants.ERROR_MSG_TITLE);
+    ApplicationManager.getApplication().invokeLater(()->Messages.showErrorDialog("异常信息: \n"+myErrorOccurred,RuntimePivotConstants.ERROR_MSG_TITLE));
   }
 
   public JavaValue getJavaResult() {

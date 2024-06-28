@@ -9,13 +9,14 @@ group = "com.runtime.pivot"
 version = "1.0.0.RELEASE"
 
 repositories {
-//    mavenCentral()
-    maven {
-        url = uri("https://maven.aliyun.com/repository/central")
-    }
+    mavenCentral()
+//    maven {
+//        url = uri("https://maven.aliyun.com/repository/central")
+//    }
 }
 
 dependencies {
+    implementation("org.jetbrains:annotations:24.0.1")
     implementation("cn.hutool:hutool-core:5.8.23")
     implementation("cn.hutool:hutool-json:5.8.23")
     implementation("org.openjdk.jol:jol-core:0.16")

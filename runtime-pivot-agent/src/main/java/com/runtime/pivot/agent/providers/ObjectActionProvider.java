@@ -68,7 +68,7 @@ public class ObjectActionProvider extends ActionProvider {
     @Action(ActionType.Object.objectLoad)
     public static <E> E load(E object,String path) throws Exception {
         if (object == null) {
-            throw new IllegalArgumentException("object must not be null");
+//            throw new IllegalArgumentException("object must not be null");
         }
         System.out.println("object load result before: "+ System.identityHashCode(object)+": "+JSONUtil.toJsonStr(object));
         //读取文件 参考IDEA setValue
@@ -78,6 +78,7 @@ public class ObjectActionProvider extends ActionProvider {
             //没有json数据
         }
         if (object == null) {
+            //值赋上去没有任何用处,因为null本身没有开辟任何地址空间,所以throw new IllegalArgumentException("object must not be null")
             //MY 直接赋值~对象,数组,集合,Map...
 //            object = objectMapper.readValue(jsonString,eClass);
             object = (E) objectMapper.readValue(jsonString,Object.class);
