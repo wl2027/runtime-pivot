@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -13,6 +14,7 @@ import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.plugin.actions.ObjectAction;
+import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,10 +41,10 @@ public class ObjectLoadAction extends ObjectAction {
     public void action(@NotNull AnActionEvent e) throws Exception{
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
         String name = node.getName();
-        String script = name;
         if (node.getRawValue().equals("null")) {
             //空值不允许json转换,只能用返回对象接收
-            script = script+" = "+ActionExecutorUtil.RETURN_OBJECT;
+            Messages.showErrorDialog("对象不能为null", RuntimePivotConstants.ERROR_MSG_TITLE);
+            return;
         }
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true,false,false,false,false,false);
         @Nullable VirtualFile toSelect = VfsUtil.createDirectories(e.getProject().getBasePath()+ AgentConstants.PATH);
@@ -50,7 +52,7 @@ public class ObjectLoadAction extends ObjectAction {
         //保存文件
         FileDocumentManager.getInstance().saveAllDocuments();
         String path = virtualFile.getPath();
-        String code = ActionExecutorUtil.buildCode(ActionType.Object.objectLoad,script,name,ActionExecutorUtil.buildStringObject(path));
+        String code = ActionExecutorUtil.buildCode(ActionType.Object.objectLoad,null,name,ActionExecutorUtil.buildStringObject(path));
         //刷新当前文件
         virtualFile.refresh(false,false);
         //加载当前文件到对象
