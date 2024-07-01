@@ -7,6 +7,7 @@ import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.agent.model.ClassLoaderInfo;
 import com.runtime.pivot.agent.tools.ClassLoaderUtil;
+import com.runtime.pivot.agent.tools.ObjectTool;
 import sun.instrument.TransformerManager;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -33,16 +34,19 @@ public class ProgramActionProvider extends ActionProvider {
         TransformerManager mTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mTransformerManager");
         TransformerManager mRetransfomableTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mRetransfomableTransformerManager");
         Object[] mTransformerList = (Object[]) ReflectUtil.getFieldValue(mTransformerManager, "mTransformerList");
-        Object[] mTransformerList2 = (Object[]) ReflectUtil.getFieldValue(mRetransfomableTransformerManager, "mTransformerList");
-        for (Object o : mTransformerList) {
-            ClassFileTransformer mTransformer = (ClassFileTransformer) ReflectUtil.getFieldValue(o, "mTransformer");
-            System.out.println(mTransformer.toString()+mTransformer.getClass());
-        }
-        for (Object o : mTransformerList2) {
-            ClassFileTransformer mTransformer = (ClassFileTransformer) ReflectUtil.getFieldValue(o, "mTransformer");
-            System.out.println(mTransformer.toString()+mTransformer.getClass());
-        }
+        Object[] mRetransfomableTransformerList = (Object[]) ReflectUtil.getFieldValue(mRetransfomableTransformerManager, "mTransformerList");
+        System.out.println("Transformers:");
+        printClassFileTransformers(mTransformerList);
+        System.out.println("Retransfomable Transformers:");
+        printClassFileTransformers(mRetransfomableTransformerList);
         return "transformers has been printed on the console";
+    }
+    private static void printClassFileTransformers(Object[] objects){
+        for (Object object : objects) {
+            ClassFileTransformer mTransformer = (ClassFileTransformer) ReflectUtil.getFieldValue(object, "mTransformer");
+            System.out.println(ObjectTool.toString(mTransformer));
+        }
+
     }
 
 }

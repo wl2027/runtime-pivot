@@ -112,11 +112,10 @@ public class ActionExecutor {
             try {
                 result = method.invoke(null, args);
             } catch (Exception e) {
-                result = e.toString();
+                result = "Agent execution error !\nError message : \n"+e.toString();
                 System.out.print(AgentConstants.ANSI_BOLD);
                 System.out.print(AgentConstants.YELLOW);
-                System.err.println("RESULT : Error!");
-                System.err.println("Error Message : "+e.getMessage());
+                System.err.println(result);
                 System.out.print(AgentConstants.RESET);
             } finally {
                 invoke.set(String.valueOf(result));
