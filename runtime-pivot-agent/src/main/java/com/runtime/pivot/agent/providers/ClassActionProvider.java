@@ -10,6 +10,7 @@ import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
 import com.runtime.pivot.agent.tools.InstrumentationUtils;
+import com.runtime.pivot.agent.tools.ObjectTool;
 import com.runtime.pivot.agent.transformer.ClassDumpTransformer;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -24,8 +25,15 @@ import java.util.Set;
 
 public class ClassActionProvider extends ActionProvider<ActionType.Class> {
 
+    /**
+     * 类加载过程
+     * @param object
+     * @param className
+     * @return
+     * @throws Exception
+     */
     @Action(ActionType.Class.classLoadingProcess)
-    public static void classLoadingProcess(Object object,String className) throws Exception {
+    public static String classLoadingProcess(Object object,String className) throws Exception {
         //class每次加载的时间和classLoad
         if (object!=null) {
             className = object.getClass().getName();
@@ -37,6 +45,7 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
                 printClassLoadingInfo(qualifiedName,classLoadingInfos);
             }
         });
+        return className+" loading process has been printed on the console";
     }
 
     public static synchronized void printClassLoadingInfo(String qualifiedName, List<ClassLoadingInfo> list) {
@@ -44,7 +53,6 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
             System.out.println("No class loading info available.");
             return;
         }
-
         System.out.print("Class Loading Chain for: ");
         System.out.print(AgentConstants.ANSI_BOLD);
         System.out.println(qualifiedName);
@@ -81,7 +89,7 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
     }
 
     @Action(ActionType.Class.classFileDump)
-    public static void classFileDump(Object object,String className,String path) throws Exception {
+    public static String classFileDump(Object object,String className,String path) throws Exception {
         ActionContext actionContext = ActionExecutor.getActionContext();
         String dateFileString = actionContext.getDateFileString();
         //模糊查询
@@ -95,7 +103,7 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
             classLoader = aClass.getClassLoader();
         }
         if (StrUtil.isEmpty(className)) {
-            return;
+            return "className is null";
         }
         Set<Class<?>> classes = new HashSet<>();
         Instrumentation instrumentation = ActionExecutor.getAgentContext().getInstrumentation();
@@ -126,13 +134,15 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
 ////                }
 //                ctClass.setName(classNameTemp);
                 //浪费性能: ctClass.rebuildClassFile();
-                ctClass.debugWriteFile(path+ AgentConstants.PATH+ File.separator+ActionType.Class.classFileDump+File.separator+dateFileString+File.separator+"CL"+System.identityHashCode(aClass.getClassLoader()));
-                System.out.println(aClass.getClassLoader()+":"+System.identityHashCode(aClass.getClassLoader()));
+                String dumpPath = path + AgentConstants.PATH + File.separator + ActionType.Class.classFileDump + File.separator + dateFileString + File.separator + "CL" + ObjectTool.getHexId(aClass.getClassLoader());
+                ctClass.debugWriteFile(dumpPath);
+                System.out.println("ClassName:"+ctClass.getName()+"\nClassLoader:"+aClass.getClassLoader()+"\nDumpPath:"+dumpPath+"\n");
                 //String filename = directoryName + File.separatorChar + classname.replace('.', File.separatorChar) + ".class";
                 //
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }));
+        return className+" dump path has been printed on the console";
     }
 }

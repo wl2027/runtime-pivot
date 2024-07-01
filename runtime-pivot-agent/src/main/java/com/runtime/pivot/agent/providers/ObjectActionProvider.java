@@ -13,6 +13,7 @@ import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.agent.model.RuntimePivotException;
 import com.runtime.pivot.agent.tools.JSONFileTool;
+import com.runtime.pivot.agent.tools.ObjectTool;
 import org.apache.lucene.util.RamUsageEstimator;
 import org.openjdk.jol.info.ClassLayout;
 
@@ -33,7 +34,7 @@ public class ObjectActionProvider extends ActionProvider {
     }
 
     @Action(ActionType.Object.objectInternals)
-    public static void internals(Object object){
+    public static String internals(Object object){
         // 打印对象头信息=>引用大小
         System.out.println("Object Size Layout:");
         //计算指定对象本身在堆空间的大小，单位字节
@@ -51,6 +52,7 @@ public class ObjectActionProvider extends ActionProvider {
 //      //打印实际对象信息
 //      System.out.println("Object total size:");
 //      System.out.println(GraphLayout.parseInstance(object).toPrintable());
+        return object+" layout has been printed on the console";
     }
 
     @Action(ActionType.Object.objectStore)
@@ -60,15 +62,16 @@ public class ObjectActionProvider extends ActionProvider {
         //转成JSON
         path = path+ AgentConstants.PATH+File.separator+ActionType.Object.objectStore +File.separator+dateFileString;
         String writePath = JSONFileTool.write(object,path);
-        System.out.println("object store path: "+writePath);
-        return writePath;
+        System.out.println("object: "+ObjectTool.toString(object) +"\nObject store path: "+writePath);
+        return ObjectTool.toString(object)+" Object store path has been printed on the console";
     }
 
 
     @Action(ActionType.Object.objectLoad)
-    public static <E> E load(E object,String path) throws Exception {
+    public static <E> String load(E object,String path) throws Exception {
         if (object == null) {
 //            throw new IllegalArgumentException("object must not be null");
+            return "Object cannot be empty";
         }
         System.out.println("object load result before: "+ System.identityHashCode(object)+": "+JSONUtil.toJsonStr(object));
         //读取文件 参考IDEA setValue
@@ -101,7 +104,7 @@ public class ObjectActionProvider extends ActionProvider {
             }
         }
         System.out.println("object load result after: "+ System.identityHashCode(object)+": "+JSONUtil.toJsonStr(object));
-        return object;
+        return ObjectTool.toString(object)+ " Object has reloaded data";
     }
 
     public static void main(String[] args) throws Exception {

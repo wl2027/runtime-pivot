@@ -1,5 +1,7 @@
 package com.runtime.pivot.agent;
 
+import com.runtime.pivot.agent.config.AgentConstants;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -106,10 +108,18 @@ public class ActionExecutor {
         Method method = ACTION_TYPE_METHOD_MAP.get(actionTypeValue);
         AtomicReference<Object> invoke = new AtomicReference<>();
         Runnable runnable = () -> {
+            Object result = null;
             try {
-                invoke.set(method.invoke(null, args));
+                result = method.invoke(null, args);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                result = e.toString();
+                System.out.print(AgentConstants.ANSI_BOLD);
+                System.out.print(AgentConstants.YELLOW);
+                System.err.println("RESULT : Error!");
+                System.err.println("Error Message : "+e.getMessage());
+                System.out.print(AgentConstants.RESET);
+            } finally {
+                invoke.set(String.valueOf(result));
             }
         };
         //调用内部AgentConsole,避免加载内部类

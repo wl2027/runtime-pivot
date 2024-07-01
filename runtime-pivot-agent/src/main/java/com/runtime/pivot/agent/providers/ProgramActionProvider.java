@@ -15,19 +15,21 @@ import java.util.List;
 public class ProgramActionProvider extends ActionProvider {
 
     @Action(ActionType.Program.classLoaderTree)
-    public static void classLoadTree() throws Exception{
+    public static String classLoadTree() throws Exception{
         List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
         ClassLoaderUtil.printClassLoaderTree(classLoaderTree);
+        return  "classLoadTree has been printed on the console";
     }
 
     @Action(ActionType.Program.classLoaderClassTree)
-    public static void classLoaderClassTree() throws Exception{
+    public static String classLoaderClassTree() throws Exception{
         List<ClassLoaderInfo> classLoaderTree = ClassLoaderUtil.getClassLoaderTree(ActionExecutor.getAgentContext().getInstrumentation());
         ClassLoaderUtil.printClassLoaderClassTree(classLoaderTree);
+        return  "classLoaderClassTree has been printed on the console";
     }
 
     @Action(ActionType.Program.transformers)
-    public static void transformers() throws Exception{
+    public static String transformers() throws Exception{
         TransformerManager mTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mTransformerManager");
         TransformerManager mRetransfomableTransformerManager = (TransformerManager) ReflectUtil.getFieldValue(ActionExecutor.getAgentContext().getInstrumentation(), "mRetransfomableTransformerManager");
         Object[] mTransformerList = (Object[]) ReflectUtil.getFieldValue(mTransformerManager, "mTransformerList");
@@ -40,6 +42,7 @@ public class ProgramActionProvider extends ActionProvider {
             ClassFileTransformer mTransformer = (ClassFileTransformer) ReflectUtil.getFieldValue(o, "mTransformer");
             System.out.println(mTransformer.toString()+mTransformer.getClass());
         }
+        return "transformers has been printed on the console";
     }
 
 }
