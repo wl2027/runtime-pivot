@@ -1,6 +1,5 @@
 package com.runtime.pivot.agent;
 
-import cn.hutool.core.date.StopWatch;
 import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
@@ -20,8 +19,6 @@ public class AgentMain {
 
     public static void premain(String agentArgs, Instrumentation instrumentation) {
         //注册启动失败钩子
-        StopWatch stopWatch = new StopWatch("aaa");
-        stopWatch.start();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("JVM is shutting down... ");
         }));
@@ -46,8 +43,6 @@ public class AgentMain {
         } finally {
             // 恢复原始的类加载器
             Thread.currentThread().setContextClassLoader(originalClassLoader);
-            stopWatch.stop();
-            stopWatch.prettyPrint();
         }
     }
 
@@ -93,7 +88,7 @@ public class AgentMain {
 
     private static Map<String, Method> initAgentData(AgentClassLoader agentClassLoader) throws Exception{
         Class<Annotation> actionAnnotationClass = (Class<Annotation>) agentClassLoader.loadClass("com.runtime.pivot.agent.model.Action");
-        List<Class<?>> actionClassList = agentClassLoader.getActionClassList();
+        List<Class> actionClassList = agentClassLoader.getActionClassList();
         Map<String, Method> actionTypeMethodMap = new HashMap<>();
         for (Class actionClass : actionClassList) {
             //Method[] methods = ReflectUtil.getMethods(actionClass);
