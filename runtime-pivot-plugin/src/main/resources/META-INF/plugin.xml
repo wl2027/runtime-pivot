@@ -19,6 +19,11 @@
         <!-- Add your extensions here -->
         <java.programPatcher implementation="com.runtime.pivot.plugin.config.RuntimeJavaAgentConfig"/>
         <projectService serviceImplementation="com.runtime.pivot.plugin.service.RuntimePivotMethodService" />
+        <projectService serviceImplementation="com.runtime.pivot.plugin.config.RuntimePivotSettings"/>
+        <projectConfigurable parentId="tools"
+                             id="RuntimePivotConfigurable"
+                             displayName="Runtime-Pivot Configuration"
+                             instance="com.runtime.pivot.plugin.view.RuntimePivotConfigurable" />
     </extensions>
 
     <actions>

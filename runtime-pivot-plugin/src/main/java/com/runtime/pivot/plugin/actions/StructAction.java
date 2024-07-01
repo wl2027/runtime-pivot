@@ -7,16 +7,17 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.plugin.model.RuntimeAgentAction;
 import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 
 
 /**
  * @see com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialog$AddXBreakpointAction
  */
-public abstract class StructAction extends RuntimeBaseAction {
+public abstract class StructAction extends RuntimeAgentAction {
     @Override
     final protected boolean isEnable(AnActionEvent e) {
-        return true;
+        return super.isEnable(e);
     }
 
     /**

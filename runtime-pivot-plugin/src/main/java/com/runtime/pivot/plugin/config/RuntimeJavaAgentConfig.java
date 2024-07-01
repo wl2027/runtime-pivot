@@ -45,6 +45,10 @@ public class RuntimeJavaAgentConfig extends JavaProgramPatcher {
             return;
         }
 
+        if (!RuntimePivotSettings.getInstance(((RunConfiguration) configuration).getProject()).isAttachAgent()){
+            return;
+        }
+
         RunConfiguration runConfiguration = (RunConfiguration) configuration;
         ParametersList vmParametersList = javaParameters.getVMParametersList();
         vmParametersList.addParametersString("-javaagent:" + agentCoreJarPath);

@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.XDebugSession;
@@ -12,6 +13,7 @@ import com.intellij.xdebugger.frame.XStackFrame;
 import com.intellij.xdebugger.impl.actions.XDebuggerActionBase;
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
 import com.runtime.pivot.plugin.config.RuntimePivotConstants;
+import com.runtime.pivot.plugin.config.RuntimePivotSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

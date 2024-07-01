@@ -1,6 +1,7 @@
 package com.runtime.pivot.plugin.model;
 
 import com.intellij.debugger.engine.JavaValue;
+import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.evaluation.EvaluationMode;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
@@ -12,13 +13,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class RuntimeContext {
-
+    private @NotNull Project myProject;
     private @NotNull XDebugSession myXDebugSession;
     private @NotNull XDebuggerEvaluator myXDebuggerEvaluator;
 
     public RuntimeContext(XDebugSession xDebugSession) {
         XStackFrame currentStackFrame = xDebugSession.getCurrentStackFrame();
         XDebuggerEvaluator evaluator = currentStackFrame.getEvaluator();
+        myProject = xDebugSession.getProject();
         myXDebugSession = xDebugSession;
         myXDebuggerEvaluator = evaluator;
     }
@@ -57,7 +59,15 @@ public class RuntimeContext {
         return callback;
     }
 
+    public Project getProject() {
+        return myProject;
+    }
+
     public XDebugSession getXDebugSession() {
         return myXDebugSession;
+    }
+
+    public XDebuggerEvaluator getXDebuggerEvaluator() {
+        return myXDebuggerEvaluator;
     }
 }

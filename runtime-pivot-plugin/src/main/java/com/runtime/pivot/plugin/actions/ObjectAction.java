@@ -8,13 +8,14 @@ import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree;
 import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.WatchesRootNode;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.plugin.model.RuntimeAgentAction;
 import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class ObjectAction extends RuntimeBaseAction {
+public abstract class ObjectAction extends RuntimeAgentAction {
     /**
      * 不为空,且不能是计算的,要内存中真实存在的
      * @see XDebuggerTreeActionBase#update(AnActionEvent)
@@ -24,7 +25,7 @@ public abstract class ObjectAction extends RuntimeBaseAction {
     @Override
     final protected boolean isEnable(AnActionEvent e) {
         XValueNodeImpl node = getSelectedNode(e.getDataContext());
-        return node != null && node.getName() != null && node.getParent() instanceof WatchesRootNode;
+        return super.isEnable(e) && node != null && node.getName() != null && node.getParent() instanceof WatchesRootNode;
     }
 
     /**
