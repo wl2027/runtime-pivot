@@ -6,23 +6,19 @@ import java.util.Date;
 
 public class ClassLoadingInfo {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    private final ClassLoader classLoader;
-    private final String className;
-    private final String qualifiedName;
-    private final Class<?> classBeingRedefined;
-    private final ProtectionDomain protectionDomain;
-    private final byte[] classfileBuffer;
-    private final Date loadingTime;
-    private final String loadingTimeStr;
-    private final String state;//install or uninstall
+    private ClassLoader classLoader;
+    private String className;
+    private String qualifiedName;
+    private Class<?> classBeingRedefined;
+    private Date loadingTime;
+    private String loadingTimeStr;
+    private String state;//install or uninstall
 
-    public ClassLoadingInfo(ClassLoader classLoader, String qualifiedName,String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+    public ClassLoadingInfo(ClassLoader classLoader, String qualifiedName,String className, Class<?> classBeingRedefined) {
         this.classLoader = classLoader;
         this.className = className;
         this.qualifiedName = qualifiedName;
         this.classBeingRedefined = classBeingRedefined;
-        this.protectionDomain = protectionDomain;
-        this.classfileBuffer = classfileBuffer;
         synchronized (simpleDateFormat){
             this.loadingTime = new Date();
             //this.loadingTimeStr = DateUtil.format(loadingTime, DatePattern.NORM_DATETIME_MS_PATTERN);
@@ -45,14 +41,6 @@ public class ClassLoadingInfo {
 
     public Class<?> getClassBeingRedefined() {
         return classBeingRedefined;
-    }
-
-    public ProtectionDomain getProtectionDomain() {
-        return protectionDomain;
-    }
-
-    public byte[] getClassfileBuffer() {
-        return classfileBuffer;
     }
 
     public Date getLoadingTime() {

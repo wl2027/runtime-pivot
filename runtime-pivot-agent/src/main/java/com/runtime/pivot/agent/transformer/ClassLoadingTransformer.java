@@ -30,25 +30,46 @@ public class ClassLoadingTransformer implements ClassFileTransformer {
             }
             return classfileBuffer;
         }
-        synchronized (ClassLoadingTransformer.class){
-            String qualifiedName = getQualifiedName(className);
-            ClassLoadingInfo classLoadingInfo = new ClassLoadingInfo(classLoader,qualifiedName,className,classBeingRedefined,protectionDomain,classfileBuffer);
-            if (ActionExecutor.getAgentContext() == null || ActionExecutor.getAgentContext().getClassLoadingInfoMap()==null) {
-                if (AgentMain.classLoadingInfoMap.get(qualifiedName)==null) {
-                    AgentMain.classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
-                }
-                List<ClassLoadingInfo> classLoadingInfos = AgentMain.classLoadingInfoMap.get(qualifiedName);
-                classLoadingInfos.add(classLoadingInfo);
-            }else {
-                Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = ActionExecutor.getAgentContext().getClassLoadingInfoMap();
-                if (classLoadingInfoMap.get(qualifiedName)==null) {
-                    classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
-                }
-                List<ClassLoadingInfo> classLoadingInfos = classLoadingInfoMap.get(qualifiedName);
-                classLoadingInfos.add(classLoadingInfo);
+        //TODO 为什么要加锁? 20240629 AgentMain.classLoadingInfoMap.put(qualifiedName,new LinkedList<>()); LinkedList线程不安全
+        //TODO解决方式 ConcurrentLinkedQueue Collections.synchronizedList
+//        synchronized (ClassLoadingTransformer.class){
+//            String qualifiedName = getQualifiedName(className);
+//            ClassLoadingInfo classLoadingInfo = new ClassLoadingInfo(classLoader,qualifiedName,className,classBeingRedefined);
+//            if (ActionExecutor.getAgentContext() == null || ActionExecutor.getAgentContext().getClassLoadingInfoMap()==null) {
+//                if (AgentMain.classLoadingInfoMap.get(qualifiedName)==null) {
+//                    AgentMain.classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
+//                }
+//                List<ClassLoadingInfo> classLoadingInfos = AgentMain.classLoadingInfoMap.get(qualifiedName);
+//                classLoadingInfos.add(classLoadingInfo);
+//            }else {
+//                Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = ActionExecutor.getAgentContext().getClassLoadingInfoMap();
+//                if (classLoadingInfoMap.get(qualifiedName)==null) {
+//                    classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
+//                }
+//                List<ClassLoadingInfo> classLoadingInfos = classLoadingInfoMap.get(qualifiedName);
+//                classLoadingInfos.add(classLoadingInfo);
+//            }
+//            return classfileBuffer;
+//        }
+        String qualifiedName = getQualifiedName(className);
+        ClassLoadingInfo classLoadingInfo = new ClassLoadingInfo(classLoader,qualifiedName,className,classBeingRedefined);
+        if (ActionExecutor.getAgentContext() == null || ActionExecutor.getAgentContext().getClassLoadingInfoMap()==null) {
+            //先用临时的
+            if (AgentMain.classLoadingInfoMap.get(qualifiedName)==null) {
+                AgentMain.classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
             }
-            return classfileBuffer;
+            List<ClassLoadingInfo> classLoadingInfos = AgentMain.classLoadingInfoMap.get(qualifiedName);
+            classLoadingInfos.add(classLoadingInfo);
+        }else {
+            //用putAll后的
+            Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = ActionExecutor.getAgentContext().getClassLoadingInfoMap();
+            if (classLoadingInfoMap.get(qualifiedName)==null) {
+                classLoadingInfoMap.put(qualifiedName,new LinkedList<>());
+            }
+            List<ClassLoadingInfo> classLoadingInfos = classLoadingInfoMap.get(qualifiedName);
+            classLoadingInfos.add(classLoadingInfo);
         }
+        return classfileBuffer;
     }
 
     private String getQualifiedName(String className) {
