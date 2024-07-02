@@ -51,7 +51,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myEvaluated != null) {
       myEvaluated.accept(myJavaResult);
     }
-    ApplicationManager.getApplication().invokeLater(()->Messages.showMessageDialog("执行结果: \n"+myResultString,RuntimePivotConstants.RESULT_MSG_TITLE,null));
+    ApplicationManager.getApplication().invokeLater(()->Messages.showMessageDialog("执行结果: \n\n"+myResultString,RuntimePivotConstants.RESULT_MSG_TITLE,null));
   }
 
   @Override
@@ -60,7 +60,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myErrorOccurred != null) {
       myErrorOccurred.accept(errorMessage);
     }
-    ApplicationManager.getApplication().invokeLater(()->Messages.showErrorDialog("异常信息: \n"+myErrorOccurred,RuntimePivotConstants.ERROR_MSG_TITLE));
+    ApplicationManager.getApplication().invokeLater(()->Messages.showErrorDialog("异常信息: \n\n"+myErrorOccurred,RuntimePivotConstants.ERROR_MSG_TITLE));
   }
 
   public JavaValue getJavaResult() {

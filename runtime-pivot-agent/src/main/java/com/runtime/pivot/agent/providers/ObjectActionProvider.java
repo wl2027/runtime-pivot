@@ -1,9 +1,11 @@
 package com.runtime.pivot.agent.providers;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -14,7 +16,6 @@ import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.Action;
 import com.runtime.pivot.agent.model.ActionProvider;
 import com.runtime.pivot.agent.model.ActionType;
-import com.runtime.pivot.agent.tools.JSONFileTool;
 import com.runtime.pivot.agent.tools.ObjectTool;
 import org.apache.lucene.util.RamUsageEstimator;
 import org.openjdk.jol.info.ClassLayout;
@@ -46,18 +47,26 @@ public class ObjectActionProvider extends ActionProvider {
         //计算指定对象及其引用树上的所有对象的综合大小，返回可读的结果，如：2KB
         System.out.println("RAM resource usage: " + RamUsageEstimator.humanReadableUnits(size));//K字节
         System.out.println("\nObject Header Layout:");
-        System.out.println(ClassLayout.parseInstance(object).toPrintable());
-        return object+" layout has been printed on the console";
+        String printable = ClassLayout.parseInstance(object).toPrintable();
+        System.out.println(printable);
+        return ObjectTool.toString(object)+" layout has been printed on the console";
     }
 
     @Action(ActionType.Object.objectStore)
-    public static String store(Object object,String path){
+    public static String store(Object object,String path) throws Exception{
         ActionContext actionContext = ActionExecutor.getActionContext();
         String dateFileString = actionContext.getDateFileString();
         //转成JSON
         path = path+ AgentConstants.PATH+File.separator+ActionType.Object.objectStore +File.separator+dateFileString;
-        String writePath = JSONFileTool.write(object,path);
-        System.out.println("object: "+ObjectTool.toString(object) +"\nObject store path: "+writePath);
+        // 创建一个格式化的 JSON 写入器
+        ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
+        // 将 JSON 格式字符串写入到文件
+        String className = object.getClass().getName();
+        String filePath = path + File.separatorChar + className.replace('.', File.separatorChar) +"@"+ObjectTool.getHexId(object)+".json";
+        File touch = FileUtil.touch(filePath);
+        writer.writeValue(touch, object);
+//        String writePath = JSONFileTool.write(object,path);
+        System.out.println("object: "+ObjectTool.toString(object) +"\nObject store path: "+touch.getPath());
         return ObjectTool.toString(object)+" Object store path has been printed on the console";
     }
 
@@ -69,27 +78,21 @@ public class ObjectActionProvider extends ActionProvider {
             //object = (E) objectMapper.readValue(jsonString,Object.class);
             return "Object cannot be empty";
         }
-        System.out.println("object load result before: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
+        //效率更高 objectMapper.writeValueAsString()
+        //System.out.println("object load result before: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
         //读取文件 参考IDEA setValue
-        JSON json = JSONUtil.readJSON(new File(path), StandardCharsets.UTF_8);
-        String jsonString = json.toJSONString(0);
-        if (StrUtil.isBlank(jsonString)) {
-            //没有json数据
-            return path+" there is no JSON data";
-        }
-        if (object instanceof Collection){
-            ((Collection)object).clear();
-        }
-        if (object instanceof Map){
-            ((Map)object).clear();
-        }
-
+//        JSON json = JSONUtil.readJSON(new File(path), StandardCharsets.UTF_8);
+//        String jsonString = json.toJSONString(0);
+//        if (StrUtil.isBlank(jsonString)) {
+//            //没有json数据
+//            return path+" there is no JSON data";
+//        }
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-
         if (object.getClass().isArray()){
             //暂时不处理数组
             if (true) return ObjectTool.toString(object)+" processing array data is not supported";
-            Object[] sourceArray = objectMapper.readValue(jsonString, Object[].class);
+            //Object[] sourceArray = objectMapper.readValue(jsonString, Object[].class);
+            Object[] sourceArray = objectMapper.readValue(new File(path), Object[].class);
             Object[] targetArray = (Object[]) object;
             int length = targetArray.length;
             System.arraycopy(sourceArray, 0, targetArray, 0, length);
@@ -97,17 +100,17 @@ public class ObjectActionProvider extends ActionProvider {
             Collection<?> collection = (Collection<?>) object;
             CollectionType collectionType = typeFactory.constructCollectionType(collection.getClass(), typeFactory.constructType(collection.iterator().next().getClass()));
             collection.clear();
-            System.out.println("object is not empty list");
-            collection.addAll(objectMapper.readValue(jsonString, collectionType));
+            collection.addAll(objectMapper.readValue(new File(path), collectionType));
         } else if (object instanceof Map && !((Map<?, ?>) object).isEmpty()) {
             Map<?, ?> map = (Map<?, ?>) object;
             MapType mapType = typeFactory.constructMapType(map.getClass(), typeFactory.constructType(map.keySet().iterator().next().getClass()), typeFactory.constructType(map.values().iterator().next().getClass()));
             map.clear();
-            map.putAll(objectMapper.readValue(jsonString, mapType));
+            map.putAll(objectMapper.readValue(new File(path), mapType));
         }else {
-            objectMapper.readerForUpdating(object).readValue(jsonString);
+            objectMapper.readerForUpdating(object).readValue(new File(path));
         }
-        System.out.println("object load result after: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
+        //System.out.println("object load result after: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
+        System.out.println(ObjectTool.toString(object) + " Object has reloaded data");
         return ObjectTool.toString(object)+ " Object has reloaded data";
     }
 
