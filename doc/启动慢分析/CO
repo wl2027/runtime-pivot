@@ -1,0 +1,9 @@
+D:\006_JDK\1.8\bin\java.exe
+-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:57795,suspend=y,server=n
+-javaagent:C:\Users\2018wl\AppData\Roaming\JetBrains\IdeaIC2024.1\plugins\runtime-pivot\lib\runtime-pivot-agent-1.0.0.RELEASE-all.jar
+-Druntime-pivot-plugin.projectId=c9bcdaa7
+-Druntime.pivot.agent.path=C:\Users\2018wl\AppData\Roaming\JetBrains\IdeaIC2024.1\plugins\runtime-pivot\lib\runtime-pivot-agent-1.0.0.RELEASE-all.jar
+-javaagent:C:\Users\2018wl\AppData\Local\JetBrains\IdeaIC2024.1\captureAgent\debugger-agent.jar
+-Dfile.encoding=UTF-8
+-classpath C:\Users\2018wl\AppData\Local\Temp\classpath85968503.jar
+com.sunline.workflow.WorkflowApplication

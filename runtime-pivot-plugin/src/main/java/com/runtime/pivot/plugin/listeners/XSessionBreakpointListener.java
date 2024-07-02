@@ -1,16 +1,11 @@
 package com.runtime.pivot.plugin.listeners;
 
-import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
-import com.intellij.xdebugger.XDebuggerManager;
-import com.intellij.xdebugger.XDebuggerManagerListener;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointListener;
-import com.runtime.pivot.plugin.enums.XStackBreakpointType;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
 import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
-import com.runtime.pivot.plugin.utils.ProjectUtils;
 import com.runtime.pivot.plugin.view.method.XSessionBreakpointDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -35,9 +35,6 @@ import com.intellij.xdebugger.impl.XDebugSessionImpl;
 import com.intellij.xdebugger.impl.XDebuggerUtilImpl;
 import com.intellij.xdebugger.impl.breakpoints.XBreakpointUtil;
 import com.intellij.xdebugger.impl.frame.XStackFrameContainerEx;
-import com.runtime.pivot.plugin.utils.platfrom.XTestCompositeNode;
-import com.runtime.pivot.plugin.utils.platfrom.XTestContainer;
-import com.runtime.pivot.plugin.utils.platfrom.XTestValueNode;
 import org.bouncycastle.jcajce.provider.symmetric.IDEA;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,8 +50,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @see IDEA

@@ -1,6 +1,5 @@
 package com.runtime.pivot.agent.model;
 
-import java.security.ProtectionDomain;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

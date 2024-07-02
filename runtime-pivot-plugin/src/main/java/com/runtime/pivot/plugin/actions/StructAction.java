@@ -8,7 +8,6 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.plugin.model.RuntimeAgentAction;
-import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 
 
 /**

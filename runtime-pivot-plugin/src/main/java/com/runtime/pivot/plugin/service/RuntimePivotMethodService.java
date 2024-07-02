@@ -11,7 +11,6 @@ import com.runtime.pivot.plugin.view.method.XSessionMonitoringDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

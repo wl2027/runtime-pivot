@@ -16,9 +16,7 @@
 package com.runtime.pivot.plugin.model;
 
 import com.intellij.debugger.engine.JavaValue;
-import com.intellij.ide.impl.ProjectNewWindowDoNotAskOption;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.ui.MessageUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.frame.XValue;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;

@@ -2,10 +2,7 @@ package com.runtime.pivot.plugin.actions.object;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.ProjectUtil;
-import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.xdebugger.frame.XValue;
-import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.model.ActionType;
 import com.runtime.pivot.plugin.actions.ObjectAction;
@@ -27,7 +24,12 @@ public class ObjectStoreAction extends ObjectAction {
         getRuntimeContext().executeAttachCode(code, (javaValue)->{
             VirtualFile baseDir = ProjectUtil.guessProjectDir(e.getProject());
             VirtualFile child = baseDir.findChild(".runtime");
-            child.getFileSystem().refresh(false);
+            if (child!=null) {
+                child.getFileSystem().refresh(false);
+            }else {
+                //第一次创建出来的文件夹.runtime并没有刷新出来
+                baseDir.getFileSystem().refresh(true);
+            }
         });
 
     }

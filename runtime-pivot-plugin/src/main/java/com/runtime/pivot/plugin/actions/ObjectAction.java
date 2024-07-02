@@ -9,7 +9,6 @@ import com.intellij.xdebugger.impl.ui.tree.actions.XDebuggerTreeActionBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.WatchesRootNode;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.plugin.model.RuntimeAgentAction;
-import com.runtime.pivot.plugin.model.RuntimeBaseAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

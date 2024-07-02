@@ -5,11 +5,8 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.xdebugger.frame.XValue;
-import com.intellij.xdebugger.impl.ui.tree.nodes.XEvaluationCallbackBase;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ActionType;
@@ -18,8 +15,6 @@ import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.utils.ActionExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
 
 /**
  * @see com.intellij.openapi.vcs.changes.patch.ApplyPatchAction

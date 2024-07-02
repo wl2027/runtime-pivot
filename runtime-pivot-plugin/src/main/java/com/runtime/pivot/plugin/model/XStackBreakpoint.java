@@ -1,7 +1,6 @@
 package com.runtime.pivot.plugin.model;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.frame.XStackFrame;
