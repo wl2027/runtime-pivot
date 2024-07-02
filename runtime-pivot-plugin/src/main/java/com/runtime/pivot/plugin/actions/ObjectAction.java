@@ -32,12 +32,8 @@ public abstract class ObjectAction extends RuntimeAgentAction {
      * @param dataContext
      * @return
      */
-    public static @NotNull List<XValueNodeImpl> getSelectedNodes(@NotNull DataContext dataContext) {
-        return XDebuggerTree.getSelectedNodes(dataContext);
-    }
-
     public static @Nullable XValueNodeImpl getSelectedNode(@NotNull DataContext dataContext) {
-        return ContainerUtil.getFirstItem(getSelectedNodes(dataContext));
+        return XDebuggerTreeActionBase.getSelectedNode(dataContext);
     }
 
     public static @Nullable XValue getSelectedValue(@NotNull DataContext dataContext) {
