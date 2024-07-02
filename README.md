@@ -8,15 +8,15 @@ __________ ____ _____________________.___   _____  ___________        __________
 ```
 # runtime-pivot-plugin
 
-[![Version](https://img.shields.io/jetbrains/plugin/v/com.github.wl2027.datapivotplugin.svg)](https://plugins.jetbrains.com/plugin/23828-data-pivot)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.github.wl2027.datapivotplugin.svg)](https://plugins.jetbrains.com/plugin/23828-data-pivot)
-![Downloads](https://img.shields.io/github/release/wl2027/data-pivot-plugin.svg)
-![Downloads](https://img.shields.io/github/stars/wl2027/data-pivot-plugin)
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/23828-runtime-pivot)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/23828-com.runtime.pivot.plugin)
+![Downloads](https://img.shields.io/github/release/wl2027/runtime-pivot.svg)
+![Downloads](https://img.shields.io/github/stars/wl2027/runtime-pivot)
 ![Downloads](https://img.shields.io/badge/license-GPLv3-blue.svg)
-![Downloads](https://img.shields.io/badge/MySQL-5.7%2B-brightgreen.svg?style=flat)
-![Downloads](https://img.shields.io/badge/Java-11-brightgreen.svg?style=flat)
-[![GitHub](https://img.shields.io/static/v1?label=&message=GitHub&logo=github&color=black&labelColor=555)](https://github.com/wl2027/data-pivot-plugin) 
-[![Gitee](https://img.shields.io/static/v1?label=&message=Gitee&logo=gitee&color=orange&labelColor=555)](https://gitee.com/wl2027/data-pivot-plugin)
+![Downloads](https://img.shields.io/badge/Java-8-brightgreen.svg?style=flat)
+![Downloads](https://img.shields.io/badge/Java-17-brightgreen.svg?style=flat)
+[![GitHub](https://img.shields.io/static/v1?label=&message=GitHub&logo=github&color=black&labelColor=555)](https://github.com/wl2027/runtime-pivot) 
+[![Gitee](https://img.shields.io/static/v1?label=&message=Gitee&logo=gitee&color=orange&labelColor=555)](https://gitee.com/wl2027/runtime-pivot)
 
 ## Introduction
 <!-- Plugin description -->
@@ -60,12 +60,12 @@ data-pivot是一款基于IntelliJ IDEA IU平台开发的插件，为项目开发
 
 - **Using the IDE built-in plugin system:**
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "data-pivot"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "runtime-pivot"</kbd> >
   <kbd>Install</kbd>
 
 - **Manually:**
 
-  Download the [latest release](https://github.com/wl2027/data-pivot-plugin/releases/latest) and install it manually using
+  Download the [latest release](https://github.com/wl2027/runtime-pivot/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 Restart the **IDE** after installation.
