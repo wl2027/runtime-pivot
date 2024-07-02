@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @State(
-        name = "RuntimePivotSettings",
-        storages = @Storage("RuntimePivotSettings.xml")
+        name = RuntimePivotConstants.STORAGE_ID,
+        storages = @Storage(RuntimePivotConstants.STORAGE_FILE_NAME)
 )
 public class RuntimePivotSettings implements PersistentStateComponent<RuntimePivotSettings.State> {
 

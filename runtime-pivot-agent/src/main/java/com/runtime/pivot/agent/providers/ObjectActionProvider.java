@@ -1,9 +1,6 @@
 package com.runtime.pivot.agent.providers;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -21,7 +18,6 @@ import org.apache.lucene.util.RamUsageEstimator;
 import org.openjdk.jol.info.ClassLayout;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
 
@@ -65,7 +61,6 @@ public class ObjectActionProvider extends ActionProvider {
         String filePath = path + File.separatorChar + className.replace('.', File.separatorChar) +"@"+ObjectTool.getHexId(object)+".json";
         File touch = FileUtil.touch(filePath);
         writer.writeValue(touch, object);
-//        String writePath = JSONFileTool.write(object,path);
         System.out.println("object: "+ObjectTool.toString(object) +"\nObject store path: "+touch.getPath());
         return ObjectTool.toString(object)+" Object store path has been printed on the console";
     }
@@ -78,20 +73,10 @@ public class ObjectActionProvider extends ActionProvider {
             //object = (E) objectMapper.readValue(jsonString,Object.class);
             return "Object cannot be empty";
         }
-        //效率更高 objectMapper.writeValueAsString()
-        //System.out.println("object load result before: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
-        //读取文件 参考IDEA setValue
-//        JSON json = JSONUtil.readJSON(new File(path), StandardCharsets.UTF_8);
-//        String jsonString = json.toJSONString(0);
-//        if (StrUtil.isBlank(jsonString)) {
-//            //没有json数据
-//            return path+" there is no JSON data";
-//        }
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         if (object.getClass().isArray()){
             //暂时不处理数组
             if (true) return ObjectTool.toString(object)+" processing array data is not supported";
-            //Object[] sourceArray = objectMapper.readValue(jsonString, Object[].class);
             Object[] sourceArray = objectMapper.readValue(new File(path), Object[].class);
             Object[] targetArray = (Object[]) object;
             int length = targetArray.length;
@@ -109,7 +94,6 @@ public class ObjectActionProvider extends ActionProvider {
         }else {
             objectMapper.readerForUpdating(object).readValue(new File(path));
         }
-        //System.out.println("object load result after: "+ ObjectTool.toString(object)+": \n"+JSONUtil.toJsonStr(object));
         System.out.println(ObjectTool.toString(object) + " Object has reloaded data");
         return ObjectTool.toString(object)+ " Object has reloaded data";
     }

@@ -71,12 +71,7 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
         System.out.println();
     }
 
-
-    private static void printClassProcessLink(String string, List<ClassLoadingInfo> classLoadingInfos) {
-
-    }
-
-    private static Class<?> getJvmClass(Object object, String className) throws ClassNotFoundException {
+    private static Class<?> getJvmMainClass(Object object, String className) throws ClassNotFoundException {
         if (object!=null) {
             Class<?> aClass = object.getClass();
             return aClass;
@@ -127,13 +122,6 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
             CtClass ctClass = null;
             try {
                 ctClass = pool.makeClass(new ByteArrayInputStream(bytes));
-//                String classNameTemp = ctClass.getName();
-//                classNameTemp = aClass.getName()+"@@CL@@"+aClass.getClassLoader();
-////                if (object!=null){
-////                    classNameTemp = aClass.getName()+"@@CL@"+aClass.getClassLoader();
-////                }
-//                ctClass.setName(classNameTemp);
-                //浪费性能: ctClass.rebuildClassFile();
                 String dumpPath = path + AgentConstants.PATH + File.separator + ActionType.Class.classFileDump + File.separator + dateFileString + File.separator + "CL" + ObjectTool.getHexId(aClass.getClassLoader());
                 ctClass.debugWriteFile(dumpPath);
                 System.out.println("ClassName:"+ctClass.getName()+"\nClassLoader:"+aClass.getClassLoader()+"\nDumpPath:"+dumpPath+"\n");

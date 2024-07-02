@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl;
+import com.runtime.pivot.plugin.i18n.RuntimePivotBundle;
 import com.runtime.pivot.plugin.model.RuntimeAgentAction;
 
 
@@ -47,7 +48,10 @@ public abstract class StructAction extends RuntimeAgentAction {
             return;
         }
         //作用在项目上
-        TreeJavaClassChooserDialog treeJavaClassChooserDialog = new TreeJavaClassChooserDialog("class file dump",project);
+        TreeJavaClassChooserDialog treeJavaClassChooserDialog = new TreeJavaClassChooserDialog(
+                RuntimePivotBundle.message("runtime.pivot.plugin.action.class.chooser.dialog"),
+                project
+        );
         treeJavaClassChooserDialog.show();
         PsiClass selected = treeJavaClassChooserDialog.getSelected();
         if (selected != null) {

@@ -18,8 +18,9 @@ public class AgentMain {
     public static volatile Map<String, List<ClassLoadingInfo>> classLoadingInfoMap = new ConcurrentSkipListMap<>();
 
     public static void premain(String agentArgs, Instrumentation instrumentation) {
-        //注册启动失败钩子
+        //注册关闭钩子
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("runtime-pivot-agent is shutting down... ");
             System.out.println("JVM is shutting down... ");
         }));
         // 当前线程的类加载器
@@ -49,7 +50,6 @@ public class AgentMain {
     private static void initTransformer(Instrumentation instrumentation) {
         //当加载类时，当 它们被重新定义时，转换器被调用。如果 canRetransform 为 true，则当它们 被重新转换时
         instrumentation.addTransformer(new ClassLoadingTransformer(),true);
-        //test instrumentation.addTransformer(new JdbcTransformer());
     }
 
     private static void initActuator(ClassLoader classLoader) throws Exception{
@@ -57,17 +57,12 @@ public class AgentMain {
         Class<?> agentContextClass = classLoader.loadClass("com.runtime.pivot.agent.AgentContext");
         Class<?> actionExecutorClass = classLoader.loadClass("com.runtime.pivot.agent.ActionExecutor");
         Class<?> actionContextClass = classLoader.loadClass("com.runtime.pivot.agent.ActionContext");
-//        if (AgentConstants.DEBUG) {
-//            System.out.println(classLoader);
-//        }
     }
 
     private static void printError(Exception exception) {
-//        if (true) return;
         System.out.println(AgentConstants.ANSI_BOLD);
-        System.out.println(AgentConstants.RED);
-        System.out.println("Runtime Pivot Agent failed to start");
-        System.out.println("error message: "+exception.getMessage());
+        System.err.println("Runtime Pivot Agent failed to start");
+        System.err.println("error message: "+exception.getMessage());
         if (AgentConstants.DEBUG) {
             exception.printStackTrace();
         }
@@ -78,11 +73,6 @@ public class AgentMain {
         String agentPath = System.getProperty(AgentConstants.AGENT_PATH);
         AgentClassLoader agentClassLoader = new AgentClassLoader(agentPath);
         List<Class<?>> classes = agentClassLoader.loadJarClassList(agentPath);
-//        if (AgentConstants.DEBUG) {
-//            for (Class<?> aClass : classes) {
-//                System.out.println(aClass);
-//            }
-//        }
         return agentClassLoader;
     }
 
@@ -120,14 +110,9 @@ public class AgentMain {
         hashMap.putAll(classLoadingInfoMap);
         externalAgentContext.setClassLoadingInfoMap(hashMap);
         ActionExecutor.setAgentContext(externalAgentContext);
-
-//        if (AgentConstants.DEBUG) {
-//            System.out.println(internalAgentContext);
-//        }
     }
 
     private static void printBanner() {
-//        if (true) return;
         System.out.println(AgentConstants.ANSI_BOLD);
         System.out.println(AgentConstants.BANNER);
         System.out.println(AgentConstants.IDENTIFICATION);

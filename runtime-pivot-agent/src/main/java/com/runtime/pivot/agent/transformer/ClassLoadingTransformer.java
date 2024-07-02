@@ -16,23 +16,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用于classLoadingProcess
+ */
 public class ClassLoadingTransformer implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         //类加载器并行加载
-        //TODO className is null E:\002_Code\000_github\IDEA\runtime-pivot\runrun\org\springframework\boot\autoconfigure\condition
-        //org.springframework.boot.autoconfigure.condition.OnPropertyCondition$$Lambda$267
         if (StringTool.isEmpty(className)) {
-            //记录为lamda
+            //记录为lambda
             try {
-                String name = ClassPool.getDefault().makeClass(new ByteArrayInputStream(classfileBuffer)).getName();
+                className = ClassPool.getDefault().makeClass(new ByteArrayInputStream(classfileBuffer)).getName();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                return classfileBuffer;
             }
-            return classfileBuffer;
         }
-        //TODO 为什么要加锁? 20240629 AgentMain.classLoadingInfoMap.put(qualifiedName,new LinkedList<>()); LinkedList线程不安全
-        //TODO解决方式 ConcurrentLinkedQueue Collections.synchronizedList
+        //并行加载: classLoadingInfoMap.put(qualifiedName,new LinkedList<>()); LinkedList线程不安全
         String qualifiedName = getQualifiedName(className);
         ClassLoadingInfo classLoadingInfo = new ClassLoadingInfo(classLoader,qualifiedName,className,classBeingRedefined);
         if (ActionExecutor.getAgentContext() == null || ActionExecutor.getAgentContext().getClassLoadingInfoMap()==null) {

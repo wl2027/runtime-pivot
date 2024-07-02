@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.extensions.PluginId;
+import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 
 import java.io.File;
 import java.util.List;
@@ -14,7 +15,7 @@ public class PluginUtil {
     private static final IdeaPluginDescriptor IDEA_PLUGIN_DESCRIPTOR;
 
     static {
-        PluginId pluginId = PluginId.getId("com.runtime.pivot.plugin");
+        PluginId pluginId = PluginId.getId(RuntimePivotConstants.PLUGIN_ID);
         IDEA_PLUGIN_DESCRIPTOR = PluginManagerCore.getPlugin(pluginId);
     }
 
@@ -24,7 +25,7 @@ public class PluginUtil {
      * @return String
      */
     public static String getAgentCoreJarPath() {
-        return getJarPathByStartWith("runtime-pivot-agent");
+        return getJarPathByStartWith(RuntimePivotConstants.AGENT_JAR_NAME);
     }
 
     /**

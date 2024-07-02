@@ -28,15 +28,6 @@ public class XSessionBreakpointListener implements XBreakpointListener {
         });
     }
 
-    //添加断点不一定要加入到当前断点列表中,因为当前断点列表指的是已经过的断点,属于历史记录
-    //不过还是需要-因为回溯时不将其记录进去会被影响而卡住
-//    @Override
-//    public void breakpointAdded(@NotNull XBreakpoint breakpoint) {
-//        updateData((session,dialog)->{
-//            dialog.updateData(XStackContext.getInstance(session));
-//        });
-//    }
-//
     @Override
     public void breakpointRemoved(@NotNull XBreakpoint breakpoint) {
         updateData((session,dialog)->{
@@ -48,7 +39,7 @@ public class XSessionBreakpointListener implements XBreakpointListener {
             dialog.updateListData(collect);
         });
     }
-//
+
     @Override
     public void breakpointChanged(@NotNull XBreakpoint breakpoint) {
         updateData((session,dialog)->{

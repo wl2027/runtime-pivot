@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.util.ui.FormBuilder;
 import com.runtime.pivot.plugin.config.RuntimePivotSettings;
+import com.runtime.pivot.plugin.i18n.RuntimePivotBundle;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,10 +32,9 @@ public class RuntimePivotConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        attachAgentCheckBox = new JBCheckBox("Attach Agent");
-        attachAgentCheckBox.setToolTipText("是否为项目程序开启runtime-pivot 的program, class, object功能增强");
-
-        JBLabel restartLabel = new JBLabel("是否为项目程序开启runtime-pivot 的program, class, object功能增强");
+        attachAgentCheckBox = new JBCheckBox(RuntimePivotBundle.message("runtime.pivot.plugin.configurable.attachAgentCheckBox"));
+        attachAgentCheckBox.setToolTipText(RuntimePivotBundle.message("runtime.pivot.plugin.configurable.tip.text"));
+        JBLabel restartLabel = new JBLabel(RuntimePivotBundle.message("runtime.pivot.plugin.configurable.tip.text"));
         restartLabel.setForeground(JBColor.GRAY);
 
         JPanel panel = new JBPanel<>();
