@@ -90,6 +90,7 @@ public class ActionExecutor {
 //        }
 //        System.out.println("正在调用execute..........args:"+args);
 //        System.out.println("正在调用execute..........args.length:"+args.length);
+
         if (args != null && args.length>0) {
             for (Object arg : args) {
                 if (arg!=null) {
@@ -101,6 +102,8 @@ public class ActionExecutor {
                 }
             }
         }
+        //将ActionClassLoader注册为AgentClassloader内的CurrentClassLoader
+        getAgentContext().getAgentClassloader().setCurrentClassLoader(getActionClassLoader());
 //        if (ActionExecutor.getActionClassLoader() == null) {
 //            throw new RuntimePivotException("args is all null");
 //        }

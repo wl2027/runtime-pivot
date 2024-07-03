@@ -1,12 +1,9 @@
 package com.runtime.pivot.agent;
 
-import cn.hutool.core.util.ReflectUtil;
-import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.config.AgentConstants;
+import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
 import com.runtime.pivot.agent.transformer.ClassLoadingTransformer;
-import sun.instrument.RuntimePivotTransformerManager;
-import sun.instrument.TransformerManager;
 
 import java.lang.annotation.Annotation;
 import java.lang.instrument.Instrumentation;
@@ -33,12 +30,8 @@ public class AgentMain {
             Thread.currentThread().setContextClassLoader(systemClassLoader);
             //打印Banner
             printBanner();
-            //初始化TransformerManager
-            initTransformerManagers(instrumentation);
             //初始化Transformer
             initTransformer(instrumentation);
-            //加载执行器
-            initActuator(systemClassLoader);
             //加载探针包
             AgentClassLoader agentClassLoader = initAgentClassLoader(originalClassLoader);
             //初始化上下文
@@ -52,22 +45,11 @@ public class AgentMain {
         }
     }
 
-    private static void initTransformerManagers(Instrumentation instrumentation) {
-//        ReflectUtil.setFieldValue(instrumentation,"mTransformerManager",RuntimePivotTransformerManager.print());
-//        ReflectUtil.setFieldValue(instrumentation,"mRetransfomableTransformerManager",new RuntimePivotTransformerManager(true));
-    }
-
     private static void initTransformer(Instrumentation instrumentation) {
         //当加载类时，当 它们被重新定义时，转换器被调用。如果 canRetransform 为 true，则当它们 被重新转换时
         instrumentation.addTransformer(new ClassLoadingTransformer(),true);
     }
 
-    private static void initActuator(ClassLoader classLoader) throws Exception{
-        Class<?> agentMainClass = classLoader.loadClass("com.runtime.pivot.agent.AgentMain");
-        Class<?> agentContextClass = classLoader.loadClass("com.runtime.pivot.agent.AgentContext");
-        Class<?> actionExecutorClass = classLoader.loadClass("com.runtime.pivot.agent.ActionExecutor");
-        Class<?> actionContextClass = classLoader.loadClass("com.runtime.pivot.agent.ActionContext");
-    }
 
     private static void printError(Exception exception) {
         System.out.println(AgentConstants.ANSI_BOLD);
@@ -81,14 +63,14 @@ public class AgentMain {
 
     private static AgentClassLoader initAgentClassLoader(ClassLoader classLoader) {
         String agentPath = System.getProperty(AgentConstants.AGENT_PATH);
-        AgentClassLoader agentClassLoader = new AgentClassLoader(agentPath);
-        List<Class<?>> classes = agentClassLoader.loadJarClassList(agentPath);
+        AgentClassLoader agentClassLoader = AgentClassLoader.getInstance(agentPath);
+        agentClassLoader.setCurrentClassLoader(classLoader);
         return agentClassLoader;
     }
 
     private static Map<String, Method> initAgentData(AgentClassLoader agentClassLoader) throws Exception{
         Class<Annotation> actionAnnotationClass = (Class<Annotation>) agentClassLoader.loadClass("com.runtime.pivot.agent.model.Action");
-        List<Class> actionClassList = agentClassLoader.getActionClassList();
+        List<Class<?>> actionClassList = agentClassLoader.getActionClassList();
         Map<String, Method> actionTypeMethodMap = new HashMap<>();
         for (Class actionClass : actionClassList) {
             //Method[] methods = ReflectUtil.getMethods(actionClass);
@@ -109,10 +91,8 @@ public class AgentMain {
     }
 
     private static void initAgentContext(Instrumentation instrumentation, AgentClassLoader agentClassLoader) throws Exception{
-        Class<?> agentContextClass = agentClassLoader.loadClass("com.runtime.pivot.agent.AgentContext");
         Map<String, Method> actionTypeMethodMap = initAgentData(agentClassLoader);
         AgentContext externalAgentContext = new AgentContext();
-        Object internalAgentContext = agentContextClass.newInstance();
         externalAgentContext.setInstrumentation(instrumentation);
         externalAgentContext.setAgentClassloader(agentClassLoader);
         externalAgentContext.setActionTypeMethodMap(actionTypeMethodMap);
