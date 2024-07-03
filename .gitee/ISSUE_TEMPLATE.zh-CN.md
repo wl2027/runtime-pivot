@@ -2,6 +2,8 @@
 
 ### 您使用哪个版本的runtime-pivot?
 
+### 您使用哪个版本的JDK?
+
 ### 您使用哪个版本的 IntelliJ IDEA IC ?
 
 ### 预期结果
