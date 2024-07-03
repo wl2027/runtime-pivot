@@ -1,5 +1,9 @@
 package com.runtime.pivot.agent.tools;
 
+import cn.hutool.core.util.ReflectUtil;
+import com.runtime.pivot.agent.ActionExecutor;
+import sun.instrument.TransformerManager;
+
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.util.Set;
@@ -8,6 +12,14 @@ import java.util.Set;
  * @comeFrom arthas
  */
 public class InstrumentationUtils {
+    /**
+     * 无法用retransformClasses,skywalking等字节码增强会触发jvm的bug,
+     * 所以只能代理transformerManager
+     * addTransformer->重新加载类->transformer->重新定义类->removeTransformer
+     * @param inst
+     * @param transformer
+     * @param classes
+     */
     public static void retransformClasses(Instrumentation inst, ClassFileTransformer transformer,
             Set<Class<?>> classes) {
         try {

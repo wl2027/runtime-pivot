@@ -124,7 +124,9 @@ public class ClassActionProvider extends ActionProvider<ActionType.Class> {
                 ctClass = pool.makeClass(new ByteArrayInputStream(bytes));
                 String dumpPath = path + AgentConstants.PATH + File.separator + ActionType.Class.classFileDump + File.separator + dateFileString + File.separator + "CL" + ObjectTool.getHexId(aClass.getClassLoader());
                 ctClass.debugWriteFile(dumpPath);
-                System.out.println("ClassName:"+ctClass.getName()+"\nClassLoader:"+aClass.getClassLoader()+"\nDumpPath:"+dumpPath+"\n");
+                String filename = dumpPath + File.separatorChar
+                        + ctClass.getName().replace('.', File.separatorChar) + ".class";
+                System.out.println("ClassName:"+ctClass.getName()+"\nClassLoader:"+aClass.getClassLoader()+"\nDumpPath:"+filename+"\n");
                 //String filename = directoryName + File.separatorChar + classname.replace('.', File.separatorChar) + ".class";
                 //
             } catch (Exception e) {
