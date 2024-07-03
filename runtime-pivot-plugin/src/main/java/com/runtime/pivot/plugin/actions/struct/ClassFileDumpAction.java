@@ -1,6 +1,5 @@
 package com.runtime.pivot.plugin.actions.struct;
 
-import cn.hutool.core.collection.ListUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -17,8 +16,11 @@ public class ClassFileDumpAction extends StructAction {
         getRuntimeContext().executeAttachCode(code, (javaValue)->{
             VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
             VirtualFile child = baseDir.findChild(".runtime");
-            com.intellij.ide.actions.SynchronizeCurrentFileAction.synchronizeFiles(ListUtil.of(child),project,false);
-            child.getFileSystem().refresh(false);
+            if (child == null) {
+                baseDir.getFileSystem().refresh(false);
+            }else {
+                child.getFileSystem().refresh(false);
+            }
         });
     }
 }
