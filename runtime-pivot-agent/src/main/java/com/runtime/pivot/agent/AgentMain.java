@@ -1,9 +1,12 @@
 package com.runtime.pivot.agent;
 
+import cn.hutool.core.util.ReflectUtil;
 import com.runtime.pivot.agent.model.AgentClassLoader;
 import com.runtime.pivot.agent.config.AgentConstants;
 import com.runtime.pivot.agent.model.ClassLoadingInfo;
 import com.runtime.pivot.agent.transformer.ClassLoadingTransformer;
+import sun.instrument.RuntimePivotTransformerManager;
+import sun.instrument.TransformerManager;
 
 import java.lang.annotation.Annotation;
 import java.lang.instrument.Instrumentation;
@@ -30,6 +33,8 @@ public class AgentMain {
             Thread.currentThread().setContextClassLoader(systemClassLoader);
             //打印Banner
             printBanner();
+            //初始化TransformerManager
+            initTransformerManagers(instrumentation);
             //初始化Transformer
             initTransformer(instrumentation);
             //加载执行器
@@ -45,6 +50,11 @@ public class AgentMain {
             // 恢复原始的类加载器
             Thread.currentThread().setContextClassLoader(originalClassLoader);
         }
+    }
+
+    private static void initTransformerManagers(Instrumentation instrumentation) {
+//        ReflectUtil.setFieldValue(instrumentation,"mTransformerManager",RuntimePivotTransformerManager.print());
+//        ReflectUtil.setFieldValue(instrumentation,"mRetransfomableTransformerManager",new RuntimePivotTransformerManager(true));
     }
 
     private static void initTransformer(Instrumentation instrumentation) {
