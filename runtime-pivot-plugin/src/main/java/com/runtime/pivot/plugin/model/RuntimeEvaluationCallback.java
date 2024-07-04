@@ -15,6 +15,7 @@
  */
 package com.runtime.pivot.plugin.model;
 
+import cn.hutool.core.util.StrUtil;
 import com.intellij.debugger.engine.JavaValue;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
@@ -47,7 +48,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
   public void evaluated(@NotNull XValue result) {
     myJavaResult = ((JavaValue) result);
     Value value = myJavaResult.getDescriptor().getValue();
-    myResultString = String.valueOf(value);
+    myResultString = StrUtil.replaceLast(StrUtil.replaceFirst(String.valueOf(value),"\"",""),"\"","");
     if (myEvaluated != null) {
       myEvaluated.accept(myJavaResult);
     }

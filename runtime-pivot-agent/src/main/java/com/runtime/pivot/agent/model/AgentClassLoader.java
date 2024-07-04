@@ -22,6 +22,7 @@ import java.util.jar.JarFile;
 public class AgentClassLoader extends ClassLoader{
 
     private volatile static AgentClassLoader agentClassLoader;
+    //see JAVA SPI
     private ClassLoader currentClassLoader;
     private ClassLoader agentJarClassLoader;
     private static final List<String> shareClassNameList = new ArrayList<>();
