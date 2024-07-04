@@ -3,7 +3,7 @@ package com.runtime.pivot.plugin.listeners;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManagerListener;
-import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+import com.runtime.pivot.plugin.service.RuntimePivotXSessionService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,7 @@ public class XSessionComponentListener implements XDebuggerManagerListener {
     public void processStopped(@NotNull XDebugProcess debugProcess) {
         XDebuggerManagerListener.super.processStopped(debugProcess);
         XDebugSession session = debugProcess.getSession();
-        RuntimePivotMethodService
+        RuntimePivotXSessionService
                 .getInstance(debugProcess.getSession().getProject())
                 .closeXSessionComponent(session);
     }

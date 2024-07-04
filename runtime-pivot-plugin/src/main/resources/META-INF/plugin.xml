@@ -18,7 +18,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <java.programPatcher implementation="com.runtime.pivot.plugin.config.RuntimeJavaAgentConfig"/>
-        <projectService serviceImplementation="com.runtime.pivot.plugin.service.RuntimePivotMethodService" />
+        <projectService serviceImplementation="com.runtime.pivot.plugin.service.RuntimePivotXSessionService" />
         <projectService serviceImplementation="com.runtime.pivot.plugin.config.RuntimePivotSettings"/>
         <projectConfigurable parentId="tools"
                              id="RuntimePivotConfigurable"
@@ -56,15 +56,15 @@
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
             </action>
         </group>
-        <group id="RuntimePivot.Method" text="method" popup="false">
+        <group id="RuntimePivot.Session" text="session" popup="false">
             <action id="RuntimePivot.XSessionMonitoring" text="XSession Monitoring"
                     icon="com.intellij.icons.AllIcons.Actions.ProfileBlue"
-                    class="com.runtime.pivot.plugin.actions.method.XSessionMonitoringAction">
+                    class="com.runtime.pivot.plugin.actions.session.XSessionMonitoringAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt U"/>
             </action>
             <action id="RuntimePivot.XSessionBreakpoint" text="XSession Breakpoint"
                     icon="com.intellij.icons.AllIcons.Debugger.MultipleBreakpoints"
-                    class="com.runtime.pivot.plugin.actions.method.XSessionBreakpointAction">
+                    class="com.runtime.pivot.plugin.actions.session.XSessionBreakpointAction">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt H"/>
             </action>
         </group>
@@ -94,8 +94,8 @@
             <reference ref="RuntimePivot.Program"/>
             <separator text="class"/>
             <reference ref="RuntimePivot.Class"/>
-            <separator text="method"/>
-            <reference ref="RuntimePivot.Method"/>
+            <separator text="session"/>
+            <reference ref="RuntimePivot.Session"/>
             <separator text="object"/>
             <reference ref="RuntimePivot.Object"/>
             <add-to-group group-id="XDebugger.ValueGroup" anchor="first"/>

@@ -5,7 +5,7 @@ import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointListener;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
-import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+import com.runtime.pivot.plugin.service.RuntimePivotXSessionService;
 import com.runtime.pivot.plugin.view.method.XSessionBreakpointDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class XSessionBreakpointListener implements XBreakpointListener {
 
     void updateData(BiConsumer<XDebugSession, XSessionBreakpointDialog> biConsumer){
-        Map<XDebugSession, XSessionBreakpointDialog> sessionBreakpointDialogMap = RuntimePivotMethodService.getInstance().getSessionBreakpointDialogMap();
+        Map<XDebugSession, XSessionBreakpointDialog> sessionBreakpointDialogMap = RuntimePivotXSessionService.getInstance().getSessionBreakpointDialogMap();
         sessionBreakpointDialogMap.forEach((session,dialog)->{
             if (dialog.isVisible()) {
                 biConsumer.accept(session,dialog);
@@ -54,7 +54,7 @@ public class XSessionBreakpointListener implements XBreakpointListener {
     public void breakpointPresentationUpdated(@NotNull XBreakpoint breakpoint, @Nullable XDebugSession session) {
         //断点视图已更新-调试会话启动也会调用,因为也属于断点视图更新
         //breakpointChanged,breakpointRemoved,breakpointAdded 都会调用
-        XSessionBreakpointDialog xSessionBreakpointDialog = RuntimePivotMethodService.getInstance().getXSessionBreakpointDialog(session);
+        XSessionBreakpointDialog xSessionBreakpointDialog = RuntimePivotXSessionService.getInstance().getXSessionBreakpointDialog(session);
         if (xSessionBreakpointDialog != null) {
             if (xSessionBreakpointDialog.isVisible()) {
                 XStackContext xStackContext = XStackContext.getInstance(session);

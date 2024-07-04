@@ -14,21 +14,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RuntimePivotMethodService implements Disposable {
+public class RuntimePivotXSessionService implements Disposable {
     private Project project;
     private Map<XDebugSession, XSessionBreakpointDialog> sessionBreakpointDialogMap = new ConcurrentHashMap<>();
     private Map<XDebugSession, XSessionMonitoringDialog> sessionMonitoringDialogMap = new ConcurrentHashMap<>();
 
-    public RuntimePivotMethodService(Project project) {
+    public RuntimePivotXSessionService(Project project) {
         this.project = project;
     }
 
-    public static RuntimePivotMethodService getInstance(){
+    public static RuntimePivotXSessionService getInstance(){
         return getInstance(ProjectUtils.getCurrProject());
     }
 
-    public static RuntimePivotMethodService getInstance(Project project){
-        return ServiceManager.getService(project, RuntimePivotMethodService.class);
+    public static RuntimePivotXSessionService getInstance(Project project){
+        return ServiceManager.getService(project, RuntimePivotXSessionService.class);
     }
 
     public Map<XDebugSession, XSessionBreakpointDialog> getSessionBreakpointDialogMap() {

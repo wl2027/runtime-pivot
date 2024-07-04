@@ -28,7 +28,7 @@ import com.intellij.ui.components.JBTextArea;
 import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackContext;
-import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+import com.runtime.pivot.plugin.service.RuntimePivotXSessionService;
 import com.runtime.pivot.plugin.utils.RuntimePivotUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -185,7 +185,7 @@ public class XSessionMonitoringDialog extends XSessionComponent<XSessionMonitori
 
     @Override
     public void removeXSessionComponent() {
-        RuntimePivotMethodService.getInstance(myProject).removeXSessionMonitoringDialog(myXDebugSession);
+        RuntimePivotXSessionService.getInstance(myProject).removeXSessionMonitoringDialog(myXDebugSession);
     }
 
     @Override

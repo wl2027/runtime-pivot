@@ -8,7 +8,7 @@ import com.runtime.pivot.plugin.config.RuntimePivotConstants;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
-import com.runtime.pivot.plugin.service.RuntimePivotMethodService;
+import com.runtime.pivot.plugin.service.RuntimePivotXSessionService;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
@@ -133,7 +133,7 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public void removeXSessionComponent() {
-        RuntimePivotMethodService.getInstance(myProject).removeXSessionBreakpointDialog(myXDebugSession);
+        RuntimePivotXSessionService.getInstance(myProject).removeXSessionBreakpointDialog(myXDebugSession);
     }
 
     @Override

@@ -21,40 +21,57 @@ __________ ____ _____________________.___   _____  ___________        __________
 ## Introduction
 <!-- Plugin description -->
 ### English:
-data-pivot is a plugin developed based on the IntelliJ IDEA IU platform, specifically designed for complex database scenarios encountered in project development.
+runtime-pivot is a runtime enhancement toolkit that provides convenient features for developers when debugging code.
 
-Facing challenges such as a large number of database tables, numerous columns, or special naming conventions, data-pivot provides developers with convenient field data report analysis capabilities as well as intelligent ORM and ROM navigation jumps between class fields and database columns.
+The current features are divided into four dimensions:
+- **program**: Analyzes instrument data during program runtime.
+- **class**: Analyzes bytecode information of classes in memory during program runtime.
+- **session**: Analyzes code invocation information during debugging sessions in program runtime.
+- **object**: Analyzes and manipulates object memory during program runtime.
 
-Using the data-pivot plugin, you can easily achieve the following operations:
-- Analyze field data in real-time, including data values and their proportion, providing you with detailed report information.
-- Quickly and conveniently navigate between code and database columns, greatly improving work efficiency.
+Comparison with similar tools:
 
-Currently, the plugin fully supports the MySQL database and provides multiple mapping strategies, including mybatis-plug annotations, jpa annotations, and camel case underscore naming conventions.
+|     | runtime-pivot         | arthas          |
+|:--|:--|:--|
+| Focus  | Debugging during development | Diagnosing issues online |
+| Features  | Analysis at specific breakpoints | Analysis of JVM and methods |
+| ... |                     |                   |
 
-In the future, we will continue to expand the plugin's capabilities to support custom SQL queries and custom strategy mappings, while also adapting to more databases such as MongoDB, SQL Server, PostgreSQL, and more.
 ### 中文:
+runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码时提供便捷的功能.
 
-data-pivot是一款基于IntelliJ IDEA IU平台开发的插件，为项目开发中遇到的复杂数据库场景设计。
+当前功能分为四个维度:
+- program 分析程序运行时instrument数据
+- class 分析程序运行时内存类字节码信息
+- session 分析程序运行中调试会话的代码调用信息
+- object 分析和操作程序运行时对象内存信息
 
-面对大量数据库表、众多字段或特殊命名规则等挑战，data-pivot为开发者提供了便捷的字段数据报表分析功能，以及智能的类字段与数据库字段之间的ORM和ROM导航跳转。
+类似工具差异说明:
 
-使用data-pivot插件，您可以轻松实现以下操作：
-- 实时分析字段数据情况，包括数据值及其数量占比等，为您提供详尽的报表信息。
-- 快速便捷地在代码与数据库字段之间进行导航跳转，极大提高工作效率。
+|     | runtime-pivot | arthas      |
+|:--|:--|:--|
+| 定位  | 开发阶段的调试工具     | 线上问题诊断工具    |
+| 特点  | 针对特定断点的分析     | 针对JVM和方法的分析 |
+| ... |               |             |
 
-目前，该插件已全面支持MySQL数据库，并提供了多种映射策略， 包括mybatis-plug注解、jpa注解以及驼峰下划线命名规则等。
-
-未来将继续扩展插件功能，支持自定义SQL查询和自定义策略映射， 同时适配MongoDB、SQL Server、PostgreSQL等更多数据库。
 <!-- Plugin description end -->
 
 ## Features
+- **program**
+  - [x] View the runtime classLoader tree structure information. 查看运行时的classLoader树结构信息.
+  - [x] View the runtime classLoader loaded classes tree structure information. 查看运行时的classLoader加载类的树结构信息.
+  - [x] View the runtime transformers list information. 查看运行时的transformers列表信息.
+- **class**
+  - [x] View the runtime class loading chain information. 查看运行时class加载链路信息.
+  - [x] Dump the runtime class bytecode information. 转储运行时class字节码信息.
+- **session**
+  - [x] Monitor the runtime code invocations. 监控运行时代码调用.
+  - [x] View the runtime breakpoints list. 查看运行时断点列表.
+- **object**
+  - [x] View the runtime object memory layout. 查看运行时对象内存布局.
+  - [x] Dump the runtime object JSON data. 转储运行时对象json数据.
+  - [x] Load JSON data to update the runtime object. 加载json数据更新运行时对象.
 
-- **Ease of Operation**: With just a simple mapping configuration, you can effortlessly utilize the three core functionalities of field data analysis, ORM navigation, and ROM navigation.
-- **Data Analysis**: Perform real-time data analysis on code fields, eliminating the need to frequently switch between IDEs for brief SQL queries. This allows you to focus more on writing high-quality code.
-- **Intelligent Navigation**: Efficiently jump between fields in your code, assisting developers in quickly finding and navigating to the desired fields in complex database scenarios, thus eliminating the tedious process of field searching.- 
-- **操作简单**: 仅需进行简单的映射配置，即可轻松使用字段数据分析、ORM跳转和ROM跳转三大核心功能.
-- **数据分析**: 实时进行代码字段的数据分析,开发过程中无需频繁切换IDE进行简短的SQL查询，从而更加专注于编写高质量的代码。
-- **智能导航**: 对代码进行高效的字段跳转,帮助开发者在复杂的数据库场景中高效地查找和跳转到所需字段，省去了繁琐的字段查找过程。
 
 ## Installation
 
@@ -72,26 +89,37 @@ Restart the **IDE** after installation.
 
 ## Using The Plugin
 
-1. Set Project Mapping Strategy 设置项目映射策略
+Run the program and enter the breakpoint. 运行程序并进入断点。
 
-<img src="./doc/image/data-pivot-setting.gif">
+1.1 View the runtime classLoader tree structure information, the operation result is printed to the console. 查看运行时的 classLoader 树结构信息，操作结果打印到控制台。
+![1.1 CLT.gif](doc%2Foperation%2F1.1%20CLT.gif)
 
-2. Perform Data Analysis on Class Fields 类字段进行数据分析
+1.2 View the runtime classLoader loaded classes tree structure information, the operation result is printed to the console. 查看运行时 classLoader 加载类的树结构信息，操作结果打印到控制台。
+![1.2 CLTCT.gif](doc%2Foperation%2F1.2%20CLTCT.gif)
 
-<img src="./doc/image/data-pivot-query.gif">
+1.3 View the runtime transformers list information, the operation result is printed to the console. 查看运行时 transformers 列表信息，操作结果打印到控制台。
+![1.3 TRS.gif](doc%2Foperation%2F1.3%20TRS.gif)
 
+2.1 View the runtime class loading chain information, applicable to class files, search boxes, and runtime objects. The operation result is printed to the console. 查看运行时 class 加载链路信息，可作用于类文件、搜索框、运行时对象，操作结果打印到控制台。
+![2.1 CPS.gif](doc%2Foperation%2F2.1%20CPS.gif)
 
-3. Navigate and Jump between Class Fields 类字段进行导航跳转
+2.2 Dump the runtime class bytecode information, applicable to class files, search boxes, and runtime objects. The dump path is the ```.runtime``` directory of the current project and is printed to the console. 转储运行时 class 字节码信息，可作用于类文件、搜索框、运行时对象。转储路径为当前项目的 ```.runtime``` 目录，并打印到控制台。
+![2.2 CFD.gif](doc%2Foperation%2F2.2%20CFD.gif)
 
-<img src="./doc/image/data-pivot-orm.gif">
+3.1 Monitor runtime code invocations, outputting overall time and time distribution between breakpoints. 监控运行时代码调用，输出总体时间和断点间时间分布。
+![3.1 MT.gif](doc%2Foperation%2F3.1%20MT.gif)
 
-4. Navigate and Jump between Database columns 数据库字段进行导航跳转
+3.2 View the runtime breakpoints list, outputting the breakpoint list information of the currently selected stack frame, and can navigate to the code location with a single click. 查看运行时断点列表，输出当前选择栈帧的断点列表信息，单击可导航至代码位置。
+![3.2 SL.gif](doc%2Foperation%2F3.2%20SL.gif)
 
-<img src="./doc/image/data-pivot-rom.gif">
+4.1 View the runtime object memory layout, including object size, occupied size, and object header information. 查看运行时对象内存布局，包括对象大小、占用大小、对象头信息。
+![4.1 OI.gif](doc%2Foperation%2F4.1%20OI.gif)
 
-5. Navigation and jumping of fields in the database console 在数据库控制台进行字段进行导航跳转
+4.2 Dump the runtime object's JSON data. The dump path is the ```.runtime``` directory of the current project and is printed to the console. 转储运行时对象的 JSON 数据，转储路径为当前项目的 ```.runtime``` 目录，并打印到控制台。
+![4.2 OS.gif](doc%2Foperation%2F4.2%20OS.gif)
 
-<img src="./doc/image/data-pivot-rom-console.gif">
+4.3 Load JSON data to update the runtime object. The default path is the ```.runtime``` directory of the current project. When loading collection data, empty collections will lose their generics. 加载 JSON 数据更新运行时对象，默认路径为当前项目的 ```.runtime``` 目录，加载集合数据时空集合会擦除泛型。
+![4.3 OL.gif](doc%2Foperation%2F4.3%20OL.gif)
 
 ## Compatibility
 
