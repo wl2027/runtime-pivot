@@ -30,10 +30,10 @@ repositories {
 dependencies {
 //    implementation(libs.annotations)
     implementation("cn.hutool:hutool-all:5.8.16")
-//    implementation(fileTree(projectDir.resolve("libs")) {
-//        include("*.jar")
-//    })
-    implementation(files("E:\\002_Code\\000_github\\IDEA\\runtime-pivot\\runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
+    implementation(fileTree(projectDir.resolve("libs")) {
+        include("*.jar")
+    })
+//    implementation(files("E:\\002_Code\\000_github\\IDEA\\runtime-pivot\\runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 //    implementation(files("./../aa/runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 }
 //println("agentLib:"+fileTree(projectDir.resolve("libs"));
