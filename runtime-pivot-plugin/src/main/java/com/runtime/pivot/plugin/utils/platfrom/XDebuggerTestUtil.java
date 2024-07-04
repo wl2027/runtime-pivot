@@ -317,17 +317,17 @@ public class XDebuggerTestUtil {
     return consoleView.getEditor().getDocument().getText();
   }
 
-  public static <T extends XBreakpointType> XBreakpoint addBreakpoint(@NotNull final Project project,
-                                                                      @NotNull final Class<T> exceptionType,
-                                                                      @NotNull final XBreakpointProperties properties) {
-    XBreakpointManager breakpointManager = XDebuggerManager.getInstance(project).getBreakpointManager();
-    Ref<XBreakpoint> breakpoint = Ref.create(null);
-    XBreakpointUtil.breakpointTypes()
-                   .select(exceptionType)
-                   .findFirst()
-                   .ifPresent(type -> breakpoint.set(breakpointManager.addBreakpoint(type, properties)));
-    return breakpoint.get();
-  }
+//  public static <T extends XBreakpointType> XBreakpoint addBreakpoint(@NotNull final Project project,
+//                                                                      @NotNull final Class<T> exceptionType,
+//                                                                      @NotNull final XBreakpointProperties properties) {
+//    XBreakpointManager breakpointManager = XDebuggerManager.getInstance(project).getBreakpointManager();
+//    Ref<XBreakpoint> breakpoint = Ref.create(null);
+//    XBreakpointUtil.breakpointTypes()
+//                   .select(exceptionType)
+//                   .findFirst()
+//                   .ifPresent(type -> breakpoint.set(breakpointManager.addBreakpoint(type, properties)));
+//    return breakpoint.get();
+//  }
 
   //MY 删除所有断点
 //  public static void removeAllBreakpoints(@NotNull Project project) {

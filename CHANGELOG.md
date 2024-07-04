@@ -2,6 +2,10 @@
 
 # runtime-pivot-plugin Changelog
 
+### Removed
+
+- remove internal API 
+
 ## [1.0.0] - 2024-07-05
 ### Added 
 project initialization
