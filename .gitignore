@@ -1,0 +1,62 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+/.idea/.gitignore
+/.idea/encodings.xml
+/.idea/gradle.xml
+/.idea/kotlinc.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/runtime-pivot-agent/gradle/wrapper/gradle-wrapper.jar
+/runtime-pivot-agent/.gitignore
+/runtime-pivot-plugin/.run/Run IDE for UI Tests.run.xml
+/runtime-pivot-plugin/.run/Run Plugin.run.xml
+/runtime-pivot-plugin/.run/Run Qodana.run.xml
+/runtime-pivot-plugin/.run/Run Tests.run.xml
+/runtime-pivot-plugin/.run/Run Verifications.run.xml
+/runtime-pivot-plugin/gradle/wrapper/gradle-wrapper.jar
+/runtime-pivot-plugin/gradle/libs.versions.toml
+/runtime-pivot-plugin/libs/runtime-pivot-agent-1.0-SNAPSHOT-all.jar
+/runtime-pivot-plugin/.gitignore
+/.gitignore
+/runtime-pivot-agent/gradle/wrapper/gradle-wrapper.jar
+/.idea/uiDesigner.xml
