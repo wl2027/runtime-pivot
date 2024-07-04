@@ -21,7 +21,6 @@ public class AgentMain {
         //注册关闭钩子
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("runtime-pivot-agent is shutting down... ");
-            System.out.println("JVM is shutting down... ");
         }));
         // 当前线程的类加载器
         ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
