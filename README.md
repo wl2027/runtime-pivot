@@ -8,8 +8,8 @@ __________ ____ _____________________.___   _____  ___________        __________
 ```
 # runtime-pivot-plugin
 
-[![Version](https://img.shields.io/jetbrains/plugin/v/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/23828-runtime-pivot)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/23828-com.runtime.pivot.plugin)
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
 ![Downloads](https://img.shields.io/github/release/wl2027/runtime-pivot.svg)
 ![Downloads](https://img.shields.io/github/stars/wl2027/runtime-pivot)
 ![Downloads](https://img.shields.io/badge/license-GPLv3-blue.svg)
@@ -31,11 +31,11 @@ The current features are divided into four dimensions:
 
 Comparison with similar tools:
 
-|     | runtime-pivot         | arthas          |
-|:--|:--|:--|
-| Focus  | Debugging during development | Diagnosing issues online |
-| Features  | Analysis at specific breakpoints | Analysis of JVM and methods |
-| ... |                     |                   |
+|       | runtime-pivot  | Arthas          | JProfiler          |
+|:------|:---------------|:----------------|:-------------------|
+| Usage | Debugging tool for development phase | Online issue diagnosis tool | Performance analysis and reporting tool |
+| Features | Analysis and memory operations at specific breakpoints | Diagnosis and troubleshooting for JVM issues | Performance tuning and reporting for JVM |
+
 
 ### 中文:
 runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码时提供便捷的功能.
@@ -48,11 +48,12 @@ runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码�
 
 类似工具差异说明:
 
-|     | runtime-pivot | arthas      |
-|:--|:--|:--|
-| 定位  | 开发阶段的调试工具     | 线上问题诊断工具    |
-| 特点  | 针对特定断点的分析     | 针对JVM和方法的分析 |
-| ... |               |             |
+|     | runtime-pivot  | Arthas        | JProfiler      |
+|:----|:--------------|:--------------|:---------------|
+| 定位  | 开发阶段的调试工具 | 线上问题诊断工具      | 性能分析和报告工具      |
+| 特点  | 针对特定断点的分析和内存操作 | 针对JVM的问题诊断和定位 | 针对JVM性能调优和报表分析 |
+| ... ||               |
+
 
 <!-- Plugin description end -->
 

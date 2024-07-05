@@ -15,3 +15,5 @@ Before submitting your issue, please answer some questions. Thank you!
 ### Additional Information
 
 ### Error Message
+
+### IDEA Error Report

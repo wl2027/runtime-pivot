@@ -2,8 +2,11 @@
 
 # runtime-pivot-plugin Changelog
 
-### Removed
+### Changed
+- 更新readme的pluginId和对比说明
+- 更新issue模板的idea错误报告
 
+### Removed
 - remove internal API 
 
 ## [1.0.0] - 2024-07-05
