@@ -2,6 +2,10 @@
 
 # runtime-pivot-plugin Changelog
 
+## [1.0.1] - 2024-07-06
+### Fixed
+- 解决安装目录有空格导致探针失效问题,将探针复制到用户目录再执行
+
 ### Changed
 - 更新readme的pluginId和对比说明
 - 更新issue模板的idea错误报告

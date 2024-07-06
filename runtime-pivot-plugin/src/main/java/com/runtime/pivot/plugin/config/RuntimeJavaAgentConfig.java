@@ -44,6 +44,8 @@ public class RuntimeJavaAgentConfig extends JavaProgramPatcher {
 
         String agentCoreJarPath = PluginUtil.getAgentCoreJarPath();
 
+        agentCoreJarPath = PluginUtil.overrideToUserHome(agentCoreJarPath);
+
         if (StrUtil.isBlank(agentCoreJarPath)) {
             return;
         }
