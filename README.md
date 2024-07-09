@@ -90,9 +90,11 @@ Restart the **IDE** after installation.
 
 ## Using The Plugin
 
-打开attach agent开关.
+open attach agent.
 
-![0.open_attach_agent.png](doc/operation/0.open_attach_agent.png)
+(Whether to enable the program, class, and object functions of runtime-pivot for the project program)
+
+![0.attach_agent.gif](doc%2Foperation%2F0.attach_agent.gif)
 
 Using the open-source project [xxl-job](https://github.com/xuxueli/xxl-job) as an example, run the program and enter the breakpoint. 以开源项目[xxl-job](https://github.com/xuxueli/xxl-job)为例,运行程序并进入断点。
 

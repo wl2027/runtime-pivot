@@ -2,6 +2,10 @@
 
 # runtime-pivot-plugin Changelog
 
+
+### Changed
+- 修改操作说明
+
 ## [1.1.0] - 2024-07-09
 ### Added
 - 添加一些提示文本的国际化
