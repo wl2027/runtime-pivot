@@ -74,7 +74,7 @@ public class XSessionMonitoringDialog extends XSessionComponent<XSessionMonitori
         JPanel bottomPanel = new JPanel(new BorderLayout());
         textArea = new JBTextArea(3, 20);
         bottomPanel.add(new JBScrollPane(textArea), BorderLayout.CENTER);
-        JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton(RuntimePivotConstants.CLOSE_BUTTON);
         closeButton.addActionListener(e -> {
             closeComponent();
         });

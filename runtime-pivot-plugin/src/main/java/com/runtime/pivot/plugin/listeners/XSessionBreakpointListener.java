@@ -36,7 +36,7 @@ public class XSessionBreakpointListener implements XBreakpointListener {
                     bean -> !bean.getXBreakpoint().equals(breakpoint)
                     //bean-> !RuntimePivotUtil.compareBreakpoints(bean.getXBreakpoint(),breakpoint)
             ).collect(Collectors.toList());
-            dialog.updateListData(collect);
+            dialog.updateTreeData(collect);
         });
     }
 
@@ -45,7 +45,7 @@ public class XSessionBreakpointListener implements XBreakpointListener {
         updateData((session,dialog)->{
             List<XStackBreakpoint> xStackBreakpointList = dialog.getXStackBreakpointList();
             xStackBreakpointList.forEach(XStackBreakpoint::updateType);
-            dialog.updateListData(new ArrayList<>(xStackBreakpointList));
+            dialog.updateTreeData(new ArrayList<>(xStackBreakpointList));
         });
     }
 

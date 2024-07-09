@@ -1,35 +1,45 @@
 package com.runtime.pivot.plugin.view.method;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.ui.MessageUtil;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.WindowManager;
+import com.intellij.ui.IconManager;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.treeStructure.Tree;
+import com.intellij.util.ui.JBUI;
+import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
+import com.intellij.xdebugger.frame.XDropFrameHandler;
+import com.intellij.xdebugger.frame.XStackFrame;
 import com.runtime.pivot.plugin.config.RuntimePivotConstants;
+import com.runtime.pivot.plugin.enums.XStackBreakpointType;
+import com.runtime.pivot.plugin.i18n.RuntimePivotBundle;
 import com.runtime.pivot.plugin.model.XSessionComponent;
 import com.runtime.pivot.plugin.model.XStackBreakpoint;
 import com.runtime.pivot.plugin.model.XStackContext;
 import com.runtime.pivot.plugin.service.RuntimePivotXSessionService;
-
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBScrollPane;
-import com.intellij.util.ui.JBUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpointDialog> {
 
     private JBLabel descriptionLabel = new JBLabel();
-    private JBList<XStackBreakpoint> dataList = new JBList<>();
+    private Tree breakpointTree;
+    private DefaultTreeModel treeModel;
     private List<XStackBreakpoint> myXStackBreakpointList = new ArrayList<>();
 
     protected XSessionBreakpointDialog(XDebugSession xDebugSession) {
@@ -47,16 +57,25 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
         // 添加顶部说明文本
         JPanel topPanel = new JPanel(new BorderLayout());
-
         descriptionLabel.setBorder(JBUI.Borders.empty(5));
         topPanel.add(descriptionLabel, BorderLayout.NORTH);
         add(topPanel, BorderLayout.NORTH);
 
-        dataList.setCellRenderer(new ListItemRenderer());
-        dataList.addMouseListener(getMouseListener(dataList::getSelectedValue));
-        add(new JBScrollPane(dataList), BorderLayout.CENTER);
+        // 分层视图
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        treeModel = new DefaultTreeModel(root);
+        breakpointTree = new Tree(treeModel);
+        breakpointTree.setRootVisible(false); // 隐藏根节点
+        breakpointTree.setShowsRootHandles(true); // 显示根节点的句柄
+        breakpointTree.setCellRenderer(new BreakpointTreeCellRenderer());
+        breakpointTree.addMouseListener(getMouseListener(() -> (XStackBreakpoint) ((DefaultMutableTreeNode) breakpointTree.getLastSelectedPathComponent()).getUserObject()));
+        add(new JBScrollPane(breakpointTree), BorderLayout.CENTER);
 
-        JButton closeButton = new JButton("Close");
+        // 展开所有节点
+        expandAllNodes(breakpointTree, 0, breakpointTree.getRowCount());
+
+        // 添加关闭按钮
+        JButton closeButton = new JButton(RuntimePivotConstants.CLOSE_BUTTON);
         closeButton.addActionListener(e -> closeComponent());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(closeButton);
@@ -70,11 +89,37 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
             @Override
             public void mouseClicked(MouseEvent e) {
                 XStackBreakpoint selectedValue = selectedValueSupplier.get();
-                if (e.getClickCount() == 1 && selectedValue != null) {
+                if (selectedValue == null) return;
+
+                if (e.getClickCount() == 1) {
                     selectedValue.getXBreakpoint().getNavigatable().navigate(true);
+                }
+                if (e.getClickCount() == 2) {
+                    if (!selectedValue.getXStackBreakpointType().equals(XStackBreakpointType.UNAVAILABLE)){
+                        if (MessageUtil.showOkNoDialog(RuntimePivotConstants.MSG_TITLE,
+                                RuntimePivotBundle.message("runtime.pivot.plugin.action.session.pop.msg",selectedValue.getXStackFrame()),
+                                myProject,
+                                RuntimePivotBundle.message("runtime.pivot.plugin.action.session.pop.ok"),
+                                RuntimePivotBundle.message("runtime.pivot.plugin.action.session.pop.no"),
+                                null)) {
+                            XStackFrame xStackFrame = selectedValue.getXStackFrame();
+                            XDropFrameHandler dropFrameHandler = getDropFrameHandler(myXDebugSession);
+                            dropFrameHandler.drop(xStackFrame);
+                        }
+                    } else {
+                        Messages.showMessageDialog(RuntimePivotBundle.message("runtime.pivot.plugin.action.session.pop.error",selectedValue.getXStackFrame()),RuntimePivotConstants.MSG_TITLE,null);
+                    }
                 }
             }
         };
+    }
+
+    @Nullable
+    private static XDropFrameHandler getDropFrameHandler(@NotNull XDebugSession xDebugSession) {
+        return Optional.ofNullable(xDebugSession)
+                .map(XDebugSession::getDebugProcess)
+                .map(XDebugProcess::getDropFrameHandler)
+                .orElse(null);
     }
 
     public static XSessionBreakpointDialog getInstance(XDebugSession xDebugSession) {
@@ -85,16 +130,14 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     public XDebugSessionListener getXDebugSessionListener() {
-        //异步编排invokeAndWait而不是invokeLater,避免同时在更新Dialog的视图导致并发问题,但invokeAndWait任意超时,所以用synchronized
         return new XDebugSessionListener() {
-            //多线程中进入断点都会调用
             @Override
             public void sessionPaused() {
                 ApplicationManager.getApplication().invokeLater(() -> {
                     updateData(XStackContext.getInstance(myXDebugSession));
                 });
             }
-            //手动改变栈 or 改变栈帧 时调用
+
             @Override
             public void stackFrameChanged() {
                 ApplicationManager.getApplication().invokeLater(() -> {
@@ -111,9 +154,9 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
 
     @Override
     synchronized public void updateData(XStackContext xStackContext) {
-        if (xStackContext!=null) {
+        if (xStackContext != null) {
             updateLabelData(xStackContext.getXDebugSession().getSuspendContext().getActiveExecutionStack().getDisplayName());
-            updateListData(xStackContext.getCurrentXStackBreakpointList());
+            updateTreeData(xStackContext.getCurrentXStackBreakpointList());
         }
     }
 
@@ -121,15 +164,36 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         descriptionLabel.setText(text);
     }
 
-    synchronized public void updateListData(List<XStackBreakpoint> newData) {
+    public synchronized void updateTreeData(List<XStackBreakpoint> newData) {
         this.myXStackBreakpointList.clear();
         this.myXStackBreakpointList.addAll(newData);
-        DefaultListModel<XStackBreakpoint> listModel = new DefaultListModel<>();
-        for (XStackBreakpoint item : newData) {
-            listModel.addElement(item);
+
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+        root.removeAllChildren();
+
+        Map<String, List<DefaultMutableTreeNode>> frameNodes = new LinkedHashMap<>();
+        for (XStackBreakpoint breakpoint : newData) {
+            String frameName = breakpoint.getXStackFrame().toString();
+            DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(breakpoint);
+            frameNodes.computeIfAbsent(frameName, k -> new ArrayList<>()).add(frameNode);
         }
-        dataList.setModel(listModel);
+
+        List<String> frameNames = new ArrayList<>(frameNodes.keySet());
+//        Collections.reverse(frameNames); // 反转分组顺序
+
+        for (String frameName : frameNames) {
+            List<DefaultMutableTreeNode> nodes = frameNodes.get(frameName);
+            DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(frameName);
+            for (DefaultMutableTreeNode node : nodes) {
+                groupNode.add(node);
+            }
+            root.add(groupNode);
+        }
+
+        treeModel.reload();
+        expandAllNodes(breakpointTree, 0, breakpointTree.getRowCount());
     }
+
 
     @Override
     public void removeXSessionComponent() {
@@ -142,22 +206,35 @@ public class XSessionBreakpointDialog extends XSessionComponent<XSessionBreakpoi
         dispose();
     }
 
-    private static class ListItemRenderer extends JLabel implements ListCellRenderer<XStackBreakpoint> {
+    private static class BreakpointTreeCellRenderer extends DefaultTreeCellRenderer {
+
+        private final Icon stackFrameIcon = IconManager.getInstance().getIcon("/icons/stack.svg", BreakpointTreeCellRenderer.class);
+
         @Override
-        public Component getListCellRendererComponent(JList<? extends XStackBreakpoint> list, XStackBreakpoint value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.toString());
-            setIcon(value.getIcon());
-            if (isSelected) {
-                setBackground(JBColor.background().darker());
-                setForeground(JBColor.foreground().brighter());
-            } else {
-                setBackground(JBColor.background());
-                setForeground(JBColor.foreground());
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+            Component component = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            if (value instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+                Object userObject = node.getUserObject();
+                if (userObject instanceof XStackBreakpoint) {
+                    XStackBreakpoint breakpoint = (XStackBreakpoint) userObject;
+                    setText(breakpoint.toString());
+                    setIcon(breakpoint.getIcon());
+                } else {
+                    setIcon(stackFrameIcon);
+                }
             }
-            setEnabled(list.isEnabled());
-            setFont(list.getFont());
-            setOpaque(true);
-            return this;
+            return component;
+        }
+    }
+
+    private void expandAllNodes(JTree tree, int startingIndex, int rowCount) {
+        for (int i = startingIndex; i < rowCount; ++i) {
+            tree.expandRow(i);
+        }
+
+        if (tree.getRowCount() != rowCount) {
+            expandAllNodes(tree, rowCount, tree.getRowCount());
         }
     }
 

@@ -119,4 +119,8 @@ public class XStackBreakpoint {
     public XSourcePosition getXSourcePosition() {
         return myXSourcePosition;
     }
+
+    public XStackFrame getXStackFrame() {
+        return xStackFrame;
+    }
 }

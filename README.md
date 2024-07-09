@@ -26,7 +26,7 @@ runtime-pivot is a runtime enhancement toolkit that provides convenient features
 The current features are divided into four dimensions:
 - **program**: Analyzes instrument data during program runtime.
 - **class**: Analyzes bytecode information of classes in memory during program runtime.
-- **session**: Analyzes code invocation information during debugging sessions in program runtime.
+- **session**: Analyzes and manipulates code invocation information during debugging sessions in program runtime.
 - **object**: Analyzes and manipulates object memory during program runtime.
 
 Comparison with similar tools:
@@ -43,7 +43,7 @@ runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码�
 当前功能分为四个维度:
 - program 分析程序运行时instrument数据
 - class 分析程序运行时内存类字节码信息
-- session 分析程序运行中调试会话的代码调用信息
+- session 分析和操作程序运行中调试会话的代码调用信息
 - object 分析和操作程序运行时对象内存信息
 
 类似工具差异说明:
@@ -67,7 +67,7 @@ runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码�
   - [x] Dump the runtime class bytecode information. 转储运行时class字节码信息.
 - **session**
   - [x] Monitor the runtime code invocations. 监控运行时代码调用.
-  - [x] View the runtime breakpoints list. 查看运行时断点列表.
+  - [x] Operate the runtime breakpoints list. 操作运行时断点列表.
 - **object**
   - [x] View the runtime object memory layout. 查看运行时对象内存布局.
   - [x] Dump the runtime object JSON data. 转储运行时对象json数据.
@@ -90,6 +90,10 @@ Restart the **IDE** after installation.
 
 ## Using The Plugin
 
+打开attach agent开关.
+
+![0.open_attach_agent.png](doc/operation/0.open_attach_agent.png)
+
 Using the open-source project [xxl-job](https://github.com/xuxueli/xxl-job) as an example, run the program and enter the breakpoint. 以开源项目[xxl-job](https://github.com/xuxueli/xxl-job)为例,运行程序并进入断点。
 
 1.1 View the runtime classLoader tree structure information, the operation result is printed to the console. 查看运行时的 classLoader 树结构信息，操作结果打印到控制台。
@@ -110,7 +114,7 @@ Using the open-source project [xxl-job](https://github.com/xuxueli/xxl-job) as a
 3.1 Monitor runtime code invocations, outputting overall time and time distribution between breakpoints. 监控运行时代码调用，输出总体时间和断点间时间分布。
 ![3.1 MT.gif](doc%2Foperation%2F3.1%20MT.gif)
 
-3.2 View the runtime breakpoints list, outputting the breakpoint list information of the currently selected stack frame, and can navigate to the code location with a single click. 查看运行时断点列表，输出当前选择栈帧的断点列表信息，单击可导航至代码位置。
+3.2 Operate the breakpoint list at runtime, output the breakpoint list information of the currently selected stack frame, click to navigate to the code location, and double-click pop to select the breakpoint stack frame. 操作运行时断点列表，输出当前选择栈帧的断点列表信息，单击可导航至代码位置,双击pop选择断点栈帧.
 ![3.2 SL.gif](doc%2Foperation%2F3.2%20SL.gif)
 
 4.1 View the runtime object memory layout, including object size, occupied size, and object header information. 查看运行时对象内存布局，包括对象大小、占用大小、对象头信息。

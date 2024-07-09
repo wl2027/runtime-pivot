@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public class RuntimePivotSettings implements PersistentStateComponent<RuntimePivotSettings.State> {
 
     public static class State {
-        public boolean attachAgent = true;
+        public boolean attachAgent = false;
     }
 
     private State state = new State();

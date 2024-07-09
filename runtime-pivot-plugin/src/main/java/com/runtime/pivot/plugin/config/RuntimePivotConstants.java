@@ -12,4 +12,5 @@ public class RuntimePivotConstants {
     public static final String STARTUP_PARAMETERS_PATH = "runtime.pivot.agent.path";
     public static final String STORAGE_ID = "RuntimePivotSettings";
     public static final String STORAGE_FILE_NAME = "RuntimePivotSettings.xml";
+    public static final String CLOSE_BUTTON = "Close";
 }
