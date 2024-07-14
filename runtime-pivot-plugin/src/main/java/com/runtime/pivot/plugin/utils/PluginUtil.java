@@ -62,14 +62,13 @@ public class PluginUtil {
      * @return String
      */
     private static String getJarPathByStartWith(String startWith) {
-        final String quotes = "\"";
         List<File> files = FileUtil.loopFiles(IDEA_PLUGIN_DESCRIPTOR.getPath());
         for (File file : files) {
             String name = file.getName();
             if (name.startsWith(startWith)) {
                 String pathStr = FileUtil.getCanonicalPath(file);
                 if (StrUtil.contains(pathStr, StrUtil.SPACE)) {
-                    return StrUtil.builder().append(quotes).append(pathStr).append(quotes).toString();
+                    return pathStr;
                 }
                 return pathStr;
             }

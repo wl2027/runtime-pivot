@@ -36,6 +36,7 @@ Comparison with similar tools:
 | Usage | Debugging tool for development phase | Online issue diagnosis tool | Performance analysis and reporting tool |
 | Features | Analysis and memory operations at specific breakpoints | Diagnosis and troubleshooting for JVM issues | Performance tuning and reporting for JVM |
 
+Detailed operation documents: [https://github.com/wl2027/runtime-pivot](https://github.com/wl2027/runtime-pivot)
 
 ### 中文:
 runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码时提供便捷的功能.
@@ -54,6 +55,7 @@ runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码�
 | 特点  | 针对特定断点的分析和内存操作 | 针对JVM的问题诊断和定位 | 针对JVM性能调优和报表分析 |
 | ... ||               |
 
+详细操作文档: [https://github.com/wl2027/runtime-pivot](https://github.com/wl2027/runtime-pivot)
 
 <!-- Plugin description end -->
 
@@ -72,21 +74,6 @@ runtime-pivot 是一个运行时增强工具集,为开发人员在调试代码�
   - [x] View the runtime object memory layout. 查看运行时对象内存布局.
   - [x] Dump the runtime object JSON data. 转储运行时对象json数据.
   - [x] Load JSON data to update the runtime object. 加载json数据更新运行时对象.
-
-
-## Installation
-
-- **Using the IDE built-in plugin system:**
-
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "runtime-pivot"</kbd> >
-  <kbd>Install</kbd>
-
-- **Manually:**
-
-  Download the [latest release](https://github.com/wl2027/runtime-pivot/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-Restart the **IDE** after installation.
 
 ## Using The Plugin
 
@@ -128,6 +115,14 @@ Using the open-source project [xxl-job](https://github.com/xuxueli/xxl-job) as a
 4.3 Load JSON data to update the runtime object. The default path is the ```.runtime``` directory of the current project. When loading collection data, empty collections will lose their generics. 加载 JSON 数据更新运行时对象，默认路径为当前项目的 ```.runtime``` 目录，加载集合数据时空集合会擦除泛型。
 ![4.3 OL.gif](doc%2Foperation%2F4.3%20OL.gif)
 
+
+## FAQ
+
+1. If the IDEA program fails to start after installing the plugin, please set ```Attach Agent``` in <kbd>Settings/Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Runtime-Pivot Configuration</kbd> to false. 如果安装插件后IDEA程序启动失败,请将 <kbd>Settings/Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Runtime-Pivot Configuration</kbd> 中的  ```Attach Agent``` 设置为false
+![img.png](doc/faq/1 error start.png)
+   The occurrence of this situation may be caused by spaces, Chinese characters or illegal characters in the agent path. Issues can be submitted for problem investigation.  这种情况的出现可能是agent路径有空格或者中文或者非法字符导致的,可以提交issue以进行问题排查
+![0.attach_agent.gif](doc%2Foperation%2F0.attach_agent.gif)
+
 ## Compatibility
 
 - [ ] Android Studio
@@ -147,6 +142,21 @@ Using the open-source project [xxl-job](https://github.com/xuxueli/xxl-job) as a
 - [ ] Rider
 - [ ] RubyMine
 - [ ] WebStorm
+
+
+## Installation
+
+- **Using the IDE built-in plugin system:**
+
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "runtime-pivot"</kbd> >
+  <kbd>Install</kbd>
+
+- **Manually:**
+
+  Download the [latest release](https://github.com/wl2027/runtime-pivot/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+Restart the **IDE** after installation.
 
 
 ## Contributing

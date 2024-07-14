@@ -2,6 +2,12 @@
 
 # runtime-pivot-plugin Changelog
 
+## [1.1.1] - 2024-07-12
+### Changed
+- 修改一些国际化文本
+- 修改操作说明
+- MacOS对Agent Jar的操作支持
+- 默认开启探针
 
 ### Changed
 - 修改操作说明
