@@ -38,7 +38,7 @@ public class InstrumentationUtils {
                 } catch (Throwable e) {
                     String errorMsg = "retransform Classes class error, name: " + clazz.getName();
                     System.out.println(errorMsg);
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         } finally {

@@ -1,5 +1,6 @@
 package com.runtime.pivot.agent;
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.runtime.pivot.agent.config.AgentConstants;
 
 import java.lang.reflect.Field;
@@ -115,9 +116,8 @@ public class ActionExecutor {
             try {
                 result = method.invoke(null, args);
             } catch (Exception e) {
-                result = "Agent execution error !\nError message : \n"+e.toString();
+                result = "Agent execution error !\nError message : \n"+ ExceptionUtil.stacktraceToString(e,5000);
                 System.out.print(AgentConstants.ANSI_BOLD);
-                System.out.print(AgentConstants.YELLOW);
                 System.err.println(result);
                 System.out.print(AgentConstants.RESET);
             } finally {

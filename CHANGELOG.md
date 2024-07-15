@@ -2,6 +2,12 @@
 
 # runtime-pivot-plugin Changelog
 
+## [1.1.2] - 2024-07-15
+### Changed
+- agent升级到1.1.0
+- 修改报错信息返回展示
+- 更新issue模板
+
 ## [1.1.1] - 2024-07-12
 ### Changed
 - 修改一些国际化文本

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.runtime.pivot"
-version = "1.0.0.RELEASE"
+version = "1.1.0.RELEASE"
 
 repositories {
     mavenCentral()
