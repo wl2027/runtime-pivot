@@ -3,4 +3,4 @@
 	url = https://github.com/wl2027/runtime-pivot-java-agent.git
 [submodule "runtime-pivot-test-demo"]
 	path = runtime-pivot-test-demo
-	url = https://github.com/wl2027/runtime-pivot-test-demo.git
+	url = https://github.com/wl2027/runtime-pivot-java-agent.git
