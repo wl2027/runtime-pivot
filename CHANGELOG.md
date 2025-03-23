@@ -2,6 +2,10 @@
 
 # runtime-pivot-plugin Changelog
 
+## [2.0.0] - 2025-03-23
+### Refactor
+- 重构项目模块
+
 ## [1.1.2] - 2024-07-15
 ### Changed
 - agent升级到1.1.0
@@ -43,3 +47,11 @@ project initialization
 - class 分析程序运行时内存类字节码信息
 - session 分析程序运行中调试会话的代码调用信息
 - object 分析和操作程序运行时对象内存信息
+
+
+[2.0.0]: https://github.com/wl2027/runtime-pivot/compare/1.1.2...2.0.0
+[1.1.2]: https://github.com/wl2027/runtime-pivot/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/wl2027/runtime-pivot/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/wl2027/runtime-pivot/compare/1.0.1...1.1.0
+[1.0.1]: https://github.com/wl2027/runtime-pivot/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/wl2027/runtime-pivot/commits/1.0.0
