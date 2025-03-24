@@ -7,7 +7,7 @@ import com.intellij.util.SmartList;
 import com.intellij.xdebugger.frame.XDebuggerTreeNodeHyperlink;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
+//import org.junit.Assert;
 
 import javax.swing.*;
 import java.util.List;
@@ -56,7 +56,7 @@ public class XTestContainer<T> {
   @NotNull
   public Pair<List<T>, String> waitFor(long timeoutMs) {
     Pair<List<T>, String> result = XDebuggerTestUtil.waitFor(myResultFuture, timeoutMs);
-    Assert.assertNotNull("Timed out", result);
+//    Assert.assertNotNull("Timed out", result);
     return result;
   }
 }

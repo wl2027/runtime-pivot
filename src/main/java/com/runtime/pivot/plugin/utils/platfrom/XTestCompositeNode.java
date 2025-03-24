@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+//import static org.junit.Assert.assertNotNull;
+//import static org.junit.Assert.assertNull;
 
 public class XTestCompositeNode extends XTestContainer<XValue> implements XCompositeNode {
   private final @NotNull AtomicReference<Runnable> myNextChildrenRunnableReference = new AtomicReference<>();
@@ -69,7 +69,7 @@ public class XTestCompositeNode extends XTestContainer<XValue> implements XCompo
   public List<XValue> collectChildren(long timeoutMs) {
     final Pair<List<XValue>, String> childrenWithError = collectChildrenWithError(timeoutMs);
     final String error = childrenWithError.second;
-    assertNull("Error getting children: " + error, error);
+//    assertNull("Error getting children: " + error, error);
     return childrenWithError.first;
   }
 
@@ -79,7 +79,7 @@ public class XTestCompositeNode extends XTestContainer<XValue> implements XCompo
 
   public @NotNull Pair<List<XValue>, String> collectChildrenWithError(long timeoutMs) {
     Runnable runnable = myNextChildrenRunnableReference.getAndSet(null);
-    assertNotNull("Not expecting children", runnable);
+//    assertNotNull("Not expecting children", runnable);
     reset();
     runnable.run();
     return waitFor(timeoutMs);
