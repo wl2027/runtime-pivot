@@ -2,6 +2,8 @@
 
 # runtime-pivot-plugin Changelog
 
+## [Unreleased]
+
 ## [2.0.0] - 2025-03-23
 ### Refactor
 - 重构项目模块
