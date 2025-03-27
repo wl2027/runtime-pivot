@@ -51,6 +51,7 @@ project initialization
 - object 分析和操作程序运行时对象内存信息
 
 
+[Unreleased]: https://github.com/wl2027/runtime-pivot/compare/2.0.0...HEAD
 [2.0.0]: https://github.com/wl2027/runtime-pivot/compare/1.1.2...2.0.0
 [1.1.2]: https://github.com/wl2027/runtime-pivot/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/wl2027/runtime-pivot/compare/1.1.0...1.1.1
