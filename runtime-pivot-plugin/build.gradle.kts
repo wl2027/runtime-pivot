@@ -33,6 +33,13 @@ dependencies {
     implementation(fileTree(projectDir.resolve("libs")) {
         include("*.jar")
     })
+    //com.alibabacloud.intellij.cosy
+    intellijPlatform {
+//        bundledPlugin("<pluginId>")
+        plugin("com.alibabacloud.intellij.cosy:1.4.5")
+    }
+
+
 //    implementation(files("E:\\002_Code\\000_github\\IDEA\\runtime-pivot\\runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 //    implementation(files("./../aa/runtime-pivot-agent\\build\\libs\\runtime-pivot-agent-1.0.0.RELEASE-all.jar"))
 }
