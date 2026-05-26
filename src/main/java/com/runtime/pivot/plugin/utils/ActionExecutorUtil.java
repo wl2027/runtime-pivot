@@ -12,7 +12,17 @@ public class ActionExecutorUtil {
     public static final String SCRIPT = "script" ;
     public static final String RETURN_OBJECT = "returnObject" ;
     private static final String EXECUTE_EXPRESSION =
-            "java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "java.lang.Class<?> actionExecutorClass = null;\n" +
+            "java.lang.ClassLoader contextClassLoader = java.lang.Thread.currentThread().getContextClassLoader();\n" +
+            "if (contextClassLoader != null) {\n" +
+            "    try {\n" +
+            "        actionExecutorClass = contextClassLoader.loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "    } catch (java.lang.ClassNotFoundException ignore) {\n" +
+            "    }\n" +
+            "}\n" +
+            "if (actionExecutorClass == null) {\n" +
+            "    actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "}\n" +
             "java.lang.reflect.Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
             "Object "+RETURN_OBJECT+" = method.invoke(null,\"{"+ACTION_TYPE+"}\",new Object[]{{"+ARGS+"}});\n" +
             "{"+SCRIPT+"};";
