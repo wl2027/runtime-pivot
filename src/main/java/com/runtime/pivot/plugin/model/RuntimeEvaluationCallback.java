@@ -62,7 +62,7 @@ public class RuntimeEvaluationCallback extends XEvaluationCallbackBase {
     if (myErrorOccurred != null) {
       myErrorOccurred.accept(errorMessage);
     }
-    ApplicationManager.getApplication().invokeLater(()->Messages.showErrorDialog(RuntimePivotBundle.message("runtime.pivot.plugin.action.callback.error",myErrorOccurred) ,RuntimePivotConstants.ERROR_MSG_TITLE));
+    ApplicationManager.getApplication().invokeLater(()->Messages.showErrorDialog(RuntimePivotBundle.message("runtime.pivot.plugin.action.callback.error",errorMessage) ,RuntimePivotConstants.ERROR_MSG_TITLE));
   }
 
   public JavaValue getJavaResult() {

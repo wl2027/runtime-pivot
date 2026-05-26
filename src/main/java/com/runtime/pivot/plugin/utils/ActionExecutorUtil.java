@@ -12,7 +12,13 @@ public class ActionExecutorUtil {
     public static final String SCRIPT = "script" ;
     public static final String RETURN_OBJECT = "returnObject" ;
     private static final String EXECUTE_EXPRESSION =
-            "java.lang.Class<?> actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\");\n" +
+            "java.lang.Class<?> actionExecutorClass = null;\n" +
+            "try { actionExecutorClass = java.lang.ClassLoader.getSystemClassLoader().loadClass(\"com.runtime.pivot.agent.ActionExecutor\"); } catch (java.lang.ClassNotFoundException rtPivotE) {}\n" +
+            "if (actionExecutorClass == null) {\n" +
+            "    java.lang.ClassLoader rtPivotCtxCl = java.lang.Thread.currentThread().getContextClassLoader();\n" +
+            "    if (rtPivotCtxCl != null) { actionExecutorClass = rtPivotCtxCl.loadClass(\"com.runtime.pivot.agent.ActionExecutor\"); }\n" +
+            "}\n" +
+            "if (actionExecutorClass == null) { throw new java.lang.ClassNotFoundException(\"[runtime-pivot] com.runtime.pivot.agent.ActionExecutor not found. Please restart the application with the agent attached.\"); }\n" +
             "java.lang.reflect.Method method = actionExecutorClass.getMethod(\"execute\",String.class,Object[].class);\n" +
             "Object "+RETURN_OBJECT+" = method.invoke(null,\"{"+ACTION_TYPE+"}\",new Object[]{{"+ARGS+"}});\n" +
             "{"+SCRIPT+"};";
