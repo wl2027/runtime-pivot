@@ -8,11 +8,11 @@
 
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
 ![Downloads](https://img.shields.io/github/release/wl2027/runtime-pivot.svg)
+![Downloads](https://img.shields.io/badge/Java-8-brightgreen.svg?style=flat)
+![Downloads](https://img.shields.io/badge/Java-17-brightgreen.svg?style=flat)
 
 ![Downloads](https://img.shields.io/badge/license-GPLv3-blue.svg)
 ![Downloads](https://img.shields.io/github/stars/wl2027/runtime-pivot)
-![Downloads](https://img.shields.io/badge/Java-8-brightgreen.svg?style=flat)
-![Downloads](https://img.shields.io/badge/Java-17-brightgreen.svg?style=flat)
 [![Version](https://img.shields.io/jetbrains/plugin/v/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
 [![GitHub](https://img.shields.io/static/v1?label=&message=GitHub&logo=github&color=black&labelColor=555)](https://github.com/wl2027/runtime-pivot) 
 [![Gitee](https://img.shields.io/static/v1?label=&message=Gitee&logo=gitee&color=orange&labelColor=555)](https://gitee.com/wl2027/runtime-pivot)
