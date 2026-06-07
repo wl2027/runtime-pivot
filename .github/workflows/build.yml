@@ -25,7 +25,11 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  # Cancel superseded pull request runs for fast feedback, but never cancel a
+  # release-producing push/dispatch run mid-flight: that could interrupt a draft
+  # update between editing the release and uploading the ZIP. Such runs serialize
+  # within the group instead.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
 
@@ -83,6 +87,7 @@ jobs:
       contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
+      release_tag: ${{ steps.state.outputs.release_tag }}
       should_prepare_release: ${{ steps.state.outputs.should_prepare_release }}
     steps:
       - name: Fetch Sources
@@ -112,26 +117,41 @@ jobs:
         run: |
           set -euo pipefail
           should_prepare_release=false
+          # New releases use the bare project version (matching the CHANGELOG compare links and
+          # the project's git-tag history). Legacy releases created by the previous workflow used
+          # a "v" prefix, so detection accepts BOTH forms and operates on whichever already exists.
+          release_tag="${VERSION}"
 
-          if gh release view "${VERSION}" >/dev/null 2>&1; then
+          existing=""
+          for cand in "${VERSION}" "v${VERSION}"; do
+            if gh release view "${cand}" >/dev/null 2>&1; then
+              existing="${cand}"
+              break
+            fi
+          done
+
+          if [ -n "${existing}" ]; then
+            release_tag="${existing}"
             # A GitHub Release already exists for this version. Use its draft flag (NOT mere
             # existence) to decide whether it is publishable or still in progress.
-            is_draft="$(gh release view "${VERSION}" --json isDraft --jq .isDraft)"
+            is_draft="$(gh release view "${existing}" --json isDraft --jq .isDraft)"
             if [ "${is_draft}" = "true" ]; then
-              echo "Draft release ${VERSION} already exists -> refresh it"
+              echo "Draft release ${existing} already exists -> refresh it"
               should_prepare_release=true
             else
-              echo "Published release ${VERSION} already exists -> skip"
+              echo "Published release ${existing} already exists -> skip"
             fi
-          elif git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
-            # No release, but a tag with this version is already present -> treat as released.
-            echo "Tag ${VERSION} already exists without a release -> skip"
+          elif git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null \
+            || git rev-parse -q --verify "refs/tags/v${VERSION}" >/dev/null; then
+            # No release, but a tag for this version is already present -> treat as released.
+            echo "Tag for ${VERSION} already exists without a release -> skip"
           else
-            echo "No release and no tag for ${VERSION} -> create a new draft"
+            echo "No release and no tag for ${VERSION} -> create a new draft (${release_tag})"
             should_prepare_release=true
           fi
 
           echo "should_prepare_release=${should_prepare_release}" >> "$GITHUB_OUTPUT"
+          echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
 
   # Build the plugin and create / refresh the GitHub Release draft for manual verification.
   # If a maintainer accepts and publishes it, release.yml takes over.
@@ -152,6 +172,9 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       VERSION: ${{ needs.detect.outputs.version }}
+      # Tag to operate on: the existing release's tag (possibly legacy "v"-prefixed) or, for a
+      # brand-new release, the bare project version. Resolved by the detect job.
+      RELEASE_TAG: ${{ needs.detect.outputs.release_tag }}
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v4
@@ -204,26 +227,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view "${VERSION}" >/dev/null 2>&1; then
+          if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then
             # Re-check at execution time: a maintainer may have published the release between the
             # detect job and now. Never overwrite a published release or revert it back to a draft.
-            is_draft="$(gh release view "${VERSION}" --json isDraft --jq .isDraft)"
+            is_draft="$(gh release view "${RELEASE_TAG}" --json isDraft --jq .isDraft)"
             if [ "${is_draft}" != "true" ]; then
-              echo "::error::Release ${VERSION} has been published; refusing to modify a published release."
+              echo "::error::Release ${RELEASE_TAG} has been published; refusing to modify a published release."
               exit 1
             fi
-            echo "Refreshing existing draft release ${VERSION}"
-            gh release edit "${VERSION}" \
+            echo "Refreshing existing draft release ${RELEASE_TAG}"
+            gh release edit "${RELEASE_TAG}" \
               --target "${GITHUB_SHA}" \
-              --title "${VERSION}" \
+              --title "${RELEASE_TAG}" \
               --notes-file RELEASE_NOTES.md
-            gh release upload "${VERSION}" build/distributions/*.zip --clobber
+            gh release upload "${RELEASE_TAG}" build/distributions/*.zip --clobber
           else
-            echo "Creating new draft release ${VERSION}"
-            gh release create "${VERSION}" \
+            echo "Creating new draft release ${RELEASE_TAG}"
+            gh release create "${RELEASE_TAG}" \
               --draft \
               --target "${GITHUB_SHA}" \
-              --title "${VERSION}" \
+              --title "${RELEASE_TAG}" \
               --notes-file RELEASE_NOTES.md \
               build/distributions/*.zip
           fi

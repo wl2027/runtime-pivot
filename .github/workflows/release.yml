@@ -53,9 +53,11 @@ jobs:
             exit 1
           fi
           TAG="${{ github.event.release.tag_name }}"
+          # Accept both the bare version and the legacy "v"-prefixed form (e.g. v2.0.0).
+          NORMALIZED_TAG="${TAG#v}"
           echo "Project version: ${VERSION}"
-          echo "Release tag:     ${TAG}"
-          if [ "${TAG}" != "${VERSION}" ]; then
+          echo "Release tag:     ${TAG} (normalized: ${NORMALIZED_TAG})"
+          if [ "${NORMALIZED_TAG}" != "${VERSION}" ]; then
             echo "::error::Release tag '${TAG}' does not match project version '${VERSION}'"
             exit 1
           fi
