@@ -1,6 +1,6 @@
 <div align="center">
 
-# runtime-pivot-plugin
+# Runtime-Pivot
 
 <img src="src/main/resources/META-INF/pluginIcon.svg" alt="Runtime Pivot plugin logo" width="128" height="128">
 
