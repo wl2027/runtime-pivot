@@ -157,6 +157,46 @@ tasks {
 }
 
 intellijPlatformTesting {
+    // The CI test stage is split into three tiers backed by the single `test` source set
+    // (selected by package). They are routed through the IntelliJ Platform test runtime so
+    // that BasePlatformTestCase fixtures and Swing components work without a running IDE.
+    //
+    // IntelliJ Platform test fixtures are not compatible with the Gradle Configuration Cache,
+    // so each task is explicitly marked incompatible (the CI workflow also passes
+    // --no-configuration-cache) to avoid cache-serialization failures after tests pass.
+    testIde {
+        register("unitTest") {
+            task {
+                group = "verification"
+                description = "Runs fast unit tests that do not require an IntelliJ Platform fixture."
+                useJUnit()
+                filter { includeTestsMatching("com.runtime.pivot.plugin.unit.*") }
+                systemProperty("java.awt.headless", "true")
+                notCompatibleWithConfigurationCache("IntelliJ Platform test runtime is not configuration-cache compatible")
+            }
+        }
+        register("integrationTest") {
+            task {
+                group = "verification"
+                description = "Runs IntelliJ Platform integration tests (BasePlatformTestCase)."
+                useJUnit()
+                filter { includeTestsMatching("com.runtime.pivot.plugin.integration.*") }
+                systemProperty("java.awt.headless", "true")
+                notCompatibleWithConfigurationCache("IntelliJ Platform test runtime is not configuration-cache compatible")
+            }
+        }
+        register("ideaUiTest") {
+            task {
+                group = "verification"
+                description = "Runs headless Swing/UI component tests (no RemoteRobot server)."
+                useJUnit()
+                filter { includeTestsMatching("com.runtime.pivot.plugin.ui.*") }
+                systemProperty("java.awt.headless", "true")
+                notCompatibleWithConfigurationCache("IntelliJ Platform test runtime is not configuration-cache compatible")
+            }
+        }
+    }
+
     runIde {
         register("runIdeForUiTests") {
             task {

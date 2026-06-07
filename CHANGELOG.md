@@ -3,6 +3,9 @@
 # runtime-pivot-plugin Changelog
 
 ## [Unreleased]
+### Changed
+- 重构 GitHub Actions CI/CD 流程：分层测试（单元 / 集成 / 无头 UI 组件）、推送主分支时自动创建并刷新 Release 草稿、GitHub Release 正式发布后自动签名并上传 JetBrains Marketplace
+- Plugin Verifier 改为按需 / 每周定时单独运行，不再阻塞 Release 草稿创建
 
 ## [2.0.0] - 2025-03-23
 ### Refactor
