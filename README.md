@@ -1,13 +1,7 @@
-```banner https://patorjk.com/software/taag/
-__________ ____ _____________________.___   _____  ___________        __________._______   _______________________
-\______   \    |   \      \__    ___/|   | /     \ \_   _____/        \______   \   \   \ /   /\_____  \__    ___/
- |       _/    |   /   |   \|    |   |   |/  \ /  \ |    __)_   ______ |     ___/   |\   Y   /  /   |   \|    |   
- |    |   \    |  /    |    \    |   |   /    Y    \|        \ /_____/ |    |   |   | \     /  /    |    \    |   
- |____|_  /______/\____|__  /____|   |___\____|__  /_______  /         |____|   |___|  \___/   \_______  /____|   
-        \/                \/                     \/        \/                                          \/         
-```
 <div align="center">
- 
+
+<img src="src/main/resources/META-INF/pluginIcon.svg" alt="Runtime Pivot plugin logo" width="128" height="128">
+
 # runtime-pivot-plugin
 
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
