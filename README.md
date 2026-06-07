@@ -1,8 +1,10 @@
 <div align="center">
 
+# runtime-pivot-plugin
+
 <img src="src/main/resources/META-INF/pluginIcon.svg" alt="Runtime Pivot plugin logo" width="128" height="128">
 
-# runtime-pivot-plugin
+
 
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/com.runtime.pivot.plugin.svg)](https://plugins.jetbrains.com/plugin/24781-runtime-pivot)
 ![Downloads](https://img.shields.io/github/release/wl2027/runtime-pivot.svg)
